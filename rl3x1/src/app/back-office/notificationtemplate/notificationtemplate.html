@@ -1,0 +1,289 @@
+﻿<div class="widget" [hidden]="!ListView">
+    <div class="widget-body">
+        <div class="widget-header widget-header1">
+            <!--<span class="widget-caption pull-left font-40"><b>Notification Template</b> </span>-->
+            <!-- <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span> -->
+            <!-- <span class="widget-caption pull-left font-40"><b>Brand </b></span>
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 pt-3">
+            <select name="brand" class="form-control" ngModel [(ngModel)]="SelectedBrandID"
+                #brand="ngModel" (change)="OnSelectBrand($event.target.value, $event.target)">
+            <option *ngFor='let brand of brands;' [value]="brand.PartnerID">
+                {{brand.PartnerName}}</option>
+            </select>
+        </div> -->
+            <div class="input-group pull-left col-md-3">
+                <input type="text" name="searchText" class="input-sm pull-left" (keyup.enter)="onFilterChanged()" style="margin-top:3px;width:300px;" [(ngModel)]="filterValue" placeholder="Search criteria includes all the visible fields.." />
+                <span class="input-group-btn">
+                <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i
+                        class="fa fa-search"></i>Search</button>
+            </span>
+            </div>
+            <div class="widget-buttons">
+                <!--<a id="btnAdd" href="javascript:void(0)" class="btn-link text-align-center thumb Authorize AUTH_2068" (click)="OnEditTimeZone(0)"><i class="glyphicon glyphicon-plus-sign"></i></a>
+                <a href="javascript:void(0)" id="btnEdit" class="btn-link ng-hide Authorize AUTH_3068" *ngIf="isEditVisible" (click)="OnEditTimeZone(CurrentTimeZone.TimeZoneId)"><i class="glyphicon glyphicon-edit"></i></a>-->
+                <button class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" data-toggle="tooltip" data-placement="top" type="button" (click)="Show('Add')" *ngIf="false">
+                <i class="glyphicon glyphicon-plus-sign"></i>Add
+            </button>
+                <!-- <button class="btn btn-sm btn-primary ng-hide Authorize AUTH_3068" data-toggle="tooltip"
+                data-placement="top" type="button" (click)="Show('Edit')" *ngIf="false">
+                <i class="glyphicon glyphicon-edit"></i>View
+            </button> -->
+                <button class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" data-placement="top" (click)="Delete()" *ngIf="false">
+                <i class="glyphicon glyphicon-trash"></i>Delete
+            </button>
+            </div>
+        </div>
+        <div class="card1 no-padding marginTop34">
+            <ag-grid-angular #agGrid style="height:100%;width:100%" class="ag-theme-balham" (gridReady)="onGridReady($event)" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="" *ngIf="!ListView">
+    <form name="NotificationTemplateForm" #f="ngForm" novalidate class="css-form">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="widget-header widget-header1">
+                    <div class="input-group pull-left" style="text-align: left; font-size: medium;">
+                        Notification Details
+                    </div>
+                    <div class="widget-buttons">
+                        <button class="btn btn-sm waves-effect waves-light btn-danger mr-2" type="button" (click)="Cancel()">
+                            <i class="fa fa-long-arrow-left"></i> Back
+                    </button>
+                        <!--<b class="btn-link" (click)="Cancel()"><i class="glyphicon glyphicon-floppy-remove red" style="display:block;"></i></b>-->
+                        <button class="btn btn-sm waves-effect waves-light btn-success" type="submit" *ngIf="LocalAccess | contains:'Edit'" (click)="onSubmit(f.form)">
+                        <i class="fa fa-floppy-o"></i> Save
+                    </button>
+                        <!--{{!(f.form.valid)}}-->
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="card1">
+                        <div class="no-padding marginTop34">
+
+                            <div class="form-group col-md-12" *ngIf="f.form.touched && !f.form.valid">
+                                <div class="requiredfield">
+                                    <b> Please fill the asterisk (*) fields. </b>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2 col-md-2 col-lg-2 col-xs-12" *ngIf="IsLoaded && e_localize.LanguageID.isVisible">{{e_localize.LanguageID.headerName}}
+                                <span *ngIf="e_localize.LanguageID.isRequired" style="color:red;">*</span>:</label>
+                                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12" *ngIf="IsLoaded && e_localize.LanguageID.isVisible">
+                                            <select #language="ngModel" [(ngModel)]="CurrentNotificationTemplate.LanguageID" [required]="e_localize.LanguageID.isRequired" name="Language" class="form-control" (ngModelChange)="getSelectedLanguages(CurrentNotificationTemplate.LanguageID)">
+                                    <!--<option [value]="0">
+                                            --Select Language--
+                                            [disabled]="!e_localize.LanguageID.isEnabled || CurrentNotificationTemplate.ID>0"
+                                        </option>-->
+                                    <option [value]="i.LanguageID" *ngFor="let i of LanguageList">{{i.Code}} |
+                                        {{i.Name}}</option>
+                                </select>
+
+                                        </div>
+                                        <label class="control-label col-sm-2 col-md-2 col-lg-2 col-xs-12" *ngIf="IsLoaded && e_localize.TemplateCode.isVisible">{{e_localize.TemplateCode.headerName}}
+                                <span *ngIf="e_localize.TemplateCode.isRequired" style="color:red;">*</span>:</label>
+                                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12" *ngIf="IsLoaded && e_localize.TemplateCode.isVisible">
+                                            <input type="text" #tempcode="ngModel" class="form-control" name="TemplateCode" [required]="e_localize.TemplateCode.isRequired" [disabled]="!e_localize.TemplateCode.isEnabled || CurrentNotificationTemplate.ID>0 || DisabledNameAndCode" [(ngModel)]="CurrentNotificationTemplate.TemplateCode"
+                                                placeholder="Template Code">
+
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <!-- <label
+                                class="control-label col-sm-2 col-md-2 col-lg-2 col-xs-12">Brand:</label>
+                            <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                        <input type="text" name="SelectedBrandName"
+                                            [(ngModel)]="SelectedBrandName" class="form-control" disabled="disabled">
+                            </div> -->
+                                        <label class="control-label col-sm-2 col-md-2 col-lg-2 col-xs-12" *ngIf="IsLoaded && e_localize.TemplateName.isVisible">{{ e_localize.TemplateName.headerName}}<span
+                                    *ngIf="e_localize.TemplateName.isRequired" style="color:red;">*</span>:</label>
+                                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12" *ngIf="IsLoaded && e_localize.TemplateName.isVisible">
+                                            <input type="text" #tempname="ngModel" class="form-control" name="TemplateName" [required]="e_localize.TemplateName.isRequired" [disabled]="!e_localize.TemplateName.isEnabled || CurrentNotificationTemplate.ID>0 || DisabledNameAndCode" [(ngModel)]="CurrentNotificationTemplate.TemplateName"
+                                                placeholder="Template Name">
+
+                                        </div>
+                                        <label class="control-label col-sm-2 col-md-2 col-lg-2 col-xs-12" *ngIf="IsLoaded && e_localize.TemplateSubject.isVisible">{{ e_localize.TemplateSubject.headerName}}<span
+                                *ngIf="e_localize.TemplateSubject.isRequired" style="color:red;">*</span>:</label>
+                                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12" *ngIf="IsLoaded && e_localize.TemplateSubject.isVisible">
+                                            <input type="text" #tempsub="ngModel" class="form-control" name="TemplateSubject" [required]="e_localize.TemplateSubject.isRequired" [disabled]="!e_localize.TemplateSubject.isEnabled" [(ngModel)]="CurrentNotificationTemplate.TemplateSubject" placeholder="Template Subject">
+
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                    <div class="form-group" *ngIf="IsLoaded && e_localize.IsActive.isVisible">
+                                        <label class="control-label col-sm-2 col-md-2 col-lg-2 col-xs-12">{{e_localize.IsActive.headerName}}:</label>
+                                        <div class="col-sm-4 col-md-4 col-lg-4 col-xs-12">
+                                            <div class="checkbox" style="margin-top:0px;margin-bottom:0px;">
+                                                <label style="position:relative;">
+                                        <!-- <input type="checkbox" name="IsActive"
+                                            [required]="e_localize.IsActive.isRequired"
+                                            [disabled]="!e_localize.IsActive.isEnabled"
+                                            [(ngModel)]="CurrentNotificationTemplate.IsActive"> -->
+
+                                            <input type="checkbox" class="checkbox-slider colored-palegreen yesno"
+                                            style="left:14px"
+                                            name="IsActive" [required]="e_localize.IsActive.isRequired"
+                                            [disabled]="!e_localize.IsActive.isEnabled"
+                                            [(ngModel)]="CurrentNotificationTemplate.IsActive" />
+
+                                            <span
+                                            class="text">&nbsp;</span>
+                                    </label>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="form-group" *ngIf="false">
+                                        <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">Schedule
+                                Notification</label>
+                                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                                            <div *ngIf="IsLoaded && e_localize.EnableSchedule.isVisible" class="checkbox checkbox-success checkbox pull-left" style="margin-top:0px;margin-bottom:0px;">
+                                                <label style="position:relative;">
+                                        <input type="checkbox" #tempenablesub="ngModel" name="EnableSchedule"
+                                            [disabled]="!e_localize.EnableSchedule.isEnabled"
+                                            [(ngModel)]="CurrentNotificationTemplate.EnableSchedule"
+                                            style="line-height:0px"><span class="text">&nbsp;</span>
+                                    </label>
+                                                <label for="CurrentNotificationTemplate.EnableSchedule">
+                                    </label>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div *ngIf="false">
+                                        <div class="col-md-12">
+                                            <hr style="margin-top:8px;margin-bottom:8px;" />
+                                        </div>
+                                        <!--ng-show="IsVisibleScheduleNotification"-->
+                                        <div class="form-group" *ngIf="IsLoaded && e_localize.IsTextNotification.isVisible">
+                                            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">{{e_localize.IsTextNotification.headerName}}
+                                    :</label>
+                                            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                                                <div class="checkbox" style="margin-top:0px;margin-bottom:0px">
+                                                    <label style="position:relative;">
+                                            <input type="checkbox" [disabled]="!e_localize.IsTextNotification.isEnabled"
+                                                [(ngModel)]="CurrentNotificationTemplate.IsTextNotification"
+                                                name="IsTextNotification"><span class="text">&nbsp;</span>
+                                        </label>
+                                                </div>
+                                            </div>
+                                            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.IsEmailNotification.isVisible">{{e_localize.IsEmailNotification.headerName}}
+                                    :</label>
+                                            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.IsEmailNotification.isVisible">
+                                                <div class="checkbox" style="margin-top: 0px;margin-bottom:0px;">
+                                                    <label style="position:relative;">
+                                            <input type="checkbox"
+                                                [disabled]="!e_localize.IsEmailNotification.isEnabled"
+                                                [(ngModel)]="CurrentNotificationTemplate.IsEmailNotification"
+                                                name="IsEmailNotification"><span class="text">&nbsp;</span>
+                                        </label>
+                                                </div>
+                                            </div>
+                                            <!--<div class="clearfix"></div>
+                                        <div style="color:red" [hidden]="tempschDay.valid || tempschDay.pristine">
+                                            {{e_localize.IsEmailNotification.headerName}} is required.
+                                        </div>-->
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.SchdeuleDayTypeLookUpID1.isVisible">{{e_localize.SchdeuleDayTypeLookUpID1.headerName}}<span
+                                        *ngIf="e_localize.SchdeuleDayTypeLookUpID1.isRequired"
+                                        style="color:red;">*</span> :</label>
+                                            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.SchdeuleDayTypeLookUpID1.isVisible">
+                                                <select #tempschDay="ngModel" [(ngModel)]="CurrentNotificationTemplate.SchdeuleDayTypeLookUpID1" [required]="e_localize.SchdeuleDayTypeLookUpID1.isRequired" [disabled]="!e_localize.SchdeuleDayTypeLookUpID1.isEnabled" name="1stSchedule" class="form-control">
+                                        <!-- <option [value]="0">--Select Days--</option> -->
+                                        <option [value]="i.ScheduleDayID" *ngFor="let i of scheduleDaysList">
+                                            {{i.ScheduleDay}}</option>
+                                    </select>
+                                                <!--<div class="clearfix"></div>
+                                            <div style="color:red" [hidden]="tempschDay.valid || tempschDay.pristine">
+                                                {{e_localize.SchdeuleDayTypeLookUpID1.headerName}} is required.
+                                            </div>-->
+                                            </div>
+                                            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.SchdeuleDayTypeLookUpID2.isVisible">{{e_localize.SchdeuleDayTypeLookUpID2.headerName}}
+                                    <span *ngIf="e_localize.SchdeuleDayTypeLookUpID2.isRequired"
+                                        style="color:red;">*</span>:</label>
+                                            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.SchdeuleDayTypeLookUpID2.isVisible">
+                                                <select #tempschDay2="ngModel" [(ngModel)]="CurrentNotificationTemplate.SchdeuleDayTypeLookUpID2" [required]="e_localize.SchdeuleDayTypeLookUpID2.isRequired" [disabled]="!e_localize.SchdeuleDayTypeLookUpID2.isEnabled" name="2ndSchedule" class="form-control">
+                                        <!-- <option [value]="0">--Select Days--</option> -->
+                                        <option [value]="i.ScheduleDayID" *ngFor="let i of scheduleDaysList">
+                                            {{i.ScheduleDay}}</option>
+                                    </select>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.SchdeuleDayTypeLookUpID3.isVisible">{{e_localize.SchdeuleDayTypeLookUpID3.headerName}}<span
+                                        *ngIf="e_localize.SchdeuleDayTypeLookUpID3.isRequired"
+                                        style="color:red;">*</span> :</label>
+                                            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.SchdeuleDayTypeLookUpID3.isVisible">
+                                                <select #tempschDay3="ngModel" [(ngModel)]="CurrentNotificationTemplate.SchdeuleDayTypeLookUpID3" [required]="e_localize.SchdeuleDayTypeLookUpID3.isRequired" [disabled]="!e_localize.SchdeuleDayTypeLookUpID3.isEnabled" name="3rdSchedule" class="form-control">
+                                        <!-- <option [value]="0">--Select Days--</option> -->
+                                        <option [value]="i.ScheduleDayID" *ngFor="let i of scheduleDaysList">
+                                            {{i.ScheduleDay}}</option>
+                                    </select>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <hr style="margin-top:8px;margin-bottom:8px;" />
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-md-12" style="display: none;margin-top:24px;">
+                                <div class="widget">
+                                    <div class="widget-header">
+                                        <span class="widget-caption pull-left font-40"><b>Parameters</b> </span>
+                                    </div>
+                                    <div class="widget-body">
+                                        <table width="100%" class="table-responsive">
+                                            <tr *ngFor="let msgKV of MessageSetUpKeyValueData" (click)="highlightBG(msgKV.KeyValueID, 'lightGray');">
+                                                <td id="KV{{msgKV.KeyValueID}}" class="tblTDClass">
+                                                    {{msgKV.KeyName}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" *ngIf="IsLoaded && e_localize.TemplateBody.isVisible">
+                                <div class="form-group">
+                                    <!-- <label class="control-label">{{e_localize.TemplateBody.headerName}} <span
+                                *ngIf="e_localize.TemplateBody.isRequired" style="color:red;">*</span>:</label> -->
+                                    <ck-editor #tempbody="ngModel" [(ngModel)]="CurrentNotificationTemplate.TemplateBody" [required]="e_localize.TemplateBody.isRequired" name="TemplateBody" [config]="config" debounce="500">
+                                    </ck-editor>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<message #pop cssClass="modal-msg"></message>

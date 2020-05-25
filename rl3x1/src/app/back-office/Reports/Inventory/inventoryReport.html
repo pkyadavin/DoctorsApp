@@ -1,0 +1,39 @@
+﻿ 
+
+<div class="" *ngIf="GridView">
+    <div class="widget">
+        <div class="widget-header ">
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterValue" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                </span>
+            </div>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="txtPartner" class="form-control input-sm" style="margin-top:3px;width:250px;" placeholder="Search...">
+            </div>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="txtNode" class="form-control input-sm" style="margin-top:3px;width:250px;" placeholder="Search...">
+            </div>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="txtModel" class="form-control input-sm" style="margin-top:3px;width:250px;" placeholder="Search...">
+            </div>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="txtLocation" class="form-control input-sm" style="margin-top:3px;width:250px;" placeholder="Search...">
+            </div>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="txtItemNumber" class="form-control input-sm" style="margin-top:3px;width:250px;" placeholder="Search...">
+            </div>
+        </div>
+
+        <div class="widget-body no-padding" style="overflow:hidden;">
+            <ag-grid-angular #agGrid style="height:450px;width:100%" class="ag-theme-balham"
+                         [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()">
+            </ag-grid-angular>
+        </div>
+    </div>
+</div>
+
+
+

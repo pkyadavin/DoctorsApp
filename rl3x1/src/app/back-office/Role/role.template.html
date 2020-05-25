@@ -1,0 +1,333 @@
+﻿<div class="widget" *ngIf="ListView">
+    <div class="widget-body">
+        <div id="divheader" class="widget-header widget-header1">
+            <div class="input-group pull-left col-md-3">
+                <input type="text" name="searchText" (keyup.enter)="onFilterChanged()" [(ngModel)]="filterText" class="form-control input-sm" style="margin-top:3px;" placeholder="Search criteria includes all the visible fields.." />
+                <span class="input-group-btn">
+          <button
+            (click)="onFilterChanged()"
+            class="btn btn-secondary btn-sm"
+            style="margin-top:3px;"
+          >
+            <i class="fa fa-search"></i>Search
+          </button>
+        </span>
+            </div>
+
+            <div class="widget-buttons">
+                <button class="btn btn-sm btn-primary add_btn" type="button" (click)="Show()" *ngIf="LocalAccess | contains:'Add'">
+          <i class="glyphicon glyphicon-plus-sign"></i>Add
+        </button>
+                <!-- <app-download
+          #PartnerAddress
+          [moduleName]="Role"
+        >
+        </app-download> -->
+                <!-- <button
+          class="btn btn-sm btn-primary save_btn"
+          type="button"
+          (click)="downlaodExcel()"
+        >
+          <i class="glyphicon glyphicon-floppy-disk"></i>Download
+        </button> -->
+            </div>
+        </div>
+        <div id="divgrid" class="card1 no-padding marginTop34">
+            <ag-grid-angular #agGrid style="height:100%;width:100%" class="ag-theme-balham" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()">
+            </ag-grid-angular>
+        </div>
+    </div>
+</div>
+
+<div class="" *ngIf="!ListView">
+    <form #f="ngForm" novalidate>
+        <div class="widget">
+            <div class="widget-body widget-header1">
+                <div class="widget-header widget-header1">
+                    <div class="input-group pull-left" style="text-align: left; font-size: medium;">
+                        Role Details
+                    </div>
+                    <div class="widget-buttons">
+                        <button class="btn btn-sm waves-effect waves-light btn-danger mr-2" type="button" (click)="Cancel()">
+              <i class="fa fa-long-arrow-left"></i> Back
+            </button>
+                        <button class="btn btn-sm waves-effect waves-light btn-success" type="submit" *ngIf="((LocalAccess | contains:'Add') && CurrentRole.RoleID == 0) || (LocalAccess | contains:'Edit')" (click)="Save(f.form)">
+              <i class="fa fa-floppy-o"></i> Save
+            </button>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="card1">
+                        <div class="no-padding marginTop34">
+                            <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                                <div style="color:red;">
+                                    <b> Please fill the asterisk (*) fields. </b>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label  col-sm-2 col-md-2 col-lg-2">Role <span style="color:red;">*</span>:</label
+                >
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                  <input
+                    maxlength="100"
+                    type="text"
+                    class="form-control"
+                    #RoleName="ngModel"
+                    name="RoleName"
+                    maxlength="80"
+                    [(ngModel)]="CurrentRole.RoleName"
+                    required
+                    placeholder="Role"
+                  />
+                  <!-- <span style="color:red" *ngIf="CurrentRole.RoleName && CurrentRole.RoleName.length > 25">
+                                        Role name should not be more than 80 Characters
+                                    </span> -->
+                </div>
+                <label class="control-label  col-sm-2 col-md-2 col-lg-2"
+                  >Dashboard / Home Page
+                  <span style="color:red;">*</span>:</label
+                >
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                  <select
+                    [(ngModel)]="CurrentRole.DashBoardMasterID"
+                    #Language="ngModel"
+                    name="Language"
+                    required
+                    class="form-control"
+                    (change)="dboardchange()"
+                  >
+                    <option [ngValue]="undefined" disabled>--Select--</option>
+                    <option
+                      [value]="i.DashBoardMasterID"
+                      *ngFor="let i of DashBoards"
+                    >
+                      {{i.DashBoardCode}}</option
+                    >
+                  </select>
+                  <br />
+                  <span>
+                    {{CurrentRole.DashBoardDescription}}
+                  </span>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="form-group">
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="form-group">
+                <div class="btn-group margin-bottom-5 col-md-12">
+                  <div
+                    *ngIf="CurrentRole.RoleID>0"
+                    class="pull-left"
+                    style="padding-top: 8px;"
+                  >
+                    <strong>Assign Access Rights</strong>
+                  </div>
+                  <div *ngIf="CurrentRole.RoleID>0" class="pull-right">
+                    <div class="widget-buttons">
+                      <button
+                        type="button"
+                        class="btn btn-primary btn-sm"
+                        [disabled]="isExpend"
+                        (click)="isExpend=true;ExpendAll(true)"
+                      >
+                        Expand All
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-primary btn-sm"
+                        [disabled]="!isExpend"
+                        (click)="isExpend=false;ExpendAll(false)"
+                      >
+                        Collapse All
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="col-md-12" *ngIf="CurrentRole.RoleID>0">
+                <div
+                  id="accordion"
+                  class="panel-group margin-bottom-5"
+                  *ngFor="let mod of CurrentRole.Authorization; let i = index"
+                >
+                  <div class="panel panel-default">
+                    <div
+                      class="widget-header"
+                      style="cursor:pointer!important;"
+                    >
+                      <div class="col-sm-11 col-md-11 col-lg-11 padding-5">
+                        <span
+                          class="widget-caption text-align-left padding-5"
+                          style="float: none!important; display: block!important;"
+                        >
+                          <a
+                            data-toggle="collapse"
+                            style="display:block;"
+                            href="#collapse_{{mod.ID}}"
+                          >
+                            <span class="fa fa-caret-right"></span
+                            >&nbsp;&nbsp;&nbsp;<i
+                              class="menu-icon {{mod.LabelCode}}"
+                            ></i>
+                            {{mod.Title}}
+                          </a>
+                        </span>
+                      </div>
+                      <div
+                        class="col-sm-1 col-md-1 col-lg-1"
+                        style="display:none"
+                      >
+                        <label
+                          style="float:right!important; margin-top:8px!important;"
+                        >
+                          <input
+                            name="parent_{{mod.ID}}"
+                            class="checkbox-slider colored-palegreen cb_parent"
+                            id="parent_{{mod.ID}}"
+                            type="checkbox"
+                            [checked]="mod.All"
+                            (change)="AssignFullPermission('parent_'+mod.ID)"
+                          />
+                          <span class="text"></span>
+                        </label>
+                            </div>
+                        </div>
+                        <div id="collapse_{{mod.ID}}" class="panel-collapse collapse c_child_collapse">
+                            <div class="panel-body">
+                                <div class="panel-group margin-bottom-5" *ngFor="let child of mod.Childs | str2obj; let j = index">
+                                    <div class="panel panel-default">
+                                        <div class="widget-header" style="cursor:pointer!important;">
+                                            <div class="col-sm-11 col-md-11 col-lg-11 padding-5">
+                                                <span class="widget-caption text-align-left padding-5" style="float: none!important; display: block!important;">
+                                  <a
+                                    data-toggle="collapse"
+                                    style="display:block;"
+                                    href="#chiled_collapse_{{child.ID}}"
+                                  >
+                                    <span class="fa fa-caret-right"></span
+                                    >&nbsp;&nbsp;&nbsp;<i
+                                      class="menu-icon {{child.LabelCode}}"
+                                    ></i>
+                                    {{child.Title}}
+                                  </a>
+                                </span>
+                                            </div>
+                                            <div class="col-sm-1 col-md-1 col-lg-1" style="display:none">
+                                                <label style="float:right!important; margin-top:8px!important;">
+                                  <input
+                                    name="child_{{child.ID}}"
+                                    class="checkbox-slider colored-palegreen cb_child cb_child_parent_{{mod.ID}} cg_parent_{{mod.ID}}"
+                                    type="checkbox"
+                                    id="child_{{child.ID}}"
+                                    [checked]="child.All"
+                                    (change)="AssignFullPermission('child_'+child.ID, 'parent_'+mod.ID)"
+                                  />
+                                  <span class="text"></span>
+                                </label>
+                                            </div>
+                                        </div>
+                                        <div id="chiled_collapse_{{child.ID}}" class="panel-collapse collapse c_collapse_{{child.ID}}">
+                                            <div class="panel-body">
+                                                <div class="panel-group margin-bottom-5" *ngFor="let deepchild of child.Childs | str2obj; let j = index">
+                                                    <div class="panel panel-default">
+                                                        <div class="widget-header" style="cursor:pointer!important;">
+                                                            <div class="col-sm-11 col-md-11 col-lg-11 padding-5">
+                                                                <span class="widget-caption text-align-left padding-5" style="float: none!important; display: block!important;">
+                                          <a
+                                            data-toggle="collapse"
+                                            style="display:block;"
+                                            href="#chiled_collapse_{{deepchild.ID}}"
+                                          >
+                                            <span
+                                              class="fa fa-caret-right"
+                                            ></span
+                                            >&nbsp;&nbsp;&nbsp;<i
+                                              class="menu-icon {{deepchild.LabelCode}}"
+                                            ></i>
+                                            {{deepchild.Title}}
+                                          </a>
+                                        </span>
+                                                            </div>
+                                                            <div class="col-sm-1 col-md-1 col-lg-1" style="display:none">
+                                                                <label style="float:right!important; margin-top:8px!important;">
+                                          <input
+                                            name="deepchild_{{deepchild.ID}}"
+                                            class="checkbox-slider colored-palegreen cb_deepchild cb_deepchild_parent_{{child.ID}} cg_parent_{{child.ID}}"
+                                            type="checkbox"
+                                            id="deepchild_{{deepchild.ID}}"
+                                            [checked]="deepchild.All"
+                                            (change)="AssignFullPermission('deepchild_'+deepchild.ID, 'parent_'+child.ID)"
+                                          />
+                                          <span class="text"></span>
+                                        </label>
+                                                            </div>
+                                                        </div>
+                                                        <div id="chiled_collapse_{{deepchild.ID}}" class="panel-collapse collapse c_collapse_{{deepchild.ID}}">
+                                                            <div class="panel-body">
+                                                                <div *ngIf="deepchild.Permissions">
+                                                                    <div *ngFor="let permission of deepchild.Permissions | str2obj">
+                                                                        <div class="checkbox">
+                                                                            <label style="position:relative;">
+                                                <input
+                                                  name="checkbox{{permission.ID}}"
+                                                  class="c_p_{{child.ID}} cb_child_child_{{deepchild.ID}}  cb_child_parent_{{child.ID}} c_c_permission"
+                                                  type="checkbox"
+                                                  [(ngModel)]="permission.IsApplicable"
+                                                  id="checkbox{{permission.ID}}"
+                                                  (click)="onAccessChanged(child.ID, deepchild.ID)"
+                                                /><span class="text"
+                                                  >{{permission.Display_Name}}</span
+                                                >
+                                              </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="child.Permissions">
+                                                    <div *ngFor="let permission of child.Permissions | str2obj" class="col-sm-3 col-md-3 col-lg-3">
+                                                        <div class="checkbox">
+                                                            <label style="position:relative;">
+                                        <input
+                                          name="checkbox{{permission.ID}}"
+                                          class="c_p_{{mod.ID}} cb_child_child_{{child.ID}}  cb_child_parent_{{mod.ID}} c_c_permission"
+                                          type="checkbox"
+                                          [(ngModel)]="permission.IsApplicable"
+                                          id="checkbox{{permission.ID}}"
+                                          (click)="onAccessChanged(mod.ID, child.ID)"
+                                        /><span class="text"
+                                          >{{permission.Display_Name}}</span
+                                        >
+                                      </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+</div>
+</div>
+</div>
+</div>
+</form>
+</div>
+
+<message #pop cssClass="modal-msg"></message>

@@ -1,0 +1,157 @@
+<div class="widget">
+  <div class="widget-header">
+    <div class="widget-buttons">
+      <button class="report-search btn btn-primary btn-sm" id="report-search" (click)="bindGraph(true)">
+        <i class="fa fa-filter"></i> Filter
+      </button>
+      <!-- <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" style="margin-top: -1px;" data-toggle="dropdown">
+          <i class="fa fa-download"></i> Download
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" style="min-width:107px!important;">
+          <li><a href="javascript: void(0);"><i class="fa fa-file-excel-o green"></i> Excel</a>
+          </li>
+          <li class="divider" style="margin: 0px!important;"></li>
+          <li><a href="/back-office/reports/web/tat"><i class="fa fa-file-text green"></i>
+              CSV</a></li>
+        </ul>
+      </div> -->
+    </div>
+  </div>
+  <div class="widget-body no-padding" style="height:auto;">
+    <div id="report_filter">
+      <div class="form-group padding-top-10">
+        <!-- <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">Return Center:</label>
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+          <select name="returncenter" class="form-control" ngModel [(ngModel)]="filter_data.return_dc"
+            #returncenter="ngModel">
+            <option value="0" selected>All Centers</option>
+            <option *ngFor='let center of return_centers;' [value]="center.PartnerID">
+              {{center.PartnerName}}</option>
+          </select> </div>
+        <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">Brand: </label>
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+          <select name="brand" class="form-control" ngModel [(ngModel)]="filter_data.brand" #brand="ngModel">
+            <option value="0" selected>All Brands</option>
+            <option *ngFor='let brand of brands;' [value]="brand.PartnerID">
+              {{brand.PartnerName}}</option>
+          </select>
+        </div> -->
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="control-label col-sm-2 col-md-2 col-lg-2 col-xs-12 padding-top-5">Date Range :</label>
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+          <input class="form-control" bsDaterangepicker [bsConfig]="bsConfig" type="text" name="from_to_date"
+            [(ngModel)]="filter_data.from_to_date" />
+        </div>
+        <!-- <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">Status: </label>
+        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+          <select name="status" class="form-control" ngModel [(ngModel)]="filter_data.status" #brand="ngModel">
+            <option value="0" selected>All Status</option>
+            <option *ngFor='let status of statuses;' [value]="status.TypeLookUpID">
+              {{status.TypeName}}</option>
+          </select>
+          <div class="clearfix"></div>
+        </div> -->
+        <div class="clearfix"></div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+
+    <div style="text-align: center;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 graph-mb" *ngIf="statusTiles.length > 0">
+      <h3>Return Statistics</h3>
+      <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12" *ngFor="let tile of statusTiles">
+          <!-- <div class="databox radius-bordered databox-shadowed databox-graded">
+                    <div class="databox-left bg-themesecondary">
+                        <div class="databox-piechart" *ngIf="tile.percent != 0">                          
+                            <div style="width: 47px;height: 47px;line-height: 47px;"
+                            data-toggle="easypiechart" class="easyPieChart" data-barcolor="#fff" data-linecap="butt" data-percent="tile.percent" data-animate="500" data-linewidth="3" data-size="47" data-trackcolor="#fb6e52 "><span class="white font-90">{{tile.percent.toFixed(2)}}%</span></div>
+                        </div>
+                    </div>
+                    <div class="databox-right">
+                        <span class="databox-number themesecondary">{{tile.count}}</span>
+                        <div class="databox-text darkgray">{{tile.text}}</div>
+                        <div class="databox-stat themesecondary radius-bordered">
+                            <i class="stat-icon  icon-lg fa fa-{{tile.icon}}"></i>
+                        </div>
+                    </div>
+                </div> -->
+
+          <div class="databox bg-white radius-bordered databox-shadowed databox-graded">
+            <div class="databox-left bg-themeprimary">
+              <div class="databox-piechart" *ngIf="tile.percent != 0">
+                <div style="width: 47px;height: 47px;line-height: 47px;" data-toggle="easypiechart" class="easyPieChart"
+                  data-barcolor="#fff" data-linecap="butt" data-percent="tile.percent" data-animate="500"
+                  data-linewidth="3" data-size="47" data-trackcolor="#2dc3e8 ">
+                  <span class="white font-90">{{tile.percent.toFixed(2)}}%</span>
+                </div>
+              </div>
+            </div>
+            <div class="databox-right">
+              <span class="databox-number themeprimary">{{tile.count}}</span>
+              <div class="databox-text darkgray">{{tile.text}}</div>
+              <div class="databox-stat themeprimary radius-bordered">
+                <i class="stat-icon  icon-lg fa fa-{{tile.icon}}"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div [hidden]="true" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 graph-mb" *ngIf="brandTiles.length > 0">
+
+      <h3>Brand Returns</h3>
+      <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12" *ngFor="let tile of brandTiles">
+          <div class="databox bg-white radius-bordered databox-shadowed databox-graded">
+            <div class="databox-left bg-themeprimary">
+              <div class="databox-piechart" *ngIf="tile.percent != 0">
+                <div style="width: 47px;height: 47px;line-height: 47px;" data-toggle="easypiechart" class="easyPieChart"
+                  data-barcolor="#fff" data-linecap="butt" data-percent="tile.percent" data-animate="500"
+                  data-linewidth="3" data-size="47" data-trackcolor="#2dc3e8 ">
+                  <span class="white font-90">{{tile.percent.toFixed(2)}}%</span>
+                </div>
+              </div>
+            </div>
+            <div class="databox-right">
+              <span class="databox-number themeprimary">{{tile.count}}</span>
+              <div class="databox-text darkgray">{{tile.text}}</div>
+              <div class="databox-stat themeprimary radius-bordered">
+                <i class="stat-icon  icon-lg fa fa-{{tile.icon}}"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 graph-mb">
+        <highcharts-chart #map
+        [Highcharts]="Highcharts"
+        [constructorType]="'mapChart'"
+        [options]="chartMap"
+    
+        style="width: 100%; height: 650px; display: block;"
+      ></highcharts-chart>
+    </div> -->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 graph-mb">
+      <highcharts-chart #map [Highcharts]="Highcharts" [constructorType]="'mapChart'" [chart]="worldMapChart"
+        style="width: 100%; height: 650px; display: block;"></highcharts-chart>
+    </div>
+
+    <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 graph-chart" [chart]="chartTopReturnReasons" *ngIf="returnReasons.length > 0"></div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 graph-chart" [chart]="chartTopProducts" *ngIf="returnedProducts.length > 0"></div> -->
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 graph-chart" [chart]="chartStackTopReturnReasons"
+      *ngIf="returnReasons.length > 0"></div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 graph-chart" [chart]="chartStackTopProducts"
+      *ngIf="returnedProducts.length > 0"></div> 
+    <div class="clearfix"></div>
+  </div>
+  <div class="clearfix"></div>
+</div>

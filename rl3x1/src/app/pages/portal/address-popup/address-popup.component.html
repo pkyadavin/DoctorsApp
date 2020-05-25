@@ -1,0 +1,70 @@
+<form id="addressPopUp" #addressDetail="ngForm" style="float: left;cursor: pointer;">
+    <div class="dropdown">
+        <button data-toggle="dropdown" id="test1" class="text-link dropdown-toggle border0 no-padding"
+            style="background: transparent; border:0px!important;" type="button">
+            <i  class="redw address-dropbtn" style="margin-left:0px!important;"
+                [title]="getlang_val('lbl_hover_edit_address')">{{getlang_val('lbl_edit_address')}}</i> 
+        </button>
+
+        <ul (click)="stopPropagation($event)" class="dropdown-menu dropdown-menu1 border0"
+            style="padding: 10px;background-color:#ffffff!important;width:300px;">
+            <li>
+
+                <div class="text-uppercase" style="padding-top: 10px;padding-bottom:10px;font-weight: bold;color: #000000;cursor:initial;">
+                    {{getlang_val('lbl_customer_changeaddress')}}</div>
+                    <span class="text-black" style="padding-bottom:10px;cursor:initial;font-size: 12px;">
+                        {{getlang_val('lbl_address_update_note')}}</span>
+                        <div class="clearfix"></div>
+                <div class="form-group">
+                    <input name="txt_street1" type="text" class="form-control"
+                        [placeholder]="getlang_val('lbl_street')+'1'" [(ngModel)]="address.street1" required />
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <input name="txt_street2" type="text" class="form-control"
+                        [placeholder]="getlang_val('lbl_street')+'2'" [(ngModel)]="address.street2" />
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <input name="txt_street3" type="text" class="form-control"
+                        [placeholder]="getlang_val('lbl_street')+'3'" [(ngModel)]="address.street3" />
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="form-group">
+                    <input name="txt_city" type="text" class="form-control" [placeholder]="getlang_val('lbl_city')"
+                        [(ngModel)]="address.city" required />
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <select name="ddlState" class="form-control"  [(ngModel)]="stateName"
+                        (change)="changeState(stateName)">
+                        <option value="" selected>--Select--</option>
+                        <option *ngFor="let state of states" [value]="state.stateName">{{state.stateName}}</option>
+                        <option value="Other" selected>Other</option>
+                    </select>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <input name="txt_postalCode" type="text" class="form-control"
+                        [placeholder]="getlang_val('lbl_postalcode')" [(ngModel)]="address.postal_code" required />
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+                <hr style="border-top-color: #ffffff;">
+                <div class="form-group" style="text-align: right;">
+                    <button id="btn_save" name="btn_save" type="button" class="btn btn-sm btn-primary"
+                        style="padding:10px 16px!important;" (click)="updateAddress(addressDetail)"
+                        [disabled]="!addressDetail.valid">
+                        {{getlang_val('lbl_btn_update')}}
+                    </button>
+                    <span style="width:5px;display: inline-block;"></span>
+                    <button id="btn_close" name="btn_close" type="button" style="padding:8px 20px;"
+                        class="btn btn-sm btn-default1" (click)="closePopup()">
+                        {{getlang_val('lbl_btn_close')}}
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </div>
+</form>

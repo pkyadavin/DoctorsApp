@@ -1,0 +1,255 @@
+/******************New CSS Only*************/
+
+.rma_box p {
+    margin-bottom: 0px;
+}
+
+.rma_box p label {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 0px;
+}
+
+.rma_box p label.colorred {
+    font-weight: 600;
+    font-size: 12px;
+    color: #ff0000;
+}
+
+.rma_box h3 {
+    color: #212529;
+    font-size: 16px!important;
+    font-weight: bold!important;
+    margin: 0px;
+}
+
+.rma_box h3 small {
+    font-size: 14px;
+    color: #8bc34a;
+    font-weight: 400;
+}
+
+.rma_box address {
+    font-size: 14px;
+    color: #212529;
+    margin-bottom: 5px;
+}
+
+pr-0 {
+    padding-right: 0px;
+}
+
+.iconbx i {
+    font-size: 32px;
+}
+
+.rma_box ul {
+    padding: 0px;
+    list-style: none;
+}
+
+.rma_box ul li {
+    float: left;
+    width: 37%;
+}
+
+.rma_box ul li .iconbx {
+    float: left;
+    padding-right: 5px;
+}
+
+.rma_box ul li label {
+    color: #212529;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 10px;
+    margin: 0;
+}
+
+.rma_box ul li p {
+    color: #212529;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 12px;
+    margin: 0;
+}
+
+.rma_box ul li:first-child {
+    width: 25%;
+}
+
+.rma_box {
+    min-height: 151px;
+}
+
+.listofprod h3 {
+    color: #212529;
+    font-size: 18px!important;
+    font-weight: bold!important;
+    margin: 0px;
+}
+
+.listofprod h3 small {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.listofprod .btn-danger {
+    margin-right: 10px;
+}
+
+.listofprod .hiddenRow p {
+    color: #212529;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.listofprod .hiddenRow h5 {
+    color: #212529;
+    font-size: 14px;
+    font-weight: bold!important;
+}
+
+.listofprod td.hiddenRow {
+    padding: 0px!important;
+    border: 0px solid #e9e9e9;
+}
+
+.listofprod td.hiddenRow {
+    padding: 15px!important;
+    border: 1px solid #e9e9e9;
+    margin-bottom: 15px;
+}
+
+.listofprod .table tr.active td:first-child {
+    box-shadow: none;
+}
+
+.listofprod .table {
+    border-collapse: separate;
+    border-spacing: 0 0px;
+}
+
+.listofprod .table>tbody>tr>td,
+.listofprod .table>tbody>tr>th,
+.listofprod .table>tfoot>tr>td,
+.listofprod .table>tfoot>tr>th,
+.listofprod .table>thead>tr>td,
+.listofprod .table>thead>tr>th {
+    border-top: 0px solid;
+    vertical-align: middle!important;
+}
+
+.listofprod .table td i {
+    color: #00bcd4;
+    font-size: 16px;
+}
+
+.listofprod .table td .btn i {
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.listofprod .table td label {
+    margin-bottom: 0px;
+}
+
+.reject_popup .modal-dialog .modal-content {
+    padding: 10px;
+}
+
+.reject_popup .modal-dialog .modal-content .modal-header {
+    background-color: #ffffff;
+    padding: 0px 0px 10px 0px;
+}
+
+.reject_popup h4.modal-title {
+    color: #212529;
+    font-size: 18px;
+    font-weight: bold!important;
+}
+
+.reject_popup .modal-body {
+    padding: 10px 0;
+}
+
+.reject_popup .modal-footer {
+    background-color: #fff;
+    padding: 0;
+}
+
+.reject_popup textarea.form-control {
+    height: 50px!important;
+}
+
+.reject_popup .btn {
+    text-transform: uppercase;
+}
+
+.reject_popup .modal-header .close {
+    color: #fff;
+    background: #ef5350;
+    opacity: 1;
+    padding: 0px 5px;
+    font-size: 20px;
+    width: 24px;
+    height: 24px;
+}
+
+.reject_popup {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.widget-body.rma_box,
+.widget-body.listofprod {
+    padding: 18px!important;
+}
+
+.widget-body.listofprod label {
+    position: relative;
+}
+
+.widget-body.listofprod label input.colored-success {
+    opacity: 0;
+    left: 0px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: 0;
+}
+
+button.btn.btn-default.btn-sm.pull-right.approved {
+    background: #28a745!important;
+    border-color: #28a745!important;
+    color: #fff;
+}
+
+button.btn.btn-default.btn-sm.pull-right.requested {
+    background: #6c757d!important;
+    border-color: #6c757d!important;
+    color: #fff;
+}
+
+button.btn.btn-default.btn-sm.pull-right.received {
+    background: #007bff!important;
+    border-color: #007bff!important;
+    color: #fff;
+}
+
+button.btn.btn-default.btn-sm.pull-right.replaced {
+    background: #ffc107!important;
+    border-color: #ffc107!important;
+    color: #fff;
+}
+
+button.btn.btn-default.btn-sm.pull-right.shipped {
+    background: #17a2b8!important;
+    border-color: #17a2b8!important;
+    color: #fff;
+}
+
+button.btn.btn-default.btn-sm.pull-right.delivered {
+    background: #1a752f!important;
+    border-color: #1a752f!important;
+    color: #fff;
+}

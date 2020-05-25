@@ -1,0 +1,38 @@
+﻿
+
+<div class="widget-body"  [hidden]="!ListView">
+        <div class="widget-header widget-header1">
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}} </b> </span>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input class="input-sm pull-left margin-left-20" style="margin-top:3px;width:300px;" [(ngModel)]="filterText" name="searchText" placeholder="Search criteria includes all the visible fields..." />
+                <span class="input-group-btn">
+                    <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                </span>
+            </div>
+            <div class="widget-buttons">
+                <button class="btn btn-sm btn-primary text-align-center" type="button" (click)="MoveUp()" *ngIf="isEditVisible">
+                    <i class="glyphicon glyphicon-arrow-up"></i>Move Up
+                </button>
+                <button class="btn btn-sm btn-primary text-align-center" type="button" (click)="ShowForm(0)" *ngIf="ShowPerMission('Add')">
+                    <i class="glyphicon glyphicon-plus-sign"></i>Add
+                </button>
+                <button class="btn btn-sm btn-primary" type="button" (click)="ShowForm(currentRule.RuleID)" *ngIf="isEditVisible && ShowPerMission('Add')">
+                    <i class="glyphicon glyphicon-edit"></i>View
+                </button>
+                <button class="btn btn-sm btn-danger" type="button" (click)="DeleteRule()" *ngIf="isEditVisible && ShowPerMission('Delete')">
+                    <i class="glyphicon glyphicon-trash"></i>Delete
+                </button>
+            </div>
+        </div>
+        <div class="card1 no-padding marginTop34" style="overflow:hidden;">
+            <ag-grid-angular #agGrid style="height:100%;width:100%" class="ag-theme-balham"
+                         [gridOptions]="ruleGridOptions" (selectionChanged)="onSelectionChanged()">
+            </ag-grid-angular>
+        </div>
+    </div>
+<Rule-editor *ngIf="!ListView" [selectedId]="selectedId" [permission]="ShowPerMission('Edit')" (EditorVisibilityChange)="ChangeEditorVisibility($event)"></Rule-editor>
+
+<message #pop cssClass="modal-msg"></message>
+
+
+

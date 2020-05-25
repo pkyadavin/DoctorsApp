@@ -1,0 +1,105 @@
+.ag-cell-focus {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
+
+/*Initiated*/
+
+@import '../returns.component.css';
+.label-warning,
+.badge-warning {
+    background-color: #ffbb34!important;
+    background-image: none !important;
+}
+
+
+/*Scanned*/
+
+.label-darkpink,
+.badge-darkpink {
+    background-color: #ccc31c;
+    background-image: none !important;
+}
+
+
+/*Received*/
+
+.label-success,
+.badge-success {
+    background-color: #99d101;
+    background-image: none !important;
+}
+
+
+/*Closed*/
+
+.label-darkorange,
+.badge-darkorange {
+    background-color: #79a502;
+    background-image: none !important;
+}
+
+.scanerSerch {
+    background-color: #ccc31c!important;
+    position: fixed;
+    color: #ffffff;
+    z-index: 9999;
+    right: 0px;
+    top: 89.2px;
+    font-size: 20px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 3px 12px;
+    cursor: pointer;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+    -webkit-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+    -moz-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+    -ms-animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+    animation: pulse 1.25s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@-webkit-keyframes pulse {
+    to {
+        box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);
+    }
+}
+
+@-moz-keyframes pulse {
+    to {
+        box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);
+    }
+}
+
+@-ms-keyframes pulse {
+    to {
+        box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);
+    }
+}
+
+@keyframes pulse {
+    to {
+        box-shadow: 0 0 0 45px rgba(232, 76, 61, 0);
+    }
+}
+
+.scaner-body {
+    text-align: left;
+    background-color: #ffffff;
+    -moz-box-shadow: 0 0 5px #888;
+    -webkit-box-shadow: 0 0 5px#888;
+    box-shadow: 0 0 5px #888;
+    width: 500px;
+    position: fixed;
+    right: 0px;
+    margin-right: -500px;
+    top: 83px;
+    padding: 10px;
+    z-index: 1;
+}
+
+.scanner-open {
+    display: none;
+}

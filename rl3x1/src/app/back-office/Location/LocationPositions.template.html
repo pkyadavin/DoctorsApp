@@ -1,0 +1,33 @@
+﻿
+<table *ngFor="let r of Rows; let i = index; trackBy: trackByFn" id="{{r}}" style="width:100%;" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+        <td *ngFor="let Child of StructureData.Childs | has:'RowIndex':r ; let j = index; trackBy: trackByFn" colspan="100" data-toggle="dropup" id="Col{{Child.PartnerLocationID}}" class="dropdown-toggle text-align-left cl-td" [ngStyle]="{'background-color':Child.ColorCode}">
+            <!--row{{Child.RowIndex}}-{{Child.PartnerLocationID}}-{{r}}-{{j}}-->
+
+            <div class="btn-group">
+                <div id="div{{Child.PartnerLocationID}}" class="popover" (mouseleave)="HidePopUp(Child.PartnerLocationID)" (mouseover)="ShowPopUp(Child.PartnerLocationID)" style="display:none;position:absolute;width:200px;top:-80px;z-index:999!important;left:-70px;">
+                    <div class="arrow" style="left: 50%;"></div><h3 class="popover-title" style="padding-left: -10px;">
+                        <li class="dropdown-item padding-top-5" style="list-style:none;margin-bottom:15px;margin-left:-10px;">
+                            <i class='fa fa-th fa-lg' (click)="AddRowNColumnEventCallback(Child);" style="right:5px;cursor:pointer;float:left;color:gray;margin-left:2px;" tooltip-placement="top" tooltip="Add"></i>
+                            <i class='fa fa-pencil-square-o fa-lg' (click)="RenameLocationCallback(Child);" style="right:22px;cursor:pointer;float:left;color:gray;margin-left:5px;" tooltip-placement="top" tooltip="Edit"></i>
+                            <i class='fa fa-trash fa-lg' (click)="DeleteLocationEventCallback(Child);" style="right:44px;cursor:pointer;float:left;color:gray;margin-left:5px;" tooltip-placement="top" tooltip="Delete"></i>
+                        </li>
+                    </h3><div class="popover-content" style="padding: 5px 5px;font-size: 11px!important;">
+                        <b>Name:</b> {{Child.LocationName}}<br />
+                        <b>Code:</b> {{Child.TenantLocationCode}}<br />
+                        <!-- <b>Location Map:</b> {{LocationMap(Child.PartnerLocationID)}}<br /> -->
+                    </div>
+                </div>
+                <button (mouseleave)="HidePopUp(Child.PartnerLocationID)" (mouseover)="ShowPopUp(Child.PartnerLocationID)" id="btn{{Child.PartnerLocationID}}" class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" (click)="RenameLocationCallback(Child)">
+                    {{Child.LocationName}}
+                </button>
+                <span style="display:none;">{{Child.LocationCode}}</span>
+            </div>
+            <!--Location control Start-->
+            <loc-structure id="{{Child.PartnerLocationID}}" [StructureData]="Child" (RenameLocationEvent)="RenameLocationCallback($event)" (AddRowNColumnEvent)="AddRowNColumnEventCallback($event)" (EditRowNColumnEvent)="EditRowNColumnEventCallback($event)" (DeleteLocationEvent)="DeleteLocationEventCallback($event)"></loc-structure>
+            <!--Location control End-->
+        </td>
+    </tr>
+</table>
+
+

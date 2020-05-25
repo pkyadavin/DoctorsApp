@@ -1,0 +1,822 @@
+body {
+    background:#f6f6f6
+   }
+   
+   @keyframes dots {
+    0%,20% {
+     color:transparent;
+     text-shadow:.3em 0 0 transparent,.6em 0 0 transparent
+    }
+    40% {
+     color:#fff;
+     text-shadow:.3em 0 0 transparent,.6em 0 0 transparent
+    }
+    60% {
+     text-shadow:.3em 0 0 #fff,.6em 0 0 transparent
+    }
+    80%,100% {
+     text-shadow:.3em 0 0 #fff,.6em 0 0 #fff
+    }
+   }
+   
+   @keyframes eggCrackSmall {
+    0% {
+     opacity:1;
+     background-position:0
+    }
+    80%,90% {
+     transform:translateX(-50%) rotate(10deg)
+    }
+    60%,85% {
+     transform:translateX(-50%) rotate(-10deg)
+    }
+    94.999% {
+     background-position:0
+    }
+    95% {
+     background-position:-36px;
+     transform:translateX(-50%) rotate(-8deg)
+    }
+    98% {
+     transform:translateX(-50%) rotate(8deg)
+    }
+    100% {
+     opacity:1;
+     background-position:-36px;
+     transform:translateX(-50%) rotate(0deg)
+    }
+   }
+   @keyframes eggCrackMedium {
+    0%,9.999% {
+     opacity:1;
+     background-position:-36px;
+     transform:translateX(-50%) rotate(0deg)
+    }
+    10%,60% {
+     transform:translateX(-50%) rotate(-10deg)
+    }
+    20%,55%,75% {
+     transform:translateX(-50%) rotate(12deg)
+    }
+    30%,45%,88%,100% {
+     opacity:1;
+     background-position:-36px;
+     transform:translateX(-50%) rotate(0deg)
+    }
+    40%,82% {
+     transform:translateX(-50%) rotate(-15deg)
+    }
+   }
+   @keyframes eggCrackLarge {
+    0% {
+     opacity:1;
+     background-position:-36px;
+     transform:translateX(-50%) rotate(0deg)
+    }
+    13.999% {
+     background-position:-36px
+    }
+    14% {
+     background-position:-72px;
+     transform:translateX(-50%) rotate(18deg)
+    }
+    26% {
+     transform:translateX(-50%) rotate(0deg)
+    }
+    30% {
+     transform:translateX(-50%) rotate(-25deg)
+    }
+    41% {
+     transform:translateX(-50%) rotate(0deg)
+    }
+    52% {
+     transform:translateX(-50%) rotate(25deg)
+    }
+    63% {
+     transform:translateX(-50%) rotate(15deg)
+    }
+    74% {
+     transform:translateX(-50%) rotate(-15deg)
+    }
+    76% {
+     transform:translateX(-50%) rotate(-5deg)
+    }
+    78%,79.999% {
+     opacity:1;
+     transform:translateX(-50%) rotate(0deg)
+    }
+    80%,100% {
+     opacity:0;
+     background-position:-72px;
+     transform:translateX(-50%) rotate(0deg)
+    }
+   }
+   @keyframes farmMove {
+    0%,10% {
+     background-position:0
+    }
+    100% {
+     background-position:-125px
+    }
+   }
+   @keyframes feetMove {
+    0%,10%,100% {
+     opacity:1;
+     background-position:-150px
+    }
+    5%,20%,35%,50%,65%,80%,95% {
+     background-position:0
+    }
+    10%,25%,40%,55%,70%,85% {
+     background-position:-50px
+    }
+    15%,30%,45%,60%,75%,90% {
+     background-position:-100px
+    }
+   }
+   @keyframes chickenHatch {
+    0% {
+     opacity:1;
+     bottom:22px;
+     transform:translateX(-50%) rotate(-25deg) scale(.45,.45)
+    }
+    3% {
+     bottom:22px;
+     transform:translateX(-50%) rotate(-18deg) scale(.6,.6)
+    }
+    5% {
+     bottom:24px;
+     transform:translateX(-50%) rotate(-10deg) scale(.8,.8)
+    }
+    6% {
+     bottom:28px;
+     transform:translateX(-50%) rotate(0deg)
+    }
+    43.999%,46%,100% {
+     opacity:1;
+     background-position:0
+    }
+    44%,45.999% {
+     background-position:-151px
+    }
+   }
+   @keyframes chickenMove {
+    0% {
+     opacity:1
+    }
+    10%,30%,50%,70%,90% {
+     bottom:27px
+    }
+    20%,40%,60%,80%,100% {
+     bottom:28px;
+     opacity:1
+    }
+   }
+   @keyframes leftShell {
+    0% {
+     opacity:1;
+     bottom:21px;
+     left:51%;
+     transform:translateX(-50%) rotate(71deg)
+    }
+    3% {
+     bottom:25px;
+     left:52%;
+     transform:translateX(-50%) rotate(32deg)
+    }
+    5% {
+     bottom:40px;
+     left:50%;
+     transform:translateX(-50%) rotate(-21deg)
+    }
+    6% {
+     bottom:58px;
+     left:45%;
+     transform:translateX(-50%) rotate(-68deg)
+    }
+    8% {
+     bottom:58px;
+     left:43%;
+     transform:translateX(-50%) rotate(-81deg)
+    }
+    20% {
+     bottom:51px;
+     left:46%;
+     transform:translateX(-50%) rotate(-50deg)
+    }
+    50% {
+     bottom:51px;
+     left:46%;
+     transform:translateX(-50%) rotate(-50deg)
+    }
+    100% {
+     opacity:1;
+     bottom:51px;
+     left:46%;
+     transform:translateX(-50%) rotate(-50deg)
+    }
+   }
+   @keyframes middleShell {
+    0% {
+     opacity:1;
+     bottom:34px;
+     transform:translateX(-50%) rotate(25deg)
+    }
+    3% {
+     bottom:34px;
+     transform:translateX(-50%) rotate(16deg)
+    }
+    5% {
+     bottom:30px;
+     transform:translateX(-50%) rotate(5deg)
+    }
+    6%,100% {
+     opacity:1;
+     bottom:30px;
+     transform:translateX(-50%) rotate(0deg)
+    }
+   }
+   @keyframes rightShell {
+    0% {
+     opacity:1;
+     bottom:21px;
+     left:48%;
+     transform:translateX(-50%) rotate(-54deg)
+    }
+    3% {
+     bottom:29px;
+     left:49%;
+     transform:translateX(-50%) rotate(-9deg)
+    }
+    5% {
+     bottom:45px;
+     left:52%;
+     transform:translateX(-50%) rotate(30deg)
+    }
+    6% {
+     bottom:51px;
+     left:54%;
+     transform:translateX(-50%) rotate(50deg)
+    }
+    8% {
+     bottom:51px;
+     left:55%;
+     transform:translateX(-50%) rotate(67deg)
+    }
+    20% {
+     bottom:48px;
+     left:55%;
+     transform:translateX(-50%) rotate(60deg)
+    }
+    50% {
+     bottom:48px;
+     left:55%;
+     transform:translateX(-50%) rotate(60deg)
+    }
+    100% {
+     opacity:1;
+     bottom:48px;
+     left:55%;
+     transform:translateX(-50%) rotate(60deg)
+    }
+   }
+   @keyframes leftShellLeave {
+    0% {
+     opacity:1;
+     bottom:51px;
+     left:46%;
+     transform:translateX(-50%) rotate(-50deg)
+    }
+    100% {
+     opacity:1;
+     left:-18%;
+     bottom:51px;
+     transform:translateX(-50%) rotate(-50deg)
+    }
+   }
+   @keyframes middleShellLeave {
+    0% {
+     opacity:1
+    }
+    100% {
+     opacity:1;
+     left:-15%
+    }
+   }
+   @keyframes rightShellLeave {
+    0% {
+     opacity:1;
+     bottom:48px;
+     left:55%;
+     transform:translateX(-50%) rotate(60deg)
+    }
+    100% {
+     opacity:1;
+     bottom:48px;
+     left:-10%;
+     transform:translateX(-50%) rotate(60deg)
+    }
+   }
+   @keyframes foodMove {
+    50% {
+     right:-15%
+    }
+    100% {
+     right:40%
+    }
+   }
+   @keyframes leftGrain {
+    21.999% {
+     opacity:1
+    }
+    22%,100% {
+     opacity:0
+    }
+   }
+   @keyframes rightGrain {
+    31.999% {
+     opacity:1
+    }
+    32%,100% {
+     opacity:0
+    }
+   }
+   @keyframes middleGrain {
+    41.999% {
+     opacity:1
+    }
+    42%,100% {
+     opacity:0
+    }
+   }
+   @keyframes chickenEats {
+    0% {
+     opacity:1;
+     background-position:0;
+     left:calc(48% + 4px);
+     transform:translateX(-50%) rotate(0deg)
+    }
+    10% {
+     left:calc(48% + 4px);
+     transform:translateX(-50%) rotate(0deg)
+    }
+    17.999% {
+     background-position:0
+    }
+    18%,28%,38% {
+     background-position:-283px;
+     left:52%;
+     transform:translateX(-50%) rotate(24deg)
+    }
+    21%,31%,41.999% {
+     background-position:-283px;
+     left:49%;
+     transform:translateX(-50%) rotate(0deg)
+    }
+    42%,100% {
+     opacity:1;
+     background-position:0;
+     left:calc(48% + 6px);
+     transform:translateX(-50%) rotate(0deg)
+    }
+   }
+   @keyframes chickenLay {
+    0% {
+     opacity:1
+    }
+    15% {
+     background-position:0;
+     left:calc(48% + 6px);
+     transform:translateX(-50%) rotate(0deg)
+    }
+    20%,24%,26% {
+     background-position:0;
+     left:53%;
+     bottom:24px;
+     transform:translateX(-50%) rotate(31deg)
+    }
+    23%,25%,27.999%,37% {
+     background-position:0;
+     left:53%;
+     bottom:24px;
+     transform:translateX(-50%) rotate(33deg)
+    }
+    28%,30%,32%,34%,36% {
+     background-position:-150px;
+     transform:translateX(-50%) rotate(31deg)
+    }
+    29%,31%,33%,35%,36.999% {
+     background-position:-150px;
+     transform:translateX(-50%) rotate(33deg)
+    }
+    50%,100% {
+     background-position:0;
+     bottom:28px;
+     left:calc(48% + 4px);
+     opacity:1;
+     transform:translateX(-50%) rotate(0deg)
+    }
+   }
+   @keyframes eggLay {
+    0%,21.999% {
+     opacity:0;
+     left:50%;
+     bottom:57px;
+     transform:translateX(-50%) rotate(75deg)
+    }
+    22%,30% {
+     opacity:1;
+     left:50%;
+     bottom:57px;
+     transform:translateX(-50%) rotate(75deg)
+    }
+    37% {
+     left:44%;
+     bottom:48px;
+     transform:translateX(-50%) rotate(40deg)
+    }
+    42% {
+     left:39%;
+     bottom:42px;
+     transform:translateX(-50%) rotate(15deg)
+    }
+    47%,55% {
+     transform:translateX(-50%) rotate(-15deg)
+    }
+    52%,58%,67%,100% {
+     opacity:1;
+     left:39%;
+     bottom:42px;
+     transform:translateX(-50%) rotate(0deg)
+    }
+    61% {
+     transform:translateX(-50%) rotate(-6deg)
+    }
+    64% {
+     transform:translateX(-50%) rotate(6deg)
+    }
+   }
+   @keyframes chickenLeave {
+    0%,11.999% {
+     opacity:1;
+     left:calc(48% + 4px)
+    }
+    12%,18%,24%,30%,36%,42%,48% {
+     bottom:28px
+    }
+    15%,21%,27%,33%,39%,45% {
+     bottom:27px
+    }
+    50%,100% {
+     opacity:1;
+     left:114%
+    }
+   }
+   @keyframes feetLeave {
+    0%,11.999% {
+     left:50%;
+     opacity:1;
+     background-position:-150px
+    }
+    12%,18%,24%,30%,36%,42% {
+     background-position:0
+    }
+    13.999%,19.999%,25.999%,31.999%,37.999%,43.999% {
+     background-position:0
+    }
+    14%,20%,26%,32%,38%,44% {
+     background-position:-50px
+    }
+    15.999%,21.999%,27.999%,33.999%,39.999%,45.999% {
+     background-position:-50px
+    }
+    16%,22%,28%,34%,40%,46%,49.999% {
+     background-position:-100px
+    }
+    17.999%,23.999%,29.999%,35.999%,41.999% {
+     background-position:-100px
+    }
+    50%,100% {
+     opacity:1;
+     background-position:-150px;
+     left:115%
+    }
+   }
+   @keyframes cloudsStart {
+    0% {
+     left:0
+    }
+    10%,40%,70% {
+     opacity:.3
+    }
+    25%,50%,90% {
+     opacity:1
+    }
+    100% {
+     left:88%
+    }
+   }
+   @keyframes cloudsFloat {
+    0%,50% {
+     left:-95%
+    }
+    10%,30%,90% {
+     opacity:.3
+    }
+    49.999% {
+     opacity:1;
+     left:88%
+    }
+    35%,60% {
+     opacity:.7
+    }
+    18%,65% {
+     opacity:1
+    }
+    100% {
+     left:88%
+    }
+   }
+   @keyframes pulse {
+    0% {
+     opacity:1
+    }
+    50% {
+     opacity:.3
+    }
+    100% {
+     opacity:1
+    }
+   }
+   html,body {
+    height:100%;
+    background:#fff
+   }
+   .step-wrap {
+    /* height:100%; */
+    position:fixed;
+    bottom: 0px;
+    margin:0 auto;
+    max-width:100%;
+    width:800px
+   }
+   
+   .step-wrap .login-tooltip {
+    position:absolute;
+    display:block;
+    width:100%;
+    padding:10px;
+    box-sizing:border-box;
+    background:#333;
+    color:#fff;
+    line-height:30px;
+    text-align:center;
+    border-radius:6px;
+    visibility:visible;
+    z-index:999;
+    opacity:0;
+    font-size:13px
+   }
+   .step-wrap .login-tooltip::after {
+    content:"";
+    position:absolute;
+    bottom:100%;
+    left:50%;
+    margin-left:-8px;
+    width:0;
+    height:0;
+    border-bottom:8px solid #333;
+    border-right:8px solid transparent;
+    border-left:8px solid transparent
+   }
+   .step-wrap .google-tooltip {
+    top:50px
+   }
+   .step-wrap .office-tooltip {
+    top:115px
+   }
+   .step-wrap .col-left {
+    padding:0 5% 0 2%
+   }
+   .step-wrap .col-left ul li {
+    position:relative
+   }
+   .step-wrap .col-mid {
+    margin:0 auto;
+    float:none
+   }
+   .step-wrap .col-right {
+    padding:0 2% 0 5%;
+    border-left:1px solid #dedede
+   }
+   .step-wrap .col-left,article.reg-refresh .step-wrap .col-mid,article.reg-refresh .step-wrap .col-right {
+    margin-top:30px;
+    width:50%
+   }
+   .step-wrap .domain-box {
+    background-color:#f9f9f9;
+    display:inline-block;
+    font:16px PNSB;
+    margin:0;
+    padding:13px 15px;
+    position:absolute;
+    right:1px;
+    top:24px;
+    z-index:1;
+    border-radius:0 5px 5px 0
+   }
+   .step-wrap .domain-box::before {
+    content:"";
+    width:35px;
+    height:calc(100% - 2px);
+    background-color:#fff;
+    position:absolute;
+    left:-35px;
+    top:0
+   }
+   .step-wrap .email-resend-inline:hover {
+    color:#30aabc;
+    border-bottom:1px solid #30aabc
+   }
+   .step-wrap .chicken-container {
+    height:300px;
+    width:483px;
+    /* margin:-80px auto 0; */
+    position:relative;
+    overflow:hidden;
+    background-position:0 0;
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-image:url(src/assets/img/svg/farm-background.svg)
+   }
+   .step-wrap .chicken-container.step1 .egg {
+    animation:eggCrackSmall 4s linear 1 forwards,eggCrackMedium 3s linear 4s infinite forwards
+   }
+   .step-wrap .chicken-container.step2 .egg {
+    animation:eggCrackLarge 2s linear forwards
+   }
+   .step-wrap .chicken-container.step2 .egg-shell.left {
+    animation:leftShell 5s linear 1.6s forwards
+   }
+   .step-wrap .chicken-container.step2 .egg-shell.middle {
+    animation:middleShell 5s linear 1.6s forwards
+   }
+   .step-wrap .chicken-container.step2 .egg-shell.right {
+    animation:rightShell 5s linear 1.6s forwards
+   }
+   .step-wrap .chicken-container.step2 .chicken-bodies {
+    animation:chickenHatch 5s linear 1.6s forwards
+   }
+   .step-wrap .chicken-container.step3 {
+    animation:farmMove 3s linear forwards
+   }
+   .step-wrap .chicken-container.step3 .egg-shell.left {
+    animation:leftShellLeave 3s linear forwards
+   }
+   .step-wrap .chicken-container.step3 .egg-shell.middle {
+    animation:middleShellLeave 3s linear forwards
+   }
+   .step-wrap .chicken-container.step3 .egg-shell.right {
+    animation:rightShellLeave 3s linear forwards
+   }
+   .step-wrap .chicken-container.step3 .chicken-bodies {
+    width:160px;
+    animation:chickenMove 3s linear forwards,chickenEats 5s linear 3s forwards
+   }
+   .step-wrap .chicken-container.step3 .chicken-feet {
+    animation:feetMove 3s step-end forwards
+   }
+   .step-wrap .chicken-container.step3 .food-grain.left {
+    animation:foodMove 3s linear forwards,leftGrain 5s linear 3s forwards
+   }
+   .step-wrap .chicken-container.step3 .food-grain.middle {
+    animation:foodMove 3s linear forwards,middleGrain 5s linear 3s forwards
+   }
+   .step-wrap .chicken-container.step3 .food-grain.right {
+    animation:foodMove 3s linear forwards,rightGrain 5s linear 3s forwards
+   }
+   .step-wrap .chicken-container.step4 {
+    background-position:-125px
+   }
+   .step-wrap .chicken-container.step4 .egg {
+    bottom:57px;
+    transform:translateX(-50%) rotate(75deg);
+    animation:eggLay 6s linear forwards
+   }
+   .step-wrap .chicken-container.step4 .chicken-bodies {
+    animation:chickenLay 6s linear forwards
+   }
+   .step-wrap .chicken-container.step4 .chicken-feet {
+    opacity:1;
+    background-position:-150px
+   }
+   .step-wrap .chicken-container.step5,article.reg-refresh .step-wrap .chicken-container.step6 {
+    background-position:-125px
+   }
+   .step-wrap .chicken-container.step5 .egg,article.reg-refresh .step-wrap .chicken-container.step6 .egg {
+    opacity:1;
+    left:39%;
+    bottom:42px;
+    animation:eggCrackSmall 4s linear 3s forwards,eggCrackMedium 3s linear 7s infinite forwards
+   }
+   .step-wrap .chicken-container.step5 .chicken-bodies,article.reg-refresh .step-wrap .chicken-container.step6 .chicken-bodies {
+    animation:chickenLeave 6s linear forwards
+   }
+   .step-wrap .chicken-container.step5 .chicken-feet,article.reg-refresh .step-wrap .chicken-container.step6 .chicken-feet {
+    background-position:-150px;
+    animation:feetLeave 6s linear forwards
+   }
+   .step-wrap .chicken-container .clouds {
+    height:104px;
+    position:relative;
+    animation:cloudsStart 50s linear forwards,cloudsFloat 100s linear 50s infinite forwards;
+    background-position:80px 0;
+    background-repeat:no-repeat;
+    background-image:url(src/assets/img/svg/clouds.png)
+   }
+   .step-wrap .chicken-container .egg {
+    position:absolute;
+    bottom:42px;
+    left:50%;
+    opacity:0;
+    height:43px;
+    width:35px;
+    transform:translateX(-50%);
+    background-position:0 0;
+    background-repeat:no-repeat;
+    background-image:url(src/assets/img/svg/eggs.png)
+   }
+   .step-wrap .chicken-container .chicken-feet {
+    position:absolute;
+    bottom:24px;
+    left:50%;
+    opacity:0;
+    height:50px;
+    width:50px;
+    transform:translateX(-50%);
+    background-position:0 0;
+    background-repeat:no-repeat;
+    background-size:200px 50px;
+    background-image:url(src/assets/img/svg/chicken-feets.svg)
+   }
+   .step-wrap .chicken-container .chicken-bodies {
+    position:absolute;
+    bottom:28px;
+    left:calc(48% + 4px);
+    opacity:0;
+    height:150px;
+    width:158px;
+    z-index:10;
+    transform:translateX(-50%);
+    background-position:0 0;
+    background-repeat:no-repeat;
+    background-size:450px 150px;
+    background-image:url(src/assets/img/svg/chicken-body-full.svg)
+   }
+   .step-wrap .chicken-container .egg-shell {
+    position:absolute;
+    bottom:35px;
+    left:50%;
+    opacity:0;
+    height:50px;
+    width:100px;
+    z-index:10;
+    transform:translateX(-50%);
+    background-position:0 0;
+    background-repeat:no-repeat
+   }
+   .step-wrap .chicken-container .egg-shell.left {
+    bottom:51px;
+    left:46%;
+    transform:translateX(-50%) rotate(-50deg);
+    background-image:url(src/assets/img/svg/left-shell.svg)
+   }
+   .step-wrap .chicken-container .egg-shell.middle {
+    bottom:30px;
+    transform:translateX(-50%) rotate(0deg);
+    background-image:url(src/assets/img/svg/middle-shell.svg)
+   }
+   .step-wrap .chicken-container .egg-shell.right {
+    bottom:48px;
+    left:55%;
+    transform:translateX(-50%) rotate(60deg);
+    background-image:url(src/assets/img/svg/right-shell.svg)
+   }
+   .step-wrap .chicken-container .food-grain {
+    position:absolute;
+    bottom:32px;
+    right:-5%;
+    height:20px;
+    width:20px;
+    background-position:0 0;
+    background-repeat:no-repeat
+   }
+   .step-wrap .chicken-container .food-grain.left {
+    background-image:url(src/assets/img/svg/left-grain.svg)
+   }
+   .step-wrap .chicken-container .food-grain.middle {
+    background-image:url(src/assets/img/svg/middle-grain.svg)
+   }
+   .step-wrap .chicken-container .food-grain.right {
+    background-image:url(src/assets/img/svg/right-grain.svg)
+   }

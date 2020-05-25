@@ -1,0 +1,70 @@
+h3 {
+    margin-top: 0;
+}
+
+.widget-body.rma_box .form-group p {
+    margin-bottom: 0px;
+}
+
+.widget-body.rma_box .form-group {
+    margin-bottom: 2px!important;
+}
+
+.widget-body.rma_box hr {
+    margin: 5px 0;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.thankyoumsg p,
+.thankyoumsg label {
+    margin-bottom: 0px!important;
+}
+
+.listofprod h3 {
+    color: #212529;
+    font-size: 18px!important;
+    font-weight: bold!important;
+    margin: 0px;
+}
+
+.back_btn_box {
+    margin-bottom: 15px;
+}
+
+.back_btn_box .btn {
+    margin: 0px;
+}
+
+.pr-0 {
+    padding-right: 0px!important;
+}
+
+.pl-0 {
+    padding-left: 0px!important;
+}
+
+.parrallel_box {
+    min-height: 290px;
+}
+
+.row.fex_row {
+    display: flex;
+}
+
+.row.fex_row>.col-md-6 {
+    flex: 1;
+    padding: 1em;
+}
+
+.colorred,
+.colorred i {
+    color: #ff0000!important;
+}
+
+.colorgreen,
+.colorgreen i {
+    color: green!important;
+}

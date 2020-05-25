@@ -1,0 +1,403 @@
+﻿<style type="text/css">
+    .popupGridHead {
+        height: 30px;
+        padding-top: 8px;
+        padding-bottom: 3px;
+        padding-left: 7px;
+        font-size: 14px;
+        border: 1px solid black;
+    }
+
+    .popupGridRow {
+        height: 25px;
+        padding-left: 7px;
+        font-size: 13px;
+        border: 1px solid black;
+    }
+</style>
+<div class="widget">
+    <div class="widget-header">
+        <span class="widget-caption" *ngIf="selectedId == null">
+            <b>
+                Add {{moduleTitle}}
+            </b>
+        </span>
+        <span class="widget-caption" *ngIf="selectedId !=null">
+            <b>
+                Edit {{moduleTitle}}
+            </b>
+        </span>
+        <div class="widget-buttons">
+            <button class="btn btn-sm btn-danger" type="button" (click)="onCancel()">
+                    <i class="fa fa-arrow-left"></i> Back 
+            </button>
+            <button id="finalSubmit" class="btn btn-sm btn-primary" type="submit" (click)="submitShipment()" *ngIf="(!CurrentOrderDetail.ShipmentID && ShipingServices!=undefined) || CurrentOrderDetail.CarrierID ==0">
+                <i class="glyphicon glyphicon-floppy-disk"></i>Save
+            </button>
+        </div>
+    </div>
+    <div class="widget-body" style="height: auto!important;">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row form-group" *ngIf="IsLoaded">
+                    <label class="control-label col-lg-6" style="padding-top:8px;">
+                        Shipment Number 
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" name="txtShippingNumber" placeholder="Auto" [disabled]="true"
+                               [ngClass]="{'radiusNone':IsCP}" [(ngModel)]="CurrentOrderDetail.ShippingNumber">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="row form-group" *ngIf="IsLoaded">
+                    <label class="control-label col-lg-6" style="padding-top:8px;">
+                        Account:<span style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" name="txtAccount" readonly="readonly" [ngClass]="{'radiusNone':IsCP}" [(ngModel)]="CurrentOrderDetail.Requester" [disabled]="isOnEditMode">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="row form-group" *ngIf="IsLoaded">
+                    <label class="control-label col-lg-6" style="padding-top:8px;">
+                        Ship From:
+                    </label>
+                    <div class="col-lg-6">
+                        <textarea name="AddressFrom" [disabled]="!isOnEditMode" style="height: 62px!important;float:left;" class="form-control" [(ngModel)]="CurrentOrderDetail.FromAddress"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="row form-group" *ngIf="IsLoaded">
+                    <label class="control-label col-lg-6" style="padding-top:8px;">
+                        Ship To Name:
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" name="txtAccount" readonly="readonly" [ngClass]="{'radiusNone':IsCP}" [disabled]="isOnEditMode" [(ngModel)]="ShipToName">
+                    </div>
+                    <div class="clearfix"></div>
+                    <label class="control-label col-lg-6" style="padding-top:8px;">
+                        Ship To Address:<span style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <textarea name="AddressTo" [disabled]="!isOnEditMode" style="height: 62px!important;float:left;" class="form-control" [(ngModel)]="CurrentOrderDetail.AddressTo"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-md-6">
+                <div class="row form-group" *ngIf="IsLoaded">
+                    <label class="control-label col-lg-6" style="padding-top:8px;">
+                        {{ OrderEditor.CarrierName.DisplayName}}:<span *ngIf="OrderEditor.CarrierName.isRequired" style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6" *ngIf="CurrentOrderDetail.CarrierID != 0">
+                        <select  [(ngModel)]="CurrentOrderDetail.CarrierID" style="width:100%!important"
+                                name="dType" class="form-control" required (change)="CarrierChanged()">
+                            <option *ngFor="let dType of CarrierList;" [value]="dType.CarrierID">
+                                {{dType.CarrierName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6" *ngIf="CurrentOrderDetail.CarrierID == 0">
+                        <input type="text" class="form-control" name="txtCarrierName" [disabled]="isOnEditMode" placeholder="Other" [ngClass]="{'radiusNone':IsCP}" [(ngModel)]="CurrentOrderDetail.CarrierName">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!-- <div class="row form-group" *ngIf="IsLoaded && CurrentOrderDetail.CarrierID==0">
+                    <label class="control-label col-lg-6" style="padding-top:8px;">
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" name="txtCarrierName" [disabled]="isOnEditMode" placeholder="Other" [ngClass]="{'radiusNone':IsCP}" [(ngModel)]="CurrentOrderDetail.CarrierName">
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div> -->
+                <div class="row form-group" *ngIf="IsLoaded && CurrentOrderDetail.CarrierID==0">
+                    <label class="control-label col-lg-6" style="padding-top:8px;">
+                        AWB#/Load#:<span style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" placeholder="AWB#/Load#" name="txtAWB" [disabled]="isOnEditMode" [ngClass]="{'radiusNone':IsCP}" [(ngModel)]="CurrentOrderDetail.AWBNumber">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="row form-group" *ngIf="IsLoaded">
+                    <label class="control-label col-lg-6" style="padding-top:8px;">
+                        {{ OrderEditor.ShipDate.DisplayName}}:<span *ngIf="OrderEditor.ShipDate.isRequired" style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+
+                        <input type="text" class="form-control" name="txtAWBDate" ng2-datetime-picker date-only="true" readonly="readonly" [ngClass]="{'radiusNone':IsCP}" [(ngModel)]="CurrentOrderDetail.ShipDate" [disabled]="isOnEditMode">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="row form-group" *ngIf="IsLoaded && CurrentOrderDetail.CarrierID > 0">
+                    <label class="control-label col-lg-6" style="padding-top:8px;">
+                        Dimensions(IN) Length, Width & Height:<span style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6" *ngIf="IsLoaded">
+                        <div class="col-lg-4" style="padding: 1px 0px!important;">
+                            <input type="number" (change)="ClearServices()" class="form-control" name="txtL" [disabled]="isOnEditMode" [ngClass]="{'radiusNone':IsCP}" required [(ngModel)]="CurrentOrderDetail.Length" placeholder="Length">
+                        </div>
+                        <div class="col-lg-4" style="padding: 1px 0px!important;">
+                            <input type="number" (change)="ClearServices()" class="form-control" name="txtW" [disabled]="isOnEditMode" [ngClass]="{'radiusNone':IsCP}" required [(ngModel)]="CurrentOrderDetail.Width" placeholder="Width">
+                        </div>
+                        <div class="col-lg-4" style="padding: 1px 0px!important;">
+                            <input type="number" (change)="ClearServices()" class="form-control" name="txtH" [disabled]="isOnEditMode" [ngClass]="{'radiusNone':IsCP}" required [(ngModel)]="CurrentOrderDetail.Height" placeholder="Height">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <label class="control-label col-lg-6" style="padding-top:8px;">
+                        Weight(LBS):<span style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="number" (change)="ClearServices()" class="form-control" name="txtW" [disabled]="isOnEditMode" [ngClass]="{'radiusNone':IsCP}" required [(ngModel)]="CurrentOrderDetail.Weight" placeholder="Weight">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="row form-group" *ngIf="IsLoaded && CurrentOrderDetail.CarrierID > 0 && isOnEditMode">
+                    <label class="control-label col-lg-6" style="padding-top:8px;">
+                        Tracking Number
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" name="txtCarrierAWB" [disabled]="isOnEditMode" [ngClass]="{'radiusNone':IsCP}" [(ngModel)]="CurrentOrderDetail.AWBNumber">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="row form-group" *ngIf="IsLoaded && CurrentOrderDetail.CarrierID > 0 && !isOnEditMode">
+                    <label class="control-label col-lg-6" style="padding-top:8px;" *ngIf="ShipingServices != undefined">
+                        Service<span style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        
+                        <select [(ngModel)]="CurrentOrderDetail.ServiceCode" style="width:100%!important" (change)="ShowFreight()" *ngIf="ShipingServices != undefined"
+                                name="ServiceCode" class="form-control" required>
+                            <option *ngFor="let srv of ShipingServices;" [value]="srv.Code">
+                                {{srv.Description}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group" *ngIf="IsLoaded && CurrentOrderDetail.CarrierID != 0">
+                    <div class="col-lg-6"></div>
+                    <div class="col-lg-6">
+                        <button class="btn btn-success btn-sm pull-left" (click)="GetServices()" *ngIf="ShipingServices == undefined">
+                            Next
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="row form-group" *ngIf="IsLoaded && CurrentOrderDetail.CarrierID > 0" >
+                    <div class="col-md-6"></div>
+                    <label class="control-label col-md-6" style="padding-top:8px;" *ngIf="CurrentServiceCost!=0">
+                        <b>USD {{CurrentServiceCost}}</b>
+                    </label>                   
+                    <div class="col-md-6" *ngIf="CurrentServiceCost ==0 && CurrentOrderDetail.ServiceCode && CurrentOrderDetail.CarrierCode =='CG001'">
+                        <button class="btn btn-success btn-sm" (click)="GetFreight()">
+                            <i class="glyphicon glyphicon-usd"></i>Calculate Freight
+                        </button>
+                    </div>              
+                   
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+
+
+            <div class="clearfix"></div>
+        </div>       
+        <div class="col-lg-6" *ngIf="IsLoaded" style="display:none;">
+            <label class="control-label col-lg-6" style="padding-top:8px;">
+                {{ OrderEditor.CarrierEmailID.DisplayName}}:<span *ngIf="OrderEditor.CarrierEmailID.isRequired" style="color:red;">*</span>
+            </label>
+            <div class="col-lg-6">
+                <input type="text" class="form-control" name="txtCarrierEmailID" [disabled]="isOnEditMode"
+                       [ngClass]="{'radiusNone':IsCP}" [(ngModel)]="CurrentOrderDetail.CarrierEmailID">
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="col-lg-6" *ngIf="IsLoaded" style="display:none;">
+            <label class="control-label col-lg-6" style="padding-top:8px;">
+                {{ OrderEditor.CarrierRemarks.DisplayName}}:<span *ngIf="OrderEditor.CarrierRemarks.isRequired" style="color:red;">*</span>
+            </label>
+            <div class="col-lg-6">
+                <textarea name="CarrierRemarks" [disabled]="isOnEditMode" style="height: 62px!important;float:left;" class="form-control" [(ngModel)]="CurrentOrderDetail.CarrierRemarks"></textarea>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="widget-header ">
+                <span class="widget-caption">
+                    <b>
+                        Items
+                    </b>
+                </span>
+                <div class="widget-buttons">
+                    <button class="btn btn-sm btn-danger" *ngIf="showDeleteButton && !CurrentOrderDetail.ShippingNumber" type="button" (click)="removeSelected()">
+                        <i class="glyphicon glyphicon-trash"></i>Delete
+                    </button>
+                    <button class="btn btn-sm btn-primary" type="submit" *ngIf="!CurrentOrderDetail.ShippingNumber" (click)="openGridPopup()">
+                        <i class="glyphicon glyphicon-plus"></i>Add
+                    </button>
+                </div>
+            </div>
+            <div>
+                <ag-grid-angular #agGrid class="agc-grid ag-theme-balham" style="width:100%;height:250px;"
+                             [gridOptions]="gridOptionsEditOrders" (selectionChanged)="onEditSelectionChanged()" (rowClicked)="onRowClicked($event)">
+                </ag-grid-angular>
+            </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+<bs-modal #rmaGridPopUp cssClass="modal-xl">
+    <bs-modal-header>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add RMA Order For Shipment</h4>
+    </bs-modal-header>
+    <bs-modal-body *ngIf="RMAGridPopup">
+        <SalesReturnOrderGrid #SroList [GridType]="'popup'" [ShippingRMAList]="SalesReturnOrderList" (notifyRMAOrder)="rmaGridEvent($event)"></SalesReturnOrderGrid>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" data-dismiss="rmaGridPopUp" (click)="rmaGridPopUp.dismiss()">Cancel</button>
+    </bs-modal-footer>
+</bs-modal>
+<bs-modal #TracingPopup cssClass="modal-lg" id="divTracingPopup">
+    <bs-modal-header>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" style="float:left;">Tracking Results</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Return Number:
+                </label>
+                <div class="col-lg-8">
+                    {{ReturnNumber}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    AWB Number:
+                </label>
+                <div class="col-lg-8">
+                    {{ShippingNumber}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Return Creation Date:
+                </label>
+                <div class="col-lg-8">
+                    {{ReturnDate}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Ship Date:
+                </label>
+                <div class="col-lg-8">
+                    {{ShipDate}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Delivery To:
+                </label>
+                <div class="col-lg-8">
+                    {{DeliveryTo}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Delivery Location:
+                </label>
+                <div class="col-lg-8">
+                    {{DeliveryLocation}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Delivery Date/Time:
+                </label>
+                <div class="col-lg-8">
+                    {{DeliveryDate}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Return Status:
+                </label>
+                <div class="col-lg-8">
+                    {{ReturnStatus}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="table-responsive marginTop10" style="padding-left:25px;">
+            <table style="border: 1px solid black;" width="100%;">
+                <tr>
+                    <th style="width:35%;" class="popupGridHead">
+                        Carrier Scan Activity
+                    </th>
+                    <th style="width:25%;" class="popupGridHead">
+                        Date/Time
+                    </th>
+                    <th style="width:40%;" class="popupGridHead">
+                        Comment
+                    </th>
+                </tr>
+                <tr *ngFor="let i of TrackCarrierDetails;">
+                    <td class="popupGridRow">
+                        {{i.Status}}
+                    </td>
+                    <td class="popupGridRow">
+                        {{i.ActivityDate}}
+                    </td>
+                    <td class="popupGridRow">
+                        {{i.Location}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="CloseTrackingPopup()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+

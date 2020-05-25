@@ -1,0 +1,43 @@
+﻿<div class="widget" [hidden]="IsEditorVisible">
+    <div class="widget-body no-padding">
+        <div class="widget">
+            <div class="widget-header widget-header1">
+                <span class="widget-caption pull-left font-40" *ngIf="GridType != 'popup'"><b>{{moduleTitle}}</b> </span>
+                <div class="input-group pull-left margin-left-20 col-md-3">
+                    <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" placeholder="Search...">
+                    <span class="input-group-btn">
+                        <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                    </span>
+                </div>
+                <!-- <div class="widget-buttons">
+
+                    <button class="btn btn-sm btn-primary" type="button" (click)="ShowEditor(0)" *ngIf="ShowPerMission('Add')">
+                        <i class="glyphicon glyphicon-plus-sign"></i>Add
+                    </button>
+                    <button class="btn btn-sm btn-primary" id="btnEdit" (click)="ShowEditor(currentReason.RMAActionCodeID)" *ngIf="isEditVisible">
+                        <i class="glyphicon glyphicon-edit"></i>View
+                    </button>
+                    <button class="btn btn-sm btn-danger" (click)="onDelete()" *ngIf="isEditVisible && ShowPerMission('Delete')">
+                        <i class="glyphicon glyphicon-trash"></i>Delete
+                    </button>
+                </div> -->
+                <div class="widget-buttons">
+                <button class="btn btn-sm btn-primary" type="button" (click)="AddSelected()" *ngIf="GridType == 'popup'">
+                        <i class="glyphicon glyphicon-plus-sign"></i>Add Selected
+                    </button>
+                </div>
+            </div>
+
+            <div class="widget-body no-padding marginTop34" style="overflow:hidden;">
+                <ag-grid-angular #agReturnReasonGrid [ngClass]="{'agc-grid-popup':GridType=='popup'}" class="agc-grid ag-theme-balham" (gridReady)="onReturnReasonGridReady($event)"
+                             [gridOptions]="ReturnReasongridOption" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+                </ag-grid-angular>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<ReturnReason-Editor *ngIf="IsEditorVisible" [GridType]="GridType" [selectedId]="selectedId" [permission]="ShowPerMission('Edit')" (EditorVisibilityChange)="ChangeEditorVisibility($event)"></ReturnReason-Editor>
+<message #pop cssClass="modal-msg"></message>

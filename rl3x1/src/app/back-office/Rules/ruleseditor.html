@@ -1,0 +1,174 @@
+﻿<div class="widget">
+    <form #f="ngForm" name="f" novalidate>
+        <div class="widget-header">
+            <span class="widget-caption" *ngIf="SelectedID == 0">
+                <b>
+                    Add {{moduleTitle}}
+                </b>
+            </span>
+            <span class="widget-caption" *ngIf="SelectedID > 0">
+                <b>
+                    <span *ngIf="permission">View</span> {{moduleTitle}}
+                </b>
+            </span>
+            <span class="widget-caption ng-binding"></span>
+            <div class="widget-buttons">
+                <button class="btn btn-sm btn-danger" type="button" (click)="onCancel()">
+                        <i class="fa fa-arrow-left"></i> Back 
+                </button>
+
+                <button class="btn btn-sm btn-primary" type="submit" *ngIf="permission" (click)="onSubmit(f.form)">
+                    <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                </button>
+                <!--<a href="" widget-maximize></a>
+                <a href="" widget-collapse></a>-->
+
+            </div>
+        </div>
+        <div class="widget-body">
+
+            <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                <div class="validationmsg" style="color:red;">
+                    <b> Please fill the asterisk (*) fields. </b>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group" *ngIf="IsLoaded && ruleEditor.RuleCode.isVisible">
+                    <label class="control-label col-lg-6">
+                        {{ruleEditor.RuleCode.DisplayName}}<span *ngIf="ruleEditor.RuleCode.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" name="txtRuleCode" ngControl="txtRuleCode" #rulecode="ngModel"
+                            [required]="ruleEditor.RuleCode.isRequired" [disabled]="!ruleEditor.RuleCode.isEnabled"
+                            class="form-control" [(ngModel)]="CurrentRule.RuleCode">
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group" *ngIf="IsLoaded && ruleEditor.RuleName.isVisible">
+                    <label class="control-label col-lg-6">
+                        {{ruleEditor.RuleName.DisplayName}}<span *ngIf="ruleEditor.RuleName.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" name="txtRuleName" ng-controller="txtRuleName" #rulename="ngModel"
+                            [required]="ruleEditor.RuleName.isRequired" [disabled]="!ruleEditor.RuleName.isEnabled"
+                            class="form-control" [(ngModel)]="CurrentRule.RuleName">
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group" *ngIf="IsLoaded && ruleEditor.RuleDescription.isVisible">
+                    <label class="control-label col-lg-6">
+                        {{ruleEditor.RuleDescription.DisplayName}}<span *ngIf="ruleEditor.RuleDescription.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <textarea type="textarea" name="txtRuleDescription" ng-controller="txtRuleDescription"
+                            style="width:100%;height:50px;" [(ngModel)]="CurrentRule.RuleDescription"
+                            [required]="ruleEditor.RuleDescription.isRequired" placeholder="Rule Description"
+                            maxlength="250" #ruledescription="ngModel"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group" *ngIf="IsLoaded && ruleEditor.TypeName.isVisible">
+                    <label class="control-label col-lg-6">
+                        {{ruleEditor.TypeName.DisplayName}}<span *ngIf="ruleEditor.TypeName.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <ddl [controlName]="ruleEditor.TypeName.DisplayName.replace(' ','-')" [form]="f"
+                            [(ddlModel)]="CurrentRule.RuleType" [Source]="TypeLookUpList" DisplayProperty="TypeName"
+                            ValueProperty="TypeLookUpID" [required]="ruleEditor.TypeName.isRequired"
+                            [disabled]="!ruleEditor.TypeName.isEnabled">
+                        </ddl>
+                        <!--<select #ddlTypeLookup="ngModel" [(ngModel)]="CurrentRule.RuleTypeID" name="ddlTypeLookup" class="form-control" [required]="ruleEditor.TypeName.isRequired" [disabled]="!ruleEditor.TypeName.isEnabled">
+                            <option value="0" disabled="disabled">--Select Type--</option>
+                            <option *ngFor="let t of TypeLookUpList" [value]="t.TypeLookUpID">{{t.TypeName}}</option>
+                        </select>-->
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="form-group" *ngIf="IsLoaded && ruleEditor.TypeName.isVisible">
+                    <label class="control-label col-lg-6">
+                        {{ruleEditor.RuleGroup.DisplayName}}<span *ngIf="ruleEditor.RuleGroup.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <!--<div class="col-lg-6">
+                        <ddl [controlName]="ruleEditor.RuleGroup.DisplayName.replace(' ','-')" [form]="f" [(ddlModel)]="CurrentRule.RuleGroup" [Source]="RuleGroupList" DisplayProperty="TypeName" ValueProperty="TypeLookUpID"
+                             [required]="ruleEditor.RuleGroup.isRequired"
+                             [disabled]="!ruleEditor.RuleGroup.isEnabled">
+                        </ddl>                        
+                    </div>-->
+                    <div class="col-lg-6">
+                        <select [(ngModel)]="CurrentRule.RuleGroupID" class="form-control"
+                            (change)="onGroupChange($event.target.value)" name="GroupType"
+                            [required]="ruleEditor.RuleGroup.isRequired" [disabled]="!ruleEditor.RuleGroup.isEnabled">
+                            <!--<option [value]="undefined">--Select Rule Group--</option>-->
+                            <option *ngFor="let rec of RuleGroupList" [value]="rec.TypeLookUpID">
+                                {{rec.TypeName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="form-group" *ngIf="IsLoaded && ruleEditor.UserInput.isVisible && !IsInternalGroup">
+                    <label class="control-label col-lg-6">
+                        {{ruleEditor.UserInput.DisplayName}}<span *ngIf="ruleEditor.UserInput.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6 ">
+                        <input type="checkbox" name="chkIsActive" #isactive="ngModel"
+                            [required]="ruleEditor.UserInput.isRequired" [disabled]="!ruleEditor.UserInput.isEnabled"
+                            style="opacity:1 !important;left:14px; height:28px;" class="checkbox" #chkIsActive="ngModel"
+                            [(ngModel)]="CurrentRule.UserInput">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="form-group" *ngIf="IsLoaded && ruleEditor.isActive.isVisible">
+                    <label class="control-label col-lg-6">
+                        {{ruleEditor.isActive.DisplayName}}<span *ngIf="ruleEditor.isActive.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6 ">
+                        <input type="checkbox" name="chkIsActive" #isactive="ngModel"
+                            [required]="ruleEditor.isActive.isRequired" [disabled]="!ruleEditor.isActive.isEnabled"
+                            style="opacity:1 !important;left:14px; height:28px;" class="checkbox" #chkIsActive="ngModel"
+                            [(ngModel)]="CurrentRule.isActive">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="col-lg-6"
+                *ngIf="CurrentRule && CurrentRule.RuleType && CurrentRule.RuleType.TypeCode=='RCT005'">
+                <label class="control-label col-lg-6">Select List Values <i class="glyphicon glyphicon-plus-sign"
+                        style="font-size: 15px;" (click)="onAddMore()"></i></label>
+                <div class="clearfix"></div>
+                <div style="height:350px;overflow-y:scroll;">
+                    <div class="col-lg-8 margin-bottom-5" *ngFor="let item of CurrentRule.ddlItems; let i = index">
+                        <input type="text" name="c{{i}}" [(ngModel)]="item.DisplayValue" class="form-control" required
+                            style="float:left; width: 85%;" />
+                        <button class="btn-link" type="button" (click)="onRemove(item)" style="float:left;" *ngIf="i>0">
+                            <i class="glyphicon glyphicon-minus-sign red" style="display:block;font-size: 15px;"></i>
+                        </button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </form>
+    <div class="clearfix"></div>
+</div>
+
+<message #pop cssClass="modal-msg"></message>

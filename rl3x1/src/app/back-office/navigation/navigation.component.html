@@ -1,0 +1,239 @@
+<!-- Navbar -->
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="navbar-container">
+            <!-- Navbar Barnd -->
+            <div class="col-md-2 no-padding bg-nav">
+                <div class="navbar-header">
+                    <a href="#" class="navbar-brand text-center">
+                        <small>
+              <img src="assets/img/arc-teryx-text-logo-transparent.png" alt="" />
+            </small>
+                    </a>
+                </div>
+            </div>
+            <!-- /Navbar Barnd -->
+            <!-- Sidebar Collapse -->
+            <!-- <div class="sidebar-collapse" id="sidebar-collapse">
+                <i class="collapse-icon fa fa-bars"></i>
+            </div> -->
+            <!-- /Sidebar Collapse -->
+            <!-- Account Area and Settings --->
+            <div class="navbar-collapse">
+                <ul class="navbar-nav mr-auto mt-md-0 hamberger">
+                    <!-- This is  -->
+                    <!-- <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="fas fa-bars"></i></a> </li> -->
+                    <li class="nav-item m-l-10">
+                        <div class="sidebar-collapse" id="sidebar-collapse">
+                            <i class="collapse-icon fa fa-bars"></i>
+                        </div>
+                    </li>
+                    <li class="nav-item m-l-10">
+                        <span class="dashboard-text">Dashboard</span>
+                    </li>
+                </ul>
+                <div class="navbar-header pull-right">
+                    <div class="navbar-account">
+                        <ul class="account-area" style="right: 0px !important;">
+                            <li>
+                                <a class="login-area dropdown-toggle" data-toggle="dropdown">
+                                    <div class="avatar" title="">
+                                        <img [src]="LogInUserImageSrc" id="userProfileImage" />
+                                    </div>
+                                    <section style="line-height: 14px;">
+                                        <span class="profile">
+                      <span
+                        ><b>{{ LogInUserName }}</b></span
+                      >
+                      <span style="font-size:12px;display: block;"
+                        ><b></b>{{ UserAssignedRole }}</span
+                      >
+                    </span>
+                                    </section>
+                                </a>
+                                <!--Login Area Dropdown-->
+                                <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
+                                    <li class="username">
+                                        <a>{{ LogInUserName }}</a>
+                                    </li>
+                                    <li class="email">
+                                        <a>{{ LoggedInUserEmail }}</a>
+                                    </li>
+                                    <!--Avatar Area-->
+                                    <li>
+                                        <div class="avatar-area" style="width:100%!important;">
+                                            <img [src]="LogInUserImageSrc" class="avatar" style="" />
+                                            <div class="browsefile" style="margin-bottom:10px;margin-left: 43px;">
+                                                <!--<img src="" id="fileimage" style="height:50px;width:50px;" />-->
+                                                <span class="caption" style="width:100%!important;color:#FFFFFF!important;" (click)="triggerChangeImage()">
+                          Change Photo
+                          <input
+                            type="file"
+                            style="width:100%; display: none"
+                            id="file"
+                            accept="image/*"
+                            name="UserImage"
+                            #UserImage="ngModel"
+                            (change)="handleInputChange(UserImage, $event)"
+                            [(ngModel)]="UserImageValue"
+                          />
+                        </span>
+                                            </div>
+                                            <input type="hidden" id="currentUserID" />
+                                        </div>
+                                    </li>
+                                    <!--Avatar Area-->
+                                    <li class="edit">
+                                        <!-- <a href="profile.html" class="pull-left">Profile</a>
+                                                    <a href="#" class="pull-right">Setting</a> -->
+                                        <button class="btn btn-link text-center" (click)="ResetPassword(passwordPopup.form)" style="font-size:12px; display:block;">
+                      Reset Password
+                    </button>
+                                    </li>
+
+                                    <li class="dropdown-footer text-align-left">
+                                        <button style="font-size:12px;" class="btn btn-link" routerLink="/auth/login" (click)="signOut()">
+                      Sign out
+                    </button>
+                                    </li>
+                                </ul>
+                                <!--/Login Area Dropdown-->
+                            </li>
+                        </ul>
+                        <!-- Settings -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- /Account Area and Settings -->
+        </div>
+    </div>
+</div>
+<div style="position: relative; width: 1349px; height: 61px; display: block; vertical-align: baseline; float: none;"></div>
+<!-- /Navbar -->
+<bs-modal #changePassword class="modal-md">
+    <bs-modal-header>
+        <h4 class="modal-title">Reset Password</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <form #passwordPopup="ngForm" name="passwordPopup">
+            <!-- <div class="form-group">
+                  <label class="control-label  col-sm-5 col-md-5 col-lg-5">Old Password <span style="color:red;">*</span>:</label>
+                  <div class="col-sm-7 col-md-7 col-lg-7">
+                      <input type="password" id="oldPassword" name="oldPassword" #oldPassword="ngModel"
+                             [(ngModel)]="cpUser.oldPassword" (focusout)="ValidateOldPassword(oldPassword.valid)" (ngModelChange)="OnChange()"
+                             required maxlength="50" />
+                      <div class="clearfix"></div>
+                      <span style="color:red" *ngIf="!oldPassword.valid && oldPassword.touched">
+                          <span *ngIf="!oldPassword.valid && oldPassword.errors.required">Password is required.</span>
+                      </span>
+                      <span style="color:red" *ngIf="oldPassword.valid && isInvalidpassword">Old user Password does not match!</span>
+                  </div>
+                  <div class="clearfix"></div>
+              </div> -->
+            <div class="form-group">
+                <label class="control-label col-sm-4 col-md-4 col-lg-4">New Password <span style="color:red;">*</span>:</label
+        >
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <input
+            type="password"
+            class="form-control input-sm"
+            id="newPassword"
+            name="newPassword"
+            #newPassword="ngModel"
+            [(ngModel)]="cpUser.newPassword"
+            required
+            validateEqual="confirmpassword"
+            reverse="true"
+            maxlength="50"
+          />
+          <div class="clearfix"></div>
+          <span
+            style="color:red;font-size: 12px;"
+            *ngIf="!newPassword.valid && newPassword.touched"
+          >
+            <span *ngIf="!newPassword.valid && newPassword.errors.required"
+              >Password is required.</span
+            >
+            <span
+              *ngIf="
+                !newPassword.valid &&
+                newPassword.value != '' &&
+                newPassword.errors.validateEqual
+              "
+              >Password don't match.</span
+            >
+          </span>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-4 col-md-4 col-lg-4"
+          >Confirm Password <span style="color:red;">*</span>:</label
+        >
+        <div class="col-sm-8 col-md-8 col-lg-8">
+          <input
+            type="password"
+            class="form-control input-sm"
+            name="confirmpassword"
+            #confirmpassword="ngModel"
+            [(ngModel)]="cpUser.confirmPassword"
+            required
+            maxlength="50"
+            validateEqual="newPassword"
+            reverse="false"
+            pattern="^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$"
+          />
+          <div class="clearfix"></div>
+          <span
+            style="color:red; font-size: 12px;"
+            *ngIf="!confirmpassword.valid && confirmpassword.touched"
+          >
+            <span
+              *ngIf="!confirmpassword.valid && confirmpassword.errors.required"
+              >Confirm Password is required.</span
+            >
+            <span
+              *ngIf="
+                !confirmpassword.valid &&
+                confirmpassword.value != '' &&
+                confirmpassword.errors.validateEqual
+              "
+              >Confirm Password don't match.</span
+            >
+            <span [hidden]="confirmpassword.valid || confirmpassword.pristine">
+              Password must be of minimum 8 character long and contains one
+              upper case and one lower case alphabet with at least one number
+              and one special character.
+            </span>
+          </span>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div>
+        <span style="color:red">{{ alertLabel }}</span>
+      </div>
+    </form>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button
+      type="reset"
+      class="btn btn-default"
+      [disabled]="isSubmittedForPwdChange"
+      data-dismiss="modal"
+      (click)="Close()"
+    >
+      Cancel
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="isSubmittedForPwdChange || passwordPopup.invalid"
+      (click)="ChangePassword()"
+    >
+      Submit
+    </button>
+  </bs-modal-footer>
+</bs-modal>
+
+<message cssClass="modal-msg" #pop></message>

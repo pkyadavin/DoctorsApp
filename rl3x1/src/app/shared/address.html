@@ -1,0 +1,241 @@
+﻿<div class="">
+  <form #f="ngForm" id="addform" name="f">
+    <!--<div class="widget-header ">
+            <span class="widget-caption ng-binding"></span>
+            <div class="widget-buttons">
+
+                <button class="btn btn-sm btn-danger" type="button" (click)="onCancel()">
+                    <i class="glyphicon glyphicon-floppy-remove"></i>Exit
+                </button>
+
+                <button class="btn btn-sm btn-primary" type="submit" (click)="onSave(f.form)">
+                    <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                </button>
+            </div>
+        </div>-->
+    <div class="">
+      <!--<div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                <div class="validationmsg">
+                    <b> Please fill the asterisk (*) fields. </b>
+                </div>
+                <div class="clearfix"></div>
+            </div>-->
+      <div
+        class="form-group"
+        *ngIf="IsLoaded && addressEditor.Address1.isVisible"
+      >
+        <label class="control-label col-lg-3 ng-binding">
+          {{addressEditor.Address1.DisplayName}}:
+          <span *ngIf="addressEditor.Address1.isRequired" style="color:red;"
+            >*</span
+          >
+        </label>
+        <div class="col-lg-3">
+          <input
+            type="text"
+            name="txtAddress1"
+            ngControl="txtAddress1"
+            maxlength="35"
+            class="form-control"
+            #address1="ngModel"
+            [required]="addressEditor.Address1.isRequired"
+            [disabled]="!addressEditor.Address1.isEnabled"
+            [(ngModel)]="CurrentAddress.Address1"
+          />
+        </div>
+        <label class="control-label col-lg-3 ng-binding">
+          {{addressEditor.Address2.DisplayName}}:
+          <span *ngIf="addressEditor.Address2.isRequired" style="color:red;"
+            >*</span
+          >
+        </label>
+        <div class="col-lg-3">
+          <input
+            type="text"
+            name="txtAddress2"
+            ngControl="txtAddress2"
+            #address2="ngModel"
+            maxlength="35"
+            [required]="addressEditor.Address2.isRequired"
+            [disabled]="!addressEditor.Address2.isEnabled"
+            [(ngModel)]="CurrentAddress.Address2"
+            class="form-control"
+          />
+        </div>
+        <div class="clearfix"></div>
+      </div>
+
+      <div class="form-group" *ngIf="IsLoaded && addressEditor.City.isVisible">
+        <label class="control-label col-lg-3 ng-binding">
+          {{addressEditor.City.DisplayName}}:
+          <span *ngIf="addressEditor.City.isRequired" style="color:red;"
+            >*</span
+          >
+        </label>
+        <div class="col-lg-3">
+          <input
+            type="text"
+            name="txtCity"
+            ngControl="txtCity"
+            maxlength="35"
+            #city="ngModel"
+            [required]="addressEditor.City.isRequired"
+            [disabled]="!addressEditor.City.isEnabled"
+            [(ngModel)]="CurrentAddress.City"
+            class="form-control"
+          />
+        </div>
+        <label class="control-label col-lg-3 ng-binding">
+          {{addressEditor.CountryID.DisplayName}}:
+          <span *ngIf="addressEditor.CountryID.isRequired" style="color:red;"
+            >*</span
+          >
+        </label>
+        <div class="col-lg-3">
+          <select
+            class="form-control"
+            name="CountryID"
+            [(ngModel)]="CurrentAddress.CountryID"
+            (change)="CountrySelected()"
+            #CountryID="ngModel"
+            [required]="addressEditor.CountryID.isRequired"
+            [disabled]="!addressEditor.CountryID.isEnabled"
+          >
+            <option
+              [value]="undefined"
+              [disabled]="addressEditor.CountryID.isRequired"
+              >--Select--
+            </option>
+            <option *ngFor="let n of Countries" [value]="n.CountryID"
+              >{{n.CountryName}}</option
+            >
+          </select>
+          <!-- <Countries [form]="f" (countryIDChange)="countryEvent($event)" [setRequiredCountry]="setRequiredCountry" [(countryID)]="selectedCountryID">Loading....</Countries> -->
+        </div>
+        <div class="clearfix"></div>
+      </div>
+
+      <div
+        class="form-group"
+        *ngIf="IsLoaded && addressEditor.StateID.isVisible"
+      >
+        <label class="control-label col-lg-3 ng-binding">
+          {{addressEditor.StateID.DisplayName}}:
+          <span
+            *ngIf="addressEditor.StateID.isRequired && States?.length>0"
+            style="color:red;"
+            >*</span
+          >
+        </label>
+        <div class="col-lg-3">
+          <select
+            class="form-control"
+            name="country"
+            [(ngModel)]="CurrentAddress.StateID"
+            (change)="StateSelected()"
+            #country="ngModel"
+            [required]="addressEditor.StateID.isRequired && States?.length>0"
+            [disabled]="!addressEditor.StateID.isEnabled"
+          >
+            <option [value]="null" [disabled]="addressEditor.StateID.isRequired"
+              >--Select--
+            </option>
+            <option *ngFor="let n of States" [value]="n.StateID"
+              >{{n.StateName}}</option
+            >
+          </select>
+          <!-- <States [form]="f" [setCountryID]="setCountryID" [setRequiredState]="setRequiredState" (stateIDChange)="stateEvent($event)" [(stateID)]="selectedStateID">Loading....</States> -->
+        </div>
+        <label class="control-label col-lg-3 ng-binding">
+          {{addressEditor.ZipCode.DisplayName}}:
+          <span *ngIf="addressEditor.ZipCode.isRequired" style="color:red;"
+            >*</span
+          >
+        </label>
+        <div class="col-lg-3">
+          <input
+            zip
+            type="text"
+            name="txtZipCode"
+            maxlength="7"
+            ngControl="txtZipCode"
+            #zipcode="ngModel"
+            [required]="addressEditor.ZipCode.isRequired"
+            [disabled]="!addressEditor.ZipCode.isEnabled"
+            [(ngModel)]="CurrentAddress.ZipCode"
+            class="form-control"
+            pattern="^[a-zA-Z0-9_]*$"
+          />
+        </div>
+        <div class="clearfix"></div>
+      </div>
+
+      <!--Facility Div-->
+      <div class="form-group">
+        <!--<div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && addressEditor.TypeLookUpID.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{addressEditor.TypeLookUpID.DisplayName}}: <span *ngIf="addressEditor.TypeLookUpID.isRequired" style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <select #addressType="ngModel" name="ddlAddressType" ngControl="ddlAddressType" [required]="addressEditor.TypeLookUpID.isRequired" [disabled]="!addressEditor.TypeLookUpID.isEnabled || AddressTypeID != 0" [(ngModel)]="CurrentAddress.AddressTypeID" class="form-control"  (ngModelChange)="onAddressTypeChange($event)">
+                            <option [value]="undefined" disabled="disabled">
+                                --Select Address Type--
+                            </option>
+                            <option [value]="i.TypeLookUpId" *ngFor="let i of TypeLookupList">{{i.TypeName}}</option>
+                        </select>
+                        
+                    </div>
+                    
+                </div>-->
+
+        <div
+          class="col-lg-6"
+          style="margin-bottom:5px;"
+          *ngIf="IsLoaded && addressEditor.Description.isVisible"
+        >
+          <label class="control-label col-lg-6 ng-binding">
+            {{addressEditor.Description.DisplayName}}:
+            <span
+              *ngIf="addressEditor.Description.isRequired"
+              style="color:red;"
+              >*</span
+            >
+          </label>
+          <div class="col-lg-6">
+            <input
+              type="text"
+              name="txtDescription"
+              ngControl="txtDescription"
+              #description="ngModel"
+              [required]="addressEditor.Description.isRequired"
+              [disabled]="!addressEditor.Description.isEnabled"
+              [(ngModel)]="CurrentAddress.Description"
+              class="form-control"
+            />
+            <!--<Div [hidden]="description.valid||description.pristine" class="red">
+                            {{addressEditor.Description.DisplayName}} is required.
+                        </Div>-->
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <!--Facility Div-->
+
+      <!--<div class="form-group">
+                <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && addressEditor.IsActive.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{addressEditor.IsActive.DisplayName}}: <span *ngIf="addressEditor.IsActive.isRequired" style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="checkbox" style="opacity:1 !important;left:14px" name="chkActive" ngControl="chkActive" #isactive="ngModel" class="checkbox" [required]="addressEditor.IsActive.isRequired" [disabled]="!addressEditor.IsActive.isEnabled" [(ngModel)]="CurrentAddress.IsActive"/>
+                    </div>
+                  
+                </div>
+                <div class="clearfix"></div>
+            </div>-->
+
+      <div class="clearfix"></div>
+    </div>
+  </form>
+  <div class="clearfix"></div>
+</div>

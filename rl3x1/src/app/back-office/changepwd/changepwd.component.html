@@ -1,0 +1,43 @@
+<form>
+  <div class="widget">
+      <div class="widget-body">
+          <div class="row">
+              <div class="col-md-2 padding-top-10">
+                  <b>
+                      <span>Reset Password</span></b>
+              </div>
+              <div class="widget-buttons pull-right">
+                  <button type="button" class="btn btn-primary" (click)="ChangePassword()">Submit</button>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+          <hr>
+          <div class="col-md-12 text-warning" style="font-size: 12px;margin-bottom: 15px;">
+            Password must be of minimum 8 character long and contains one upper case and one lower case alphabet with at least one number and one special character.
+          </div>
+          <div class="form-group">
+              <label class="control-label col-sm-3 col-md-3 col-lg-3">New Password <span
+                      style="color:red;">*</span>:</label>
+              <div class="col-sm-3 col-md-3 col-lg-3">
+                  <input class="form-control" type="password" id="newPassword" name="newPassword"
+                      [(ngModel)]="pwdchangeData.newPassword" required maxlength="50" #newPassword="ngModel" />
+                  <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+          <div class="form-group">
+              <label class="control-label col-sm-3 col-md-3 col-lg-3">Confirm Password <span
+                      style="color:red;">*</span>:</label>
+              <div class="col-sm-3 col-md-3 col-lg-3">
+                  <input class="form-control" type="password" name="confirmPassword"
+                      [(ngModel)]="pwdchangeData.confirmPassword" pw-check="newPassword" required maxlength="50"
+                      #confirmPassword="ngModel" />
+                  <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+          <div class="clearfix"></div>
+      </div>
+      <div class="clearfix"></div>
+  </div>
+</form>

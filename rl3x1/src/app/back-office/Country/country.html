@@ -1,0 +1,251 @@
+﻿<style>
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+    
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0);
+        -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0);
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0);
+    }
+    
+    .nav-tabs>li {
+        margin: 0px 3px 0px 3px;
+    }
+    
+    .nav-tabs>li>a,
+    .nav-tabs>li>a:focus {
+        border-radius: 0 !important;
+        color: #777 !important;
+        margin-right: -1px;
+        line-height: 24px;
+        position: relative;
+        z-index: 11;
+    }
+    
+    .nav-tabs>li.active>a,
+    .nav-tabs>li.active>a:hover,
+    .nav-tabs>li.active>a:focus {
+        color: #262626 !important;
+        border: 0;
+        border-top: 2px solid #333;
+        border-bottom-color: transparent;
+        z-index: 12;
+        line-height: 24px;
+        margin-top: -2px;
+        box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, .15);
+    }
+    
+    .nav-tabs>li a:hover {
+        color: #262626 !important;
+    }
+    
+    .nav-tabs>li>a,
+    .nav-tabs>li>a:focus {
+        border-radius: 0 !important;
+        color: #262626 !important;
+    }
+    
+    .nav>li.disabled>a {
+        color: #262626;
+        background-color: gray !important;
+    }
+    
+    .nav>li.disabled>a:hover {
+        color: #262626 !important;
+        background-color: gray !important;
+    }
+    
+    .nav-tabs>li:first-child>a {
+        color: #262626 !important;
+    }
+</style>
+<div class="widget" [hidden]="!ListView">
+    <div class="widget-body">
+        <div class="widget-header ">
+            <span class="widget-caption pull-left font-40"><b>Region</b> </span>
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12 pt-3">
+                <select id="selectedRegion" class="form-control-mb-12" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedRegion" (change)="getRegion($event.target.value)">
+            <option *ngFor="let reg of RegionList" [value]="reg.RegionID">{{reg.RegionName}}</option>
+        </select>
+            </div>
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" placeholder="Search...">
+                <span class="input-group-btn">
+            <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i
+                    class="fa fa-search"></i>Search</button>
+        </span>
+            </div>
+            <div class="widget-buttons">
+                <button class="btn btn-sm btn-primary" type="button" (click)="onAddCountry()" *ngIf="isAddConfigSetup$ && LocalAccess | contains:'Add'">
+            <i class="glyphicon glyphicon-plus-sign"></i>Add
+        </button>
+                <button class="btn btn-sm btn-primary" id="btnEdit" *ngIf="isEditConfigSetup$" (click)="onEditCountry()">
+            <i class="glyphicon glyphicon-edit"></i>Edit
+        </button>
+                <!-- <button class="btn btn-sm btn-danger" (click)="onDeleteCountry()"
+            *ngIf="isDeleteConfigSetup$ && LocalAccess | contains:'Delete'">
+            <i class="glyphicon glyphicon-trash"></i>Delete
+        </button> -->
+            </div>
+        </div>
+        <div class="card1 no-padding marginTop34">
+            <ag-grid-angular #agGrid class="agc-grid ag-theme-balham" [ngClass]="{'agc-grid-popup':(GridType=='popup') }" (gridReady)="onGridReady($event)" [gridOptions]="gridOptions" (selectionChanged)="GridType != 'popup' && onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="clearfix"></div>
+
+
+
+<div class="" *ngIf="!ListView">
+    <form name="Country" #f="ngForm" class="css-form" novalidate>
+        <div class="widget">
+            <div class="widget-body">
+                <div class="widget-header ">
+                    <span class="widget-caption" *ngIf="CurrentCountryObj.CountryID == undefined"><b>Add {{moduleTitle}}</b>
+              </span>
+                    <span class="widget-caption" *ngIf="CurrentCountryObj.CountryID > 0"><b><span
+                          *ngIf="LocalAccess | contains:'Edit'">Edit</span> {{moduleTitle}}</b>
+                    </span>
+                    <div class="widget-buttons">
+                        <button class="btn btn-sm waves-effect waves-light btn-danger mr-2" type="button" (click)="Cancel()">
+                      <i class="fa fa-long-arrow-left"></i> Back
+                  </button>
+                        <button class="btn btn-sm waves-effect waves-light btn-success" type="submit" *ngIf="LocalAccess | contains:'Edit'" (click)="Save(f.form)">
+                      <i class="fa fa-floppy-o"></i> Save
+                  </button>
+                    </div>
+                </div>
+                <hr>
+                <div class="widget-body no-padding">
+                    <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                        <div class="validationmsg">
+                            <b> Please fill the asterisk (*) fields. </b>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group" *ngIf="IsLoaded">
+                        <div *ngIf="IsLoaded">
+                            <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.CountryName.isVisible">{{e_localize.CountryName.headerName}} <span
+                              *ngIf="e_localize.CountryName.isRequired" style="color:red;">*</span>:</label>
+
+                            <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.CountryName.isVisible">
+                                <input type="text" class="form-control" name="CountryName" #CountryName="ngModel" [(ngModel)]="CurrentCountryObj.CountryName" [required]="e_localize.CountryName.isRequired" [disabled]="!e_localize.CountryName.isEnabled" placeholder="Country Name">
+
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--2row-->
+                    <div class="form-group" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.CountryCode.isVisible">{{e_localize.CountryCode.headerName}} <span
+                          *ngIf="e_localize.CountryCode.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.CountryCode.isVisible">
+                            <input type="text" class="form-control" name="CountryCode" #CountryCode="ngModel" [(ngModel)]="CurrentCountryObj.CountryCode" [required]="e_localize.CountryCode.isRequired" [disabled]="!e_localize.CountryCode.isEnabled" placeholder="Country Code">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Region <span style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <select id="selectedRegion" class="form-control-mb-12" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedRegion" (change)="getRegion($event.target.value)">
+                          <option *ngFor="let reg of RegionList" [value]="reg.RegionID">{{reg.RegionName}}</option>
+                      </select>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.CountryCode.isVisible">{{e_localize.Description.headerName}} </label>
+                        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Description.isVisible">
+                            <input type="text" class="form-control" name="Description" #Description="ngModel" [(ngModel)]="CurrentCountryObj.Description" [disabled]="!e_localize.Description.isEnabled" placeholder="Description">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="form-group" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Tax.isVisible">{{e_localize.Tax.headerName}} <span
+                        *ngIf="e_localize.Tax.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Tax.isVisible">
+                            <input type="text" class="form-control" name="Tax" #CountryCode="ngModel" [(ngModel)]="CurrentCountryObj.Tax" [required]="e_localize.Tax.isRequired" [disabled]="!e_localize.Tax.isEnabled" placeholder="Tax">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <div *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.IsActive.isVisible">{{e_localize.IsActive.headerName}} <span
+                          *ngIf="e_localize.IsActive.isRequired" style="color:red;">*</span>:</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.IsActive.isVisible">
+                            <div class="checkbox">
+                                <label>
+                              <input type="checkbox" [required]="e_localize.IsActive"
+                                  class="checkbox-slider colored-palegreen yesno"
+                                  [disabled]="!e_localize.IsActive" [(ngModel)]="CurrentCountryObj.IsActive"
+                                  [ngModelOptions]="{standalone: true}"><span class="text">&nbsp;</span>
+                          </label>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <tabs>
+        <tab tabTitle="Carrier">
+            <div class="form-group" style="padding-top: 8px;">
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                    <select class="form-control" [(ngModel)]="selectedCarrierGateway" [ngModelOptions]="{standalone: true}" (change)="onSelectedCarrierGatewayChanged()">
+              <option [value]="undefined" disabled>--Select--</option>
+              <option [value]="i.TypeCode" *ngFor="let i of AllCarrierGateway">{{i.TypeName}}</option>
+            </select>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+            <div style="height:278px;">
+
+                <div *ngIf="CarrierGatewayAttribute">
+                    <div class="form-group">
+                        <label class="control-label col-md-12"><b>Attributes</b></label>
+                    </div>
+                    <div class="form-group" *ngFor="let att of CarrierGatewayAttribute; let ind = index;">
+
+                        <label *ngIf="att.TypeName != booleanText && att.TypeName != 'Brands'" class="control-label col-sm-3 col-md-3 col-lg-3">{{att.Description}} :</label>
+                        <div *ngIf="att.TypeName != booleanText && att.TypeName != 'Brands'" class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="{{att.TypeCode}}" [(ngModel)]="att.AttributeValue" [disabled]="CarrierListType =='Customer'" placeholder="{{att.Description}}">
+                        </div>
+
+                        <div *ngIf="att.TypeName == booleanText">
+                            <label class="control-label col-sm-3 col-md-3 col-lg-3">{{att.Description}}
+                  :</label>
+                            <label style="float:left!important; margin-top:8px!important; margin-left:12px;">
+                  <input type="checkbox" name="_{{att.TypeCode}}" class="checkbox-slider colored-palegreen yesno"
+                    [(ngModel)]="att.AttributeValue" id="checkbox{{att.TypeLookUpID}}"
+                    [disabled]="CarrierListType =='Customer'">
+                  <span class="text"></span>
+                </label>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </tab>
+    </tabs>
+</div>

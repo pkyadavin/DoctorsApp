@@ -1,0 +1,98 @@
+[{
+  "order_number":"RMA05032018001",
+  "order_date":"2019-03-05 08:27:02.003",
+  "ship_date":"03/08/2019",
+  "delivery_date":"03/10/2019",
+  "order_amount":"500",
+  "tax_rate_percent":"10",
+  "tax_amount":"50",
+  "discount_amount":"100",
+  "order_total_amount":"450",
+  "currency":"USD",
+  "brand":"Suunto",
+  "customer": {
+    "cif_number":"",
+    "name":"Mukesh Kumar Sharma",
+    "email":"mukesh@reverselogix.com",
+    "phone":"9990546862",
+    "address": {
+      "street1":"g 18 b ",
+      "street2":"street no 4",
+      "street3":"sakarpur",
+      "state":"Delhi",
+      "city":"delhi",
+      "postal_code":"110092",
+      "country_code":"+91"
+    }
+  },
+  "items":[
+    {
+      "id":"1",
+      "EAN":"SK32123",
+      "name":"Running Shoe",
+      "description":"Jumping Shoe",
+      "image_url":"",
+      "quantity":"2",
+      "unit_price_amount":"110",
+      "shipment_id":"1AQ22",
+      "specifics":[
+        {"size":"8"},
+        {"color":"White"}
+      ],
+      "extra":{
+              "return_DC":"Uberherrn",            
+              "return_ shipment":"free",
+              "returnable":"Y"
+        }
+    },
+    {
+      "id":"2",
+      "EAN":"ASDAS23",
+      "name":"Shocks",
+      "description":"woollen shoe",
+      "image_url":"",
+      "quantity":"2",      
+      "unit_price_amount":"14",
+      "shipment_id":"ASD12",
+      "specifics":[
+        {"size":"M"},
+        {"color":"black"}
+      ],      
+      "extra":{
+            "return_DC":"Uberherrn", 
+            "return_ shipment":"Paid",
+            "returnable":"N"
+        }
+    }
+  ],
+  "shipment":{
+    "shipment_number":"DGSDF234",
+    "carrier":"UPS",
+    "shipping_charge":"25",
+    "tax_amount":"2",
+    "parcels":[
+      {
+        "shipment_id":"1",
+        "dimensions":{          
+          "height":"2", 
+          "width":"3", 
+          "depth":"4", 
+          "unit":"1"
+        }
+      },
+      {
+        "shipment_id":"2",
+        "dimensions":{
+          "height":"2", 
+          "width":"3", 
+          "depth":"4", 
+          "unit":"1"
+        }
+      }
+    ]
+  },
+  "extra":{
+    "return_DC":"Uberherrn"      
+  }
+}
+]

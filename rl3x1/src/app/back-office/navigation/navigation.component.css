@@ -1,0 +1,9 @@
+.navbar .navbar-inner .navbar-header .navbar-account .account-area > li {   
+    min-width: 200px;
+}
+.navbar .navbar-inner .navbar-header .navbar-account .account-area .login-area {    
+    min-width: 220px;
+}
+.profile{
+    color:#FFF;
+}

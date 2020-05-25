@@ -1,0 +1,116 @@
+﻿<div class="widget">
+    <div class="widget-header" style="padding-top:3px!important">
+        <span class="widget-caption pull-left font-40"><b>Aging Report</b> </span>
+
+        <label class="control-label col-sm-2" style="padding-top:8px;">From Date :</label>
+        <div class="col-sm-2">
+            <input ng2-datetime-picker date-only="true" readonly="readonly" #fromDate="ngModel" name="txtFromDate" class="form-control" [(ngModel)]="postAgingReport.fromDate">
+        </div>
+        <label class="control-label col-sm-2" style="padding-top:8px;">To Date :</label>
+        <div class="col-md-2">
+            <input ng2-datetime-picker date-only="true" readonly="readonly" #toDate="ngModel" name="txtToDate" class="form-control" [(ngModel)]="postAgingReport.toDate">
+        </div>
+        <div class="col-lg-2">
+            <button (click)="getAgingReport()" class="btn btn-default btn-sm" style="float:left!important;margin-top:1px!important;margin-left:-22px!important;line-height:20px!important;"><span class="glyphicon glyphicon-search"></span></button>
+            <i class="fa fa-download pull-left" aria-hidden="true" ng-hide="exportExcel" style="cursor:pointer;margin-left:10px;margin-top:10px;"></i>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="widget-body no-padding" style="overflow:hidden;">
+        <div class="clearfix"></div>
+        <table style="width:100%;" cellpadding="3" cellspacing="3" class="table-responsive table">
+            <thead>
+                <tr>
+                    <th><label class="control-label"><b>Product Category</b></label></th>
+                    <th><label class="control-label"><b>Model</b></label></th>
+                    <th><label class="control-label"><b>Total</b></label></th>
+                    <th><label class="control-label"><b>1 Day</b></label></th>
+                    <th><label class="control-label"><b>2 Days</b></label></th>
+                    <th><label class="control-label"><b>3 Days</b></label></th>
+                    <th><label class="control-label"><b>4 Days</b></label></th>
+                    <th><label class="control-label"><b>5 Days</b></label></th>
+                    <th><label class="control-label"><b>6 Days</b></label></th>
+                    <th><label class="control-label"><b>7 Days</b></label></th>
+                    <th><label class="control-label"><b>8-14 Days</b></label></th>
+                    <th><label class="control-label"><b>15-21 Days</b></label></th>
+                    <th><label class="control-label"><b>&gt; 21 Days</b></label></th>
+
+                </tr>
+            </thead>
+            <tbody id="sortable">
+                <tr *ngIf="agingReports.length==0">
+                <td colspan="13" style="text-align:center;">
+                    No Rows To Show</td>
+                </tr>    
+                <tr *ngFor="let agingReport of agingReports">
+                    <td>
+                        <div class="col-md-10 ng-binding" style="padding-left:0px!important;">
+                          {{agingReport.ProductCategory}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 ng-binding" style="padding-left:0px!important;">
+                           {{agingReport.Model}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 ng-binding" style="padding-left:0px!important;">
+                            {{agingReport.Total}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 ng-binding" style="padding-left:0px!important;">
+                           {{agingReport.OneDay}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 ng-binding" style="padding-left:0px!important;">
+                           {{agingReport.TwoDays}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 ng-binding" style="padding-left:0px!important;">
+                            {{agingReport.ThreeDays}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 ng-binding" style="padding-left:0px!important;">
+                           {{agingReport.FourDays}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 ng-binding" style="padding-left:0px!important;">
+                            {{agingReport.FiveDays}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 ng-binding" style="padding-left:0px!important;">
+                           {{agingReport.SixDays}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 ng-binding" style="padding-left:0px!important;">
+                           {{agingReport.SevenDays}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 ng-binding" style="padding-left:0px!important;">
+                           {{agingReport.EightFourtheenDays}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 ng-binding" style="padding-left:0px!important;">
+                            {{agingReport.FifteenTwentyOneDays}}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-md-10 ng-binding" style="padding-left:0px!important;">
+                            {{agingReport.TwentyTwoDays}}
+                        </div>
+                    </td>
+                </tr><!-- end ngRepeat: i in AgingReportData -->
+            </tbody>
+        </table>
+    </div>
+</div>

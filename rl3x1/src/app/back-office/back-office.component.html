@@ -1,0 +1,73 @@
+<!-- Loading Container -->
+<div class="loading-continer">
+    <!-- <div class="loader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div> -->
+    <!-- <div style="color: #79bbb5" class="la-ball-square-clockwise-spin la-2x">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div> -->
+    <!-- <div id="loader">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="loading"></div>
+    </div> -->
+</div>
+<!--  /Loading Container -->
+<!-- /Navbar -->
+<app-navigation></app-navigation>
+<!-- /Navbar -->
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container" id="main-wrapper">
+        <!-- Page Sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <app-command commands=[Commands]></app-command>
+            <!-- Page Body -->
+            <div class="page-body">
+                <div class="blocker"></div>
+                <div class="rl-scanner rl-scanner-inactive">
+                    <div class="rl-scanner-loader">
+                        <div class="pull-left"><img width="100" src="../../assets/img/ring-spinner.gif" /></div>
+                        <div class="pull-left" style="padding-top:28px;">
+                            <span style="font-size: 16px;">Scan package to initiate</span><br>
+                            <span style="font-size: 12px;">Esc to continue manually</span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!-- <div class="scroll-top-wrapper"></div>                 -->
+                <router-outlet></router-outlet>
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+    <!-- /Page Container -->
+</div>
+<!-- Main Container -->

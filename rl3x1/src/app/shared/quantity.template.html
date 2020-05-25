@@ -1,0 +1,27 @@
+<div class="Cei-K">
+    <div class="p_2gDy8">
+        <div class="p_1-WOV">
+            <div class="p_V_bPx"><label id="TextField1Label" for="TextField1" class="p_3IQ8y">quantity</label></div>
+        </div>
+        <div class="p_3GizD p_3SG-9" [ngStyle]="{'pointer-events': disableControl ? 'none' : 'auto' }">
+            <input id="TextField1" (keydown)="OnChangeStart()" (keyup)="OnChange()" (blur)="OnBlur()" class="p_glbr9 p_3r8b0" [min]="min" [max]="max" type="number" aria-label="quantity" [disabled]="disableTextBox"
+               [(ngModel)]="value" aria-labelledby="TextField1Label TextField1Suffix" aria-invalid="false" value="0">
+            <div class="p_1NR0J" id="TextField1Suffix">/ {{max}}</div>
+            <div class="p_mZR70" aria-hidden="true">
+                <div role="button" class="p_1yrNj" tabindex="-1" (click)="OnUp()">
+                    <div class="p_1BqId"><span class="p_2-hnq"><svg viewBox="0 0 20 20" class="p_v3ASA"
+                                focusable="false" aria-hidden="true">
+                                <path d="M15 12l-5-5-5 5z"></path>
+                            </svg></span></div>
+                </div>
+                <div role="button" class="p_1yrNj" tabindex="-1" (click)="OnDown()">
+                    <div class="p_1BqId"><span class="p_2-hnq"><svg viewBox="0 0 20 20" class="p_v3ASA"
+                                focusable="false" aria-hidden="true">
+                                <path d="M5 8l5 5 5-5z" fill-rule="evenodd"></path>
+                            </svg></span></div>
+                </div>
+            </div>
+            <div class="p_yfPJo"></div>
+        </div>
+    </div>
+</div>

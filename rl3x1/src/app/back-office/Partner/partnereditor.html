@@ -1,0 +1,374 @@
+﻿<style>
+  .form-control[disabled],
+  .form-control[readonly],
+  fieldset[disabled] .form-control {
+    cursor: not-allowed;
+    background-color: #ffffff !important;
+    border-color: #e5e5e5;
+  }
+
+  h1 {
+    display: block;
+    font-size: 14px;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+  }
+
+  .input-group-btn>.btn {
+    line-height: 23px !important;
+  }
+
+  .ui-tabs .ui-tabs-nav li {
+    width: 35px !important;
+  }
+
+  .nav-tabs {
+    margin-bottom: 0;
+    margin-left: 0;
+    border: 0;
+    top: 2px;
+    background: none !important;
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0);
+    -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0);
+    /*background-color: #eee;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,.3);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,.3);
+        box-shadow: 0 0 4px rgba(0,0,0,.3);*/
+  }
+
+  .nav-tabs>li {
+    margin: 0px 3px 0px 3px;
+  }
+
+  .nav-tabs>li>a,
+  .nav-tabs>li>a:focus {
+    border-radius: 0 !important;
+    color: #777;
+    margin-right: -1px;
+    line-height: 24px;
+    position: relative;
+    z-index: 11;
+  }
+
+  .nav-tabs>li.active>a,
+  .nav-tabs>li.active>a:hover,
+  .nav-tabs>li.active>a:focus {
+    color: #262626;
+    border: 0;
+    border-top: 2px solid #333;
+    border-bottom-color: transparent;
+    /*background-color: #fbfbfb;*/
+    z-index: 12;
+    line-height: 24px;
+    margin-top: -2px;
+    box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  .nav-tabs>li a:hover {
+    color: #fff;
+    /*border: 0;*/
+    /*border-bottom-color: transparent;*/
+    /*background-color: #BAF3DA;*/
+    /*z-index: 12;*/
+    /*line-height: 24px;*/
+  }
+
+  .nav-tabs>li>a,
+  .nav-tabs>li>a:focus {
+    border-radius: 0 !important;
+    color: #fff;
+    /* margin-right: -1px;
+                / line-height: 24px;
+                position: relative;
+                z-index: 11;
+                /*background-color: #178E58;*/
+  }
+
+  .nav>li.disabled>a {
+    color: #fff;
+    background-color: gray;
+  }
+
+  .nav>li.disabled>a:hover {
+    color: #fff;
+    background-color: gray;
+  }
+
+  /*Legend Style Sheet*/
+
+  legend a {
+    color: inherit;
+  }
+
+  legend.legendStyle {
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-bottom: 0px !important;
+  }
+
+  fieldset.fsStyle {
+    border: 1px solid #ccc !important;
+    padding: 5px !important;
+    margin: 0px !important;
+  }
+
+  legend.legendStyle {
+    font-size: 14px;
+    color: #555;
+    background-color: transparent;
+    font-weight: bold;
+  }
+
+  legend {
+    width: auto;
+    border-bottom: 0px;
+  }
+
+  .btn-bs-file {
+    position: relative;
+  }
+
+  .btn-bs-file input[type="file"] {
+    position: absolute;
+    top: -9999999;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    width: 0;
+    height: 0;
+    outline: none;
+    cursor: inherit;
+  }
+</style>
+
+<form #f="ngForm" novalidate>
+  <div class="widget">
+    <div class="widget-body">
+      <div class="widget-header widget-header1">
+        <span class="widget-caption pull-left font-40" *ngIf="partnerId == 0"><b>Add {{moduleDescription}}</b>
+        </span>
+        <span class="widget-caption pull-left font-40" *ngIf="partnerId > 0"><b><span
+              *ngIf="permission && !this.CurrentPartner.PartnerParentID">Edit {{moduleDescription}}</span>
+            <span *ngIf="permission && this.CurrentPartner.PartnerParentID > 0">View Child Account</span>
+          </b>
+        </span>
+        <div class="widget-buttons">
+          <button type="button" class="btn btn-sm waves-effect waves-light btn-danger mr-2" (click)="CancelPartner()">
+            <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back
+          </button>
+
+          <button class="btn btn-sm waves-effect waves-light btn-success" type="button"
+            *ngIf="((LocalAccess | contains:'Add') && CurrentPartner.PartnerID == 0) || (LocalAccess | contains:'Edit')"
+            (click)="onSubmit(f.form)">
+            <i class="fa fa-floppy-o"></i> Save
+          </button>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="card1">
+          <div class="form-group" *ngIf="f.form.touched && !f.form.valid  && isSaveClick">
+            <div style="color:red;">
+                <b>Please fill the asterisk (*) fields. </b>
+            </div>
+            <div class="clearfix"></div>
+         </div>
+          <!-- ROW 1 -->
+          <div class="form-group">
+            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.PartnerCode.isVisible">{{e_localize.PartnerCode.headerName}}<span
+                *ngIf="e_localize.PartnerCode.isRequired" style="color:red;">*</span>:</label>
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.PartnerCode.isVisible">
+              <input maxlength="500" type="text" name="partnerCode" class="form-control" [(ngModel)]="CurrentPartner.PartnerCode"
+                [placeholder]="e_localize.PartnerCode.headerName" maxlength="10" #PartnerCode="ngModel"
+                [required]="e_localize.PartnerCode.isRequired" [disabled]="true" />
+              <div class="clearfix"></div>
+            </div>
+
+            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.TypeName.isVisible">{{e_localize.TypeName.headerName}}
+              <span *ngIf="e_localize.TypeName.isRequired" style="color:red;">*</span>:</label>
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+              <ddl id="ddlAccountType" [controlName]="e_localize.TypeName.headerName.replace(' ','-')"
+                *ngIf="IsLoaded && e_localize.TypeName.isVisible" [form]="f" [(ddlModel)]="CurrentPartner.OrgSubType"
+                [Source]="AllOrgSubTypes" DisplayProperty="TypeName" ValueProperty="TypeLookUpID"
+                [required]="e_localize.TypeName.isRequired"
+                [disabled]="!e_localize.TypeName.isEnabled || IsAccountTypeDisabled"
+                (change)="ChangeAccountType($event)">
+              </ddl>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <!-- ROW 2 -->
+          <div class="form-group">
+            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.PartnerName.isVisible">{{e_localize.PartnerName.headerName}}<span
+                *ngIf="e_localize.PartnerName.isRequired" style="color:red;">*</span>:</label>
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.PartnerName.isVisible">
+              <input maxlength="500"  names type="text" name="PartnerName" class="form-control" [(ngModel)]="CurrentPartner.PartnerName"
+                [placeholder]="e_localize.PartnerName.headerName" maxlength="50" #PartnerName="ngModel"
+                [required]="e_localize.PartnerName.isRequired" [disabled]="!e_localize.PartnerName.isEnabled" />
+              <div class="clearfix"></div>
+            </div>
+            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.ContactNumber.isVisible && !IsConsumerType">{{e_localize.ContactNumber.headerName}}<span
+                *ngIf="e_localize.ContactNumber.isRequired" style="color:red;">*</span>:</label>
+
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.ContactNumber.isVisible && !IsConsumerType">
+              <div class="input-group pull-left col-md-3" style="width: 100%;">
+                <input type="tel" id="mobile-number" disabled="disabled" style="width:84px;float: left;height: 30px;" />
+                <div style="width: calc(100% - 84px);float:left;">
+                  <input phone type="text" id="ContactNumber" name="ContactNumber" class="form-control"
+                    style="width:100%;float:left" phone-input maxlength="10" placeholder="Number with area code"
+                    [(ngModel)]="CurrentPartner.ContactNumber" #ContactNumber="ngModel" (focusout)="CheckPhoneVal()"
+                    [required]="e_localize.ContactNumber.isRequired" [disabled]="!e_localize.ContactNumber.isEnabled" />
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <!-- ROW 3 -->
+          <div class="form-group">
+            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.ContactName.isVisible && !IsConsumerType">{{e_localize.ContactName.headerName}}<span
+                *ngIf="e_localize.ContactName.isRequired" style="color:red;">*</span>:</label>
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.ContactName.isVisible && !IsConsumerType">
+              <input maxlength="500" type="text" name="ContactName" class="form-control" [(ngModel)]="CurrentPartner.ContactName"
+                [placeholder]="e_localize.ContactName.headerName" maxlength="50" #ContactName="ngModel"
+                [required]="e_localize.ContactName.isRequired" [disabled]="!e_localize.ContactName.isEnabled" />
+              <div class="clearfix"></div>
+            </div>
+
+            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.Email.isVisible && !IsConsumerType">{{e_localize.Email.headerName}}<span
+                *ngIf="e_localize.Email.isRequired" style="color:red;">*</span>:</label>
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.Email.isVisible && !IsConsumerType">
+              <input type="email" name="Email" validateEmail class="form-control" [(ngModel)]="CurrentPartner.Email"
+                [placeholder]="e_localize.Email.headerName" maxlength="50" #Email="ngModel"
+                [required]="e_localize.Email.isRequired" [disabled]="!e_localize.Email.isEnabled" />
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+         <!-- ROW 4,5,6 -->
+          <div *ngIf="typeId!='PTR005' && IsLoaded">
+            <Address-Template #PartnerAddress [address]="CurrentAddress" [addressEditor]="e_localize"
+              (notifyAddress)="AddressEvent($event)">
+            </Address-Template>
+            <div class="clearfix"></div>
+          </div>
+          <!-- ROW 7 -->
+          <div class="form-group">
+            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.host.isVisible && !IsConsumerType">{{e_localize.host.headerName}}<span
+                *ngIf="e_localize.host.isRequired" style="color:red;">*</span>:</label>
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.host.isVisible && !IsConsumerType">
+              <input maxlength="100"  type="text" name="host" class="form-control" [(ngModel)]="CurrentPartner.host"
+                [placeholder]="e_localize.host.headerName" maxlength="50" #host="ngModel"
+                [required]="e_localize.host.isRequired" [disabled]="!e_localize.host.isEnabled" />
+              <div class="clearfix"></div>
+            </div>
+            <!-- ROW 8 -->
+            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.portnumber.isVisible && !IsConsumerType">{{e_localize.portnumber.headerName}}<span
+                *ngIf="e_localize.portnumber.isRequired" style="color:red;">*</span>:</label>
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.portnumber.isVisible && !IsConsumerType">
+              <input DigitOnly maxlength="20" type="text"  name="portnumber" class="form-control" [(ngModel)]="CurrentPartner.portnumber"
+                [placeholder]="e_localize.portnumber.headerName" maxlength="50" #portnumber="ngModel"
+                [required]="e_localize.portnumber.isRequired" [disabled]="!e_localize.portnumber.isEnabled" />
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <!-- ROW 9 -->
+          <div class="form-group">
+            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.username.isVisible && !IsConsumerType">{{e_localize.username.headerName}}<span
+                *ngIf="e_localize.username.isRequired" style="color:red;">*</span>:</label>
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.username.isVisible && !IsConsumerType">
+              <input maxlength="100" type="text" name="username" class="form-control" [(ngModel)]="CurrentPartner.username"
+                [placeholder]="e_localize.username.headerName" maxlength="50" #username="ngModel"
+                [required]="e_localize.username.isRequired" [disabled]="!e_localize.username.isEnabled" />
+              <div class="clearfix"></div>
+            </div>
+
+            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.pass.isVisible && !IsConsumerType">{{e_localize.pass.headerName}}<span
+                *ngIf="e_localize.pass.isRequired" style="color:red;">*</span>:</label>
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.pass.isVisible && !IsConsumerType">
+              <input maxlength="100" type="password" name="pass" class="form-control" [(ngModel)]="CurrentPartner.pass"
+                [placeholder]="e_localize.pass.headerName" maxlength="50" #pass="ngModel"
+                [required]="e_localize.pass.isRequired" [disabled]="!e_localize.pass.isEnabled" />
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <!-- ROW 10 -->
+          <div class="form-group">
+            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.MercahntKey.isVisible && !IsConsumerType">{{e_localize.MercahntKey.headerName}}<span
+                *ngIf="e_localize.MercahntKey.isRequired" style="color:red;">*</span>:</label>
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.MercahntKey.isVisible && !IsConsumerType">
+              <input maxlength="1000" type="text" name="MercahntKey" class="form-control" [(ngModel)]="CurrentPartner.MercahntKey"
+                [placeholder]="e_localize.MercahntKey.headerName" maxlength="50" #MercahntKey="ngModel"
+                [required]="e_localize.MercahntKey.isRequired" [disabled]="!e_localize.MercahntKey.isEnabled" />
+              <div class="clearfix"></div>
+            </div>
+
+            <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.MercahntPassword.isVisible && !IsConsumerType">{{e_localize.MercahntPassword.headerName}}<span
+                *ngIf="e_localize.MercahntPassword.isRequired" style="color:red;">*</span>:</label>
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"
+              *ngIf="IsLoaded && e_localize.MercahntPassword.isVisible && !IsConsumerType">
+              <input maxlength="1000" type="Password" name="MercahntPassword" class="form-control"
+                [(ngModel)]="CurrentPartner.MercahntPassword" [placeholder]="e_localize.MercahntPassword.headerName"
+                maxlength="50" #MercahntPassword="ngModel" [required]="e_localize.MercahntPassword.isRequired"
+                [disabled]="!e_localize.MercahntPassword.isEnabled" />
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+          <!-- ROW 11 -->
+          <div class="form-group">
+            <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded">
+              SSL
+            </label>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+              <label *ngIf="IsLoaded">
+                <input type="checkbox" class="checkbox-slider colored-palegreen yesno" style="left:14px"
+                  [(ngModel)]="CurrentPartner.SSLValue" name="SSLValue" />
+                <span class="text"></span>
+              </label>
+              <div class="clearfix"></div>
+            </div>
+            <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded">
+              Active
+            </label>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+              <label *ngIf="IsLoaded">
+                <input type="checkbox" class="checkbox-slider colored-palegreen yesno" style="left:14px"
+                  [(ngModel)]="CurrentPartner.IsActive" name="IsActive" />
+                <span class="text"></span>
+              </label>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="clearfix"></div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+  <div class="clearfix"></div>

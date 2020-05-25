@@ -1,0 +1,340 @@
+﻿<style>
+    .modal-msg {
+        width: 500px;
+    }
+
+    .no-display {
+        display: none;
+    }
+
+    .part-wizard-warper {
+        background: #98bf21;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .part-action-wizard-warper {
+        background: #98bf21;
+        width: 100%;
+    }
+
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,0);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,0);
+        box-shadow: 0 0 4px rgba(0,0,0,0);
+        /*background-color: #eee;
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    box-shadow: 0 0 4px rgba(0,0,0,.3);*/
+    }
+
+        .nav-tabs > li {
+            margin: 0px 3px 0px 3px;
+        }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #777;
+                margin-right: -1px;
+                line-height: 24px;
+                position: relative;
+                z-index: 11;
+            }
+
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                color: #262626;
+                border: 0;
+                border-top: 2px solid #333;
+                border-bottom-color: transparent;
+                /*background-color: #fbfbfb;*/
+                z-index: 12;
+                line-height: 24px;
+                margin-top: -2px;
+                box-shadow: 0 -2px 3px 0 rgba(0,0,0,.15);
+            }
+
+            .nav-tabs > li a:hover {
+                color: #fff;
+                /*border: 0;*/
+                /*border-bottom-color: transparent;*/
+                /*background-color: #BAF3DA;*/
+                /*z-index: 12;*/
+                /*line-height: 24px;*/
+            }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #fff;
+                /* margin-right: -1px;
+                / line-height: 24px;
+                position: relative;
+                z-index: 11;
+                /*background-color: #178E58;*/
+            }
+
+    .nav > li.disabled > a {
+        color: #fff;
+        background-color: gray;
+    }
+
+        .nav > li.disabled > a:hover {
+            color: #fff;
+            background-color: gray;
+        }
+</style>
+<div class="widget" *ngIf="ListView">
+    <div class="widget-body">
+        <div class="widget-header widget-header1">
+            <!-- <span class="widget-caption pull-left font-40" *ngIf="GridType != 'popup'"><b>{{moduleTitle}}</b> </span> -->
+            <div class="input-group pull-left col-md-3">
+                <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:300px;" [readonly]="NavigatedItem" [(ngModel)]="filterValue" placeholder="Search criteria includes all the visible fields..">
+                <span class="input-group-btn">
+                    <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                </span>
+                <!--<i aria-hidden="true" class="fa fa-download pull-right" (click)="ExportToExcel()" ng-if="1!=0" style="cursor:pointer;margin-left:10px;margin-top:10px;"></i>-->
+            </div>
+            <!--<input type="text" name="searchText" class="input-sm pull-left margin-left-20" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" placeholder="Search..." />-->
+            <div class="widget-buttons">                
+                <button class="btn btn-sm btn-primary" type="button" (click)="Show(0)" *ngIf="LocalAccess | contains:'Add'">
+                    <i class="glyphicon glyphicon-plus-sign"></i>Add
+                </button>
+                <!-- <button class="btn btn-sm btn-primary" type="button" (click)="Show(CurrentReturnType.RMAActionCodeID)" *ngIf="CurrentReturnType.RMAActionCodeID > 0 && LocalAccess | contains:'Edit'">
+                    <i class="glyphicon glyphicon-edit"></i>View
+                </button> -->
+                <!-- <button class="btn btn-sm btn-danger" type="button" (click)="Delete()" *ngIf="CurrentReturnType.RMAActionCodeID > 0 && LocalAccess | contains:'Delete'">
+                    <i class="glyphicon glyphicon-trash"></i>Delete
+                </button> -->
+            </div>
+        </div>
+        <div class="card1 no-padding marginTop34">
+            <ag-grid-angular #agGrid style="height:100%;width:100%" class="ag-theme-balham"
+                         [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+        </div>
+    </div>
+</div>
+    <form #f="ngForm" novalidate>
+    <div class="" *ngIf="!ListView">
+        <div class="widget">
+            <div class="widget-body">
+            <div class="widget-header widget-header1">
+                <!-- <span class="widget-caption pull-left font-40" *ngIf="CurrentReturnType.RMAActionCodeID == 0 && GridType != 'popup'"><b>Add {{moduleTitle}}</b> </span>-->
+                <span class="widget-caption pull-left font-40"><b>View {{moduleTitle}}</b> </span> 
+                <div class="widget-buttons">
+                    <button type="button" class="btn btn-sm btn-danger" (click)="Cancel()">
+                            <i class="fa fa-arrow-left"></i> Back 
+                    </button>
+                    <button class="btn btn-sm btn-primary" type="submit" (click)="Save(f.form)" *ngIf="((LocalAccess | contains:'Add') && CurrentReturnType.RMAActionCodeID == 0) || (LocalAccess | contains:'Edit')">
+                        <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                    </button>
+                </div>
+            </div>
+            <hr/>
+            <div class="row">
+                <div class="card1">
+            <div class="no-padding marginTop34">
+                <!--<div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                    <div class="validationmsg">
+                        <b> Please fill the asterisk (*) fields. </b>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>-->
+                <!-- <div class="form-group">
+                    <label class="control-label col-sm-12 col-md-12 col-lg-12" style="color:red;">{{errorMessage}}</label>
+                </div> -->
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.RMAActionCode.isVisible">{{e_localize.RMAActionCode.headerName}}<span *ngIf="e_localize.RMAActionCode.isRequired" style="color:red;">*</span>:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.RMAActionCode.isVisible">
+                        <input type="text" name="RMAActionCode" class="form-control" [(ngModel)]="CurrentReturnType.RMAActionCode" placeholder="{{e_localize.RMAActionCode.headerName}}" maxlength="50" #rmaactioncode="ngModel" [required]="e_localize.RMAActionCode.isRequired" [disabled]="!e_localize.RMAActionCode.isEnabled" />
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">                   
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.RMAActionName.isVisible">{{e_localize.RMAActionName.headerName}}<span *ngIf="e_localize.RMAActionName.isRequired" style="color:red;">*</span>:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.RMAActionName.isVisible">
+                        <input type="text" name="RMAActionName" class="form-control" [(ngModel)]="CurrentReturnType.RMAActionName" placeholder="{{e_localize.RMAActionName.headerName}}" maxlength="500" #rmaactionname="ngModel" [required]="e_localize.RMAActionName.isRequired" [disabled]="!e_localize.RMAActionName.isEnabled" />
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>          
+                <div class="form-group" *ngIf="Scope=='RR005'">                   
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Parameters.isVisible">{{e_localize.Parameters.headerName}}<span *ngIf="e_localize.Parameters.isRequired" style="color:red;">*</span>:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Parameters.isVisible">
+                        <ng-multiselect-dropdown #brands="ngModel"
+                        name="brands"
+                        [placeholder]="'Select Brands'"
+                        [data]="dropdownList"
+                        [(ngModel)]="selectedBrands"
+                        [settings]="dropdownSettings"
+                        (onSelect)="onItemSelect($event)"
+                        (onSelectAll)="onSelectAll($event)">
+                        </ng-multiselect-dropdown>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>               
+                <!-- <div class="form-group">
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Parameters.isVisible">{{e_localize.Parameters.headerName}}<span *ngIf="e_localize.Parameters.isRequired" style="color:red;">*</span>:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Parameters.isVisible">
+                        <input type="text" name="Parameters" class="form-control" [(ngModel)]="CurrentReturnType.Parameters" placeholder="{{e_localize.Parameters.headerName}}" maxlength="500" #rmaactionname="ngModel" [required]="e_localize.Parameters.isRequired" [disabled]="!e_localize.Parameters.isEnabled" />
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div> -->
+                <div class="form-group">
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.isActive.isVisible">{{e_localize.isActive.headerName}}<span *ngIf="e_localize.isActive.isRequired" style="color:red;">*</span>:</label>
+                    <div class="col-lg-6" *ngIf="e_localize.isActive.isVisible">
+                        <!-- <input type="checkbox" class="checkbox" style="opacity:1 !important;left:14px" #isActive="ngModel" [ngModelOptions]="{standalone: true}"                               
+                               [(ngModel)]="CurrentReturnType.isActive"> -->
+                               <label style="float:left!important;">
+                               <input type="checkbox" class="checkbox-slider colored-palegreen yesno" #isActive="ngModel" [ngModelOptions]="{standalone: true}"  
+                               style="left:14px" [(ngModel)]="CurrentReturnType.isActive"
+                               name="isActive" />
+                               <span class="text"></span>
+                    </label>
+                    </div>                    
+                    <div class="clearfix"></div>
+                </div>
+
+               
+            </div></div></div>
+                <div class="clearfix"></div>
+            
+            
+                <tabs>
+                    <tab *ngIf="Scope=='RR005'" tabTitle="Return Reasons">
+                        <div class="form-group" style="margin-bottom: 0px!important;">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <!-- <label class="control-label"><b>Return Reason</b></label> -->
+                                <button class="btn btn-sm btn-link pull-right" type="button" (click)="openReturnReasonGridPopup()">
+                                    <i class="glyphicon glyphicon-plus-sign"></i>Add
+                                </button>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <ag-grid-angular #agGridReturnReason style="height: 250px; width:100%" class="ag-theme-balham"
+                                    (rowClicked)="deleteReturnReason($event)" (gridReady)="onReasonGridReady($event)"
+                                    [gridOptions]="reasonGridOptions" (selectionChanged)="onSelectedReasonChanged()">
+                                </ag-grid-angular>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </tab>
+                    </tabs>
+            </div>
+        </div>
+<div class="clearfix"></div>
+
+
+<bs-modal #retReasonGridPopUp backdrop="static" cssClass="modal-xl">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="retReasonGridPopUp.dismiss()" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add Return Reason</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+            <ReturnReasons #ReturnReasonGrid [GridType]="setUserGridType" [ScopeType]="'RRA001'"
+            [AvailableReasons]="AvailableReasons" (notifyReason)="ReturnReasonGridEvent($event)"></ReturnReasons>
+        <!-- <div class="widget">
+            <div class="widget-body no-padding">
+                <div class="widget">
+                    <div class="widget-header widget-header1">
+                        <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+                        <div class="input-group pull-left margin-left-20 col-md-3">
+                            <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" placeholder="Search...">
+                            <span class="input-group-btn">
+                                <button (click)="onFilterChangedPop()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                            </span>
+                        </div>
+                        <div class="widget-buttons">
+                        <button class="btn btn-sm btn-primary" type="button" (click)="AddSelected()">
+                                <i class="glyphicon glyphicon-plus-sign"></i>Add Selected
+                            </button>
+                        </div>
+                    </div>        
+                    <div class="widget-body no-padding marginTop34" style="overflow:hidden;">
+                        <ag-grid-angular #agReturnReasonGrid  class="agc-grid ag-theme-balham agc-grid-popup" (gridReady)="onReturnReasonGridReady($event)"
+                                     [gridOptions]="ReturnReasongridOption" (selectionChanged)="onSelectionChangedPop()" (rowClicked)="onRowClickedPop($event)">
+                        </ag-grid-angular>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div> -->
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="retReasonGridPopUp.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #configPopUp backdrop="static" cssClass="modal-md">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="configPopUp.dismiss()" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Configuration </h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <div class="col-sm-12 col-md-12 col-lg-12" *ngIf="configSetup">
+            <label>
+                <input name="requiredonCustomerPortal" [(ngModel)]="configSetup.requiredonCustomerPortal"
+                    class="checkbox-slider colored-palegreen yesno" type="checkbox" id="chk1">
+                <span class="text"></span>
+            </label>
+            <span class="text margin-left-10" style="position: absolute;">Required on Customer Portal</span>
+            <div class="clearfix"></div>
+            <label>
+                <input name="RequiredonBackOffice" [(ngModel)]="configSetup.RequiredonBackOffice"
+                    class="checkbox-slider colored-palegreen yesno" type="checkbox" id="chk2">
+                <span class="text"></span>
+            </label>
+            <span class="text margin-left-10" style="position: absolute;">Required on Back-Office</span>
+            <div class="clearfix"></div>
+            <label>
+                <input name="FileMandatory" [(ngModel)]="configSetup.FileMandatory"
+                    class="checkbox-slider colored-palegreen yesno" type="checkbox" id="chk3">
+                <span class="text"></span>
+            </label>
+            <span class="text margin-left-10" style="position: absolute;">File Mandatory</span>
+            <div class="clearfix"></div>
+            <label *ngIf="false">
+                <input name="ApprovalRequired" [(ngModel)]="configSetup.ApprovalRequired"
+                    class="checkbox-slider colored-palegreen yesno" type="checkbox" id="chkApprovalRequired">
+                <span class="text"></span>
+            </label>
+            <!-- <span class="text margin-left-10" style="position: absolute;">Approval Required</span> -->
+            <div class="clearfix"></div>
+            <label>
+                <input name="CommentMandatory" [(ngModel)]="configSetup.CommentMandatory"
+                    class="checkbox-slider colored-palegreen yesno" type="checkbox" id="chk4">
+                <span class="text"></span>
+            </label>
+            <span class="text margin-left-10" style="position: absolute;">Comment Mandatory</span>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-text btn-primary" (click)="ApplyConfigSetup()">OK</button>
+    </bs-modal-footer>
+</bs-modal>
+
+    </div>
+    </form>
+
+<message #pop cssClass="modal-msg"></message>

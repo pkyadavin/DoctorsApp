@@ -1,0 +1,73 @@
+﻿
+<form #f="ngForm">
+    <div class="widget">
+        <div class="widget-header ">
+            <span class="widget-caption pull-left font-40"><b>Action: </b> {{ActionName}}</span>
+            <!--<span class="widget-caption pull-left font-40" *ngIf="TaskId > 0"><b>View Task Workflow</b> </span>-->
+            <div class="widget-buttons">
+                <!--<button type="button" class="btn-link" (click)="CancelTask()">
+                    <i class="glyphicon glyphicon-floppy-remove red" style="display:block;"></i>
+                </button>-->
+                <button type="button" class="btn btn-sm btn-danger" (click)="CancelTaskFlow();">Cancel</button>
+                <button type="button" class="btn btn-sm btn-primary" (click)="SaveTaskFlow();">Save</button>
+                <button type="button" class="btn btn-sm btn-default" (click)="ClearTaskFlow();">Clear</button>
+                <!--<button class="btn-link" (click)="Save()">
+                    <i class="glyphicon glyphicon-floppy-disk blue" style="display:block;"></i>
+                </button>-->
+            </div>
+        </div>
+        <div class="widget-body">
+            <div class="form-group">
+                <label class="control-label col-sm-12 col-md-12 col-lg-12" style="color:red;">{{errorMessage}}</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2 col-md-2 col-lg-2" style="padding-right:0px!important;padding-left:0px!important">Current State<span style="color:red;">*</span>:</label>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <select name="fromState" [(ngModel)]="CurrentState" class="form-control" #fromState="ngModel" required style="width: 170px!important">
+                        <option [value]="0">--Select State--</option>
+                        <option *ngFor="let INT of StatusList" [value]="INT.ModuleStatusMapID">{{INT.StatusName}}</option>
+                    </select>
+                    <div class="clearfix"></div>
+                </div>
+
+                <label class="control-label col-sm-2 col-md-2 col-lg-2" style="padding-right:0px!important;padding-left:0px!important">Next State<span style="color:red;">*</span>:</label>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <select name="toState" [(ngModel)]="NextState" class="form-control" #toState="ngModel" required style="width: 170px!important">
+                        <option [value]="0">--Select State--</option>
+                        <option *ngFor="let INT of StatusList1" [value]="INT.ModuleStatusMapID">{{INT.StatusName}}</option>
+                    </select>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <div style="padding-bottom:5px;">
+                    <strong>Rules:</strong>
+                </div>
+                <div class="thumbnail" >
+                    <div *ngFor="let rule of RuleList">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <label>
+                                <!--<input type="checkbox" name="chk_{{rule.ModuleRuleMapID}}" [(ngModel)]="rule.isSelected" class="colored-success" style="left:25px">-->
+                                
+
+                                <span class="text">{{rule.RuleName}}</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <label class="no-margin">
+                                <input name="parent_{{rule.ModuleRuleMapID}}" class="checkbox-slider colored-palegreen cb_parent" id="parent_{{rule.ModuleRuleMapID}}" type="checkbox" [(ngModel)]="rule.isSelected">
+                                <span class="text"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+</form>

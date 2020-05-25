@@ -1,0 +1,469 @@
+﻿<style>
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,0);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,0);
+        box-shadow: 0 0 4px rgba(0,0,0,0);
+        /*background-color: #eee;
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    box-shadow: 0 0 4px rgba(0,0,0,.3);*/
+    }
+
+        .nav-tabs > li {
+            margin: 0px 3px 0px 3px;
+        }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #777;
+                margin-right: -1px;
+                line-height: 24px;
+                position: relative;
+                z-index: 11;
+            }
+
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                color: #262626;
+                border: 0;
+                border-top: 2px solid #333;
+                border-bottom-color: transparent;
+                /*background-color: #fbfbfb;*/
+                z-index: 12;
+                line-height: 24px;
+                margin-top: -2px;
+                box-shadow: 0 -2px 3px 0 rgba(0,0,0,.15);
+            }
+
+            .nav-tabs > li a:hover {
+                color: #fff;
+                /*border: 0;*/
+                /*border-bottom-color: transparent;*/
+                /*background-color: #BAF3DA;*/
+                /*z-index: 12;*/
+                /*line-height: 24px;*/
+            }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #fff;
+                /* margin-right: -1px;
+                / line-height: 24px;
+                position: relative;
+                z-index: 11;
+                /*background-color: #178E58;*/
+            }
+
+    .nav > li.disabled > a {
+        color: #fff;
+        background-color: gray;
+    }
+
+        .nav > li.disabled > a:hover {
+            color: #fff;
+            background-color: gray;
+        }
+</style>
+
+<form #f="ngForm" novalidate autocomplete="off">
+    <div class="">
+        <div class="widget-header">
+            <span class="widget-caption pull-left font-40" *ngIf="userId == 0 && GridType != 'popup'"><b>Add {{moduleTitle}}</b> </span>
+            <span class="widget-caption pull-left font-40" *ngIf="userId > 0 && GridType != 'popup'"><b><span *ngIf="permission">View</span> {{moduleTitle}}</b> </span>
+            <div class="widget-buttons">
+                <!--<button type="button" class="btn btn-sm btn-danger" (click)="CancelUser()">
+                    <i class="glyphicon glyphicon-floppy-remove"></i>Exit
+                </button>-->
+
+                <button class="btn btn-sm btn-primary" type="button" (click)="onSubmit(f.form)">
+                    <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                </button>
+            </div>
+        </div>
+        <div class="widget-body">
+            <div class="form-group">
+                <label class="control-label col-sm-12 col-md-12 col-lg-12" style="color:red;">{{errorMessage}}</label>
+            </div>
+            <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                <div class="validationmsg">
+                    <b> Please fill the asterisk (*) fields. </b>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Initials.isVisible">{{e_localize.Initials.headerName}}<span *ngIf="e_localize.Initials.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Initials.isVisible">
+                    <select name="Initials" [(ngModel)]="singleUser.Initials" class="form-control" [required]="e_localize.Initials.isRequired" [disabled]="!e_localize.Initials.isEnabled" #Initials="ngModel">
+                        <option [value]="undefined" [disabled]="e_localize.Initials.isRequired">--Select Initial--</option>
+                        <option *ngFor="let INT of userInitials" [value]="INT.InitialIName">{{INT.InitialIName}}</option>
+                    </select>
+                    <div class="clearfix"></div>
+                    <!--<div style="color:red" [hidden]="nameInit.valid || nameInit.pristine">
+                        Inital Required.
+                    </div>-->
+                    <!--<div *ngIf="Initials.errors && (Initials.dirty || Initials.touched)" class="alert alert-danger">
+                        <div [hidden]="!Initials.errors.required">
+                            {{e_localize.Initials.headerName}} is required
+                        </div>
+                        <div [hidden]="!name.errors.minlength">
+                            Name must be at least 4 characters long.
+                        </div>
+                        <div [hidden]="!name.errors.maxlength">
+                            Name cannot be more than 24 characters long.
+                        </div>
+                    </div>-->
+
+                </div>
+
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.FirstName.isVisible">{{e_localize.FirstName.headerName}}<span *ngIf="e_localize.FirstName.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.FirstName.isVisible">
+                    <input type="text" name="firstName" class="form-control" [(ngModel)]="singleUser.FirstName" placeholder="First Name" maxlength="50" #firstName="ngModel" [required]="e_localize.FirstName.isRequired" [disabled]="!e_localize.FirstName.isEnabled" />
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.MiddleName.isVisible">{{e_localize.MiddleName.headerName}}<span *ngIf="e_localize.MiddleName.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.MiddleName.isVisible">
+                    <input type="text" name="MiddleName" class="form-control" [(ngModel)]="singleUser.MiddleName" placeholder="Middle Name" maxlength="50" [required]="e_localize.MiddleName.isRequired" [disabled]="!e_localize.MiddleName.isEnabled">
+                </div>
+
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.LastName.isVisible">{{e_localize.LastName.headerName}}<span *ngIf="e_localize.LastName.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.LastName.isVisible">
+                    <input type="text" name="LastName" class="form-control" [(ngModel)]="singleUser.LastName" placeholder="Last Name" maxlength="50" [required]="e_localize.LastName.isRequired" [disabled]="!e_localize.LastName.isEnabled">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Email.isVisible">{{e_localize.Email.headerName}}<span *ngIf="e_localize.Email.isRequired" style="color:red;">*</span>::</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Email.isVisible">
+                    <input type="email" name="Email" validateEmail class="form-control" [(ngModel)]="singleUser.Email" placeholder="first@someone.com" maxlength="50" #Email="ngModel" [required]="e_localize.Email.isRequired" [disabled]="!e_localize.Email.isEnabled">
+                    <div style="color:red"  [hidden]="Email.valid || Email.pristine">
+                        * Enter valid Email.
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--<div *ngIf="Email.errors && (Email.dirty || Email.touched)" class="alert alert-danger">
+                        <div [hidden]="!Email.errors.email">
+                            Invalid Email.
+                        </div>
+                    </div>-->
+                </div>
+
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.CellNumber.isVisible">{{e_localize.CellNumber.headerName}}<span *ngIf="e_localize.CellNumber.isRequired" style="color:red;">*</span>:</label>
+                <!--<div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.CellNumber.isVisible">
+                    <input type="text" id="CellNumber" name="CellNumber" class="form-control" phone-input maxlength="15" onkeypress="javascript:return numberonly(this,event,event);" placeholder="Phone Number" [(ngModel)]="singleUser.CellNumber" #CellNumber="ngModel" [required]="e_localize.CellNumber.isRequired" [disabled]="!e_localize.CellNumber.isEnabled">
+                    <div class="clearfix"></div>
+                </div>-->
+
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.CellNumber.isVisible">
+                    <div class="input-group pull-left col-md-3" style="width:100%">
+                        <input type="tel" id="mobile-number" disabled="disabled" style="width:84px;float: left;height: 28px;">
+                        <div style="width: calc(100% - 84px);float:left;">
+                            <input type="text" id="CellNumber" name="CellNumber" class="form-control" style="width:100%;float:left"  maxlength="15" placeholder="Number with area code" [(ngModel)]="singleUser.CellNumber" #CellNumber="ngModel" (focusout)="CheckPhoneVal()" [required]="e_localize.CellNumber.isRequired" [disabled]="!e_localize.CellNumber.isEnabled">
+                        </div>
+                        <!--<span class="input-group-btn">
+                            <select id="countrycode" name="countrycode" *ngIf="IsLoaded && e_localize.CellNumber.isVisible" style="width:70px;height:28px;"
+                                    [(ngModel)]="singleUser.TeleCode" #countrycode="ngModel" [required]="e_localize.CellNumber.isRequired" [disabled]="!e_localize.CellNumber.isEnabled">
+                                <option value="" [disabled]="e_localize.CellNumber.isRequired"></option>
+                                <option *ngFor="let c of countrycodes" [value]="c.TeleCode">{{c.TeleCode}}</option>
+                            </select>
+                        </span>
+                        <input type="text" id="CellNumber" name="CellNumber" class="form-control" style="width:170px;" maxlength="15" placeholder="Phone Number" (focusout)="CheckPhoneVal()" [(ngModel)]="singleUser.CellNumber" #CellNumber="ngModel" [required]="e_localize.CellNumber.isRequired" [disabled]="!e_localize.CellNumber.isEnabled">-->
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Address1.isVisible">{{e_localize.Address1.headerName}}<span *ngIf="e_localize.Address1.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Address1.isVisible">
+                    <input type="text" name="Address" class="form-control" [(ngModel)]="singleUser.Address1" placeholder="Address" maxlength="100" #Address="ngModel" [required]="e_localize.Address1.isRequired" [disabled]="!e_localize.Address1.isEnabled">
+                    <div class="clearfix"></div>
+                </div>
+
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Address2.isVisible">{{e_localize.Address2.headerName}}<span *ngIf="e_localize.Address2.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Address2.isVisible">
+                    <input type="text" name="Address2" class="form-control" [(ngModel)]="singleUser.Address2" placeholder="Address2" maxlength="100" [required]="e_localize.Address2.isRequired" [disabled]="!e_localize.Address2.isEnabled">
+                    <div class="clearfix"></div>
+
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded">Country <span style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded">
+                    <select id="country" name="Country" class="form-control"
+                            [(ngModel)]="singleUser.CountryID" (change)="onCountryChange($event.target.value)" #Country="ngModel" required>
+                        <option [value]="undefined" disabled="disabled">--Select Country--</option>
+                        <option *ngFor="let c of countryList" [value]="c.CountryID">{{c.CountryName}}</option>
+                    </select>
+                    <div class="clearfix"></div>
+                </div>
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.StateID.isVisible">{{e_localize.StateID.headerName}}<span *ngIf="e_localize.StateID.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.StateID.isVisible">
+                    <select name="State" class="form-control"
+                            [(ngModel)]="singleUser.StateID" #State="ngModel" [required]="e_localize.StateID.isRequired" [disabled]="!e_localize.StateID.isEnabled">
+                        <option [value]="undefined" [disabled]="e_localize.StateID.isRequired">--Select State--</option>
+                        <option *ngFor="let s of stateList" [value]="s.StateID">{{s.StateName}}</option>
+                    </select>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.City.isVisible">{{e_localize.City.headerName}}<span *ngIf="e_localize.City.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.City.isVisible">
+                    <input type="text" name="City" class="form-control" [(ngModel)]="singleUser.City" placeholder="City" maxlength="50" #city="ngModel" [required]="e_localize.City.isRequired" [disabled]="!e_localize.City.isEnabled">
+                    <div class="clearfix"></div>
+                </div>
+
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.ZipCode.isVisible">{{e_localize.ZipCode.headerName}}<span *ngIf="e_localize.ZipCode.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.ZipCode.isVisible">
+                    <input zip type="text" class="form-control" name="ZipCode" [(ngModel)]="singleUser.ZipCode" placeholder="ZipCode" only-num maxlength="20" #zipcode="ngModel" [required]="e_localize.ZipCode.isRequired" [disabled]="!e_localize.ZipCode.isEnabled">
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.UserImage.isVisible">{{e_localize.UserImage.headerName}}:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.UserImage.isVisible">
+                    <div class="browsefile" style="margin-bottom:10px;">
+                        <img [src]="singleUser.UserImage" id="fileimagethumbnail" style="height:50px;width:50px;" />
+                        <input type="file" name="userimage" accept="image/*" (change)="handleInputChange(userimage, $event);" validateFile
+                               style="position:initial;height:22px;opacity:1;background:#fbfbfb;width:100%;">
+                        <!--<img src="{{singleUser.UserImage}}" id="fileimagethumbnail" style="height:50px;width:50px;" />
+                        <input type="file" onchange="readImageURL(this,true);" id="file" accept="image/*" style="height:50px;width:50px;top:0px !important">-->
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Scope.isVisible">{{e_localize.Scope.headerName}}<span *ngIf="e_localize.Scope.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Scope.isVisible">
+                    <select name="UserType" class="form-control" [(ngModel)]="singleUser.Scope" #Scope="ngModel" [required]="e_localize.Scope.isRequired" disabled (change)="ChangeUserType()">                        
+                        <option *ngFor="let type of UserType" [value]="type.Scope">{{type.UserType}}</option>
+                    </select>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.FixedLineNumber.isVisible">{{e_localize.FixedLineNumber.headerName}}<span *ngIf="e_localize.FixedLineNumber.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.FixedLineNumber.isVisible">
+                    <input type="text" class="form-control" name="Address2" [(ngModel)]="singleUser.FixedLineNumber" phone-input maxlength="15" onkeypress="javascript:return numberonly(this,event,event);" [required]="e_localize.FixedLineNumber.isRequired" [disabled]="!e_localize.FixedLineNumber.isEnabled">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.UserName.isVisible">{{e_localize.UserName.headerName}}<span *ngIf="e_localize.UserName.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.UserName.isVisible">
+                    <input type="text" class="form-control" id="txtUserName" name="UserName" [(ngModel)]="singleUser.UserName" placeholder="User Name" maxlength="50" #username="ngModel" [required]="e_localize.UserName.isRequired" [disabled]="userId > 0" autocomplete="off">
+                    <div class="clearfix"></div>
+                </div>
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.LanguageID.isVisible">{{e_localize.LanguageID.headerName}}<span *ngIf="e_localize.LanguageID.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.LanguageID.isVisible">
+                    <select id="Language" name="Language" class="form-control" required [(ngModel)]="singleUser.LanguageID" #Language="ngModel">
+                        <option [value]="undefined" [disabled]="disabled">--Select Language--</option>
+                        <option *ngFor="let lang of languageList" [value]="lang.LanguageID">{{lang.Code}} | {{lang.Name}}</option>
+                    </select>
+                    <div class="clearfix"></div>
+                </div>
+                <!--<label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Scope.isVisible">{{e_localize.Scope.headerName}}<span *ngIf="e_localize.Scope.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Scope.isVisible">
+                    <select id="Language" name="Language" class="form-control" required [(ngModel)]="singleUser.Scope" #Language="ngModel">
+                        <option value="PTR001">Facility</option>
+                        <option value="PTR004">Account</option>
+                    </select>
+                    <div class="clearfix"></div>
+                </div>-->
+                <div class="clearfix"></div>
+            </div>
+            <!--<div class="form-group" *ngIf="userId == 0">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.UserName.isVisible"><span *ngIf="e_localize.UserName.isRequired" style="color:red;">*</span>:</label>
+
+                <div class="clearfix"></div>
+            </div>-->
+            <div class="form-group" *ngIf="userId == 0">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Password.isVisible">{{e_localize.Password.headerName}}<span *ngIf="e_localize.Password.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Password.isVisible">
+                    <input type="password" class="form-control" id="Password" name="Password" [(ngModel)]="singleUser.Password"
+                           placeholder="Password..." maxlength="50" #Password="ngModel" [required]="e_localize.Password.isRequired" [disabled]="!e_localize.Password.isEnabled" autocomplete="off">
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group" *ngIf="userId == 0">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Password.isVisible">{{e_localize.PasswordVerificationToken.headerName}}<span *ngIf="e_localize.Password.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Password.isVisible">
+                    <input type="password" id="PasswordConfirmation" class="form-control" name="PasswordConfirmation" [(ngModel)]="singleUser.PasswordConfirmation"
+                           pw-check="Password" placeholder="{{e_localize.PasswordVerificationToken.headerName}}" maxlength="50" #pwdconfirm="ngModel" [required]="e_localize.Password.isRequired" [disabled]="!e_localize.Password.isEnabled">
+                    <div class="clearfix"></div>
+                    <div *ngIf="pwdconfirm.errors && (pwdconfirm.dirty || pwdconfirm.touched)" style="color:red">
+                        <!--<div [hidden]="!pwdconfirm.errors.required">
+                            Password is required.
+                        </div>-->
+                        <div [hidden]="!pwdconfirm.errors.check">
+                            Password don't match.
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <hr />
+            <div class="form-group" *ngIf="userId > 0">
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                    <!-- Button trigger modal -->
+                    <button class="btn btn-primary btn-sm" data-toggle="modal" type="button" novalidate (click)="OpenChangePassword()">
+                        Change Password
+                    </button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <!--Tabs Starts Here-->
+    <tabs>
+        <tab tabTitle="Role" *ngIf="false">
+            <div class="form-group">
+                <div class="col-sm-8 col-md-8 col-lg-8">
+                    <!--<label class="control-label"><b>Facility/Account</b></label>-->
+                    <button class="btn btn-sm btn-primary pull-right" type="button" (click)="openGridPopup()" *ngIf="IsShowAssignButton">
+                        <i class="glyphicon glyphicon-plus-sign"></i>Assign {{SelectedUserType}} <!-- Facility/Account-->
+                    </button>
+                    <div class="clearfix"></div>
+                    <ag-grid-angular id="defaultP" #agGridUser style="height: 250px; width:100%" class="ag-theme-balham"
+                                 [gridOptions]="usergridOptions" (selectionChanged)="onSelectedUserChanged()" (rowClicked)="DeleteItem($event)">
+                    </ag-grid-angular>
+                </div>
+                <div class="col-sm-4 col-md-4 col-lg-4">
+                    <label class="control-label"><b>Roles</b></label>
+
+                    <ag-grid-angular #agGridRole style="height: 250px; width:100%" class="ag-theme-balham"
+                                 [gridOptions]="rolegridOptions" (selectionChanged)="onRoleSelectionChanged($event)" rowSelection="multiple" suppressRowClickSelection="true">
+                    </ag-grid-angular>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+        </tab>
+    </tabs>
+
+</form>
+
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+<bs-modal #changePassword cssClass="modal-xl">
+    <bs-modal-header>
+        <button type="button" class="close"  (click)="changePassword.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Change Password</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <form #passwordPopup="ngForm" (submit)="ChangePassword()">
+            <div class="form-group">
+                <label class="control-label  col-sm-5 col-md-5 col-lg-5">Old Password <span style="color:red;">*</span>:</label>
+                <div class="col-sm-7 col-md-7 col-lg-7">
+                    <input type="password" id="oldPassword" name="oldPassword" check [(ngModel)]="pwdchangeData.oldPassword" maxlength="50" #oldpassword="ngModel" required />
+                    <div class="clearfix"></div>
+                    <!--<div *ngIf="oldpassword.errors && (oldpassword.dirty || oldpassword.touched)" class="alert alert-danger">
+                        <div [hidden]="!oldpassword.errors.required">
+                            Old Password is required.
+                        </div>
+                        <div [hidden]="!oldpassword.errors.check">
+                            old user Password not match!
+                        </div>
+                    </div>-->
+                    <!--<span style="color:red" ng-show="passwordPopup.oldPassword.$touched || passwordPopup.$submitted">
+                        <span ng-show="passwordPopup.oldPassword.$error.required">Password is required.</span>
+                        <span ng-show="passwordPopup.oldPassword.$error.check">old user Password not match!</span>
+                    </span>-->
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-5 col-md-5 col-lg-5">New Password <span style="color:red;">*</span>:</label>
+                <div class="col-sm-7 col-md-7 col-lg-7">
+                    <input type="password" id="newPassword" name="newPassword" [(ngModel)]="pwdchangeData.newPassword" required="" maxlength="50" #newPassword="ngModel" />
+                    <div class="clearfix"></div>
+                    <!--<div *ngIf="newPassword.errors && (newPassword.dirty || newPassword.touched)" class="alert alert-danger">
+                        <div [hidden]="!newPassword.errors.required">
+                            Password is required.
+                        </div>
+                    </div>-->
+                    <!--<span style="color:red" ng-show="passwordPopup.$submitted || passwordPopup.newPassword.$touched">
+                        <span ng-show="passwordPopup.newPassword.$error.required">Password is required.</span><span class="clearfix"></span>
+                    </span>-->
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-5 col-md-5 col-lg-5">Confirm Password <span style="color:red;">*</span>:</label>
+                <div class="col-sm-7 col-md-7 col-lg-7">
+                    <input type="password" name="confirmPassword" [(ngModel)]="pwdchangeData.confirmPassword" pw-check="newPassword" required="" maxlength="50" #confirmPassword="ngModel" />
+                    <div class="clearfix"></div>
+                    <!--<div *ngIf="confirmPassword.errors && (confirmPassword.dirty || confirmPassword.touched)" class="alert alert-danger">
+                        <div [hidden]="!confirmPassword.errors.required">
+                            Confirm Password is required.
+                        </div>
+                        <div [hidden]="!confirmPassword.errors.pwmatch">
+                            Passwords not match!
+                        </div>
+                    </div>-->
+                    <!--<span style="color:red" ng-show="passwordPopup.$submitted || passwordPopup.confirmPassword.$touched">
+                        <span ng-show="passwordPopup.confirmPassword.$error.required">Confirm Password is required.</span><span class="clearfix"></span>
+                        <span ng-show="passwordPopup.confirmPassword.$error.pwmatch">Passwords don't match.</span>
+                    </span>-->
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer" style="background-color:white">
+                <button type="button" class="btn btn-default"   (click)="changePassword.dismiss()">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </bs-modal-body>
+    <bs-modal-footer>
+
+    </bs-modal-footer>
+</bs-modal>
+<div class="modal fade" id="myModalNorm1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+<bs-modal #userGridPopUp cssClass="modal-xl">
+    <bs-modal-header>
+        <button type="button" class="close"  (click)="userGridPopUp.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add {{SelectedUserType}}</h4>
+    </bs-modal-header>
+    <bs-modal-body > <!--*ngIf="UserGridPopup"-->
+        <!--<PartnerGrid [partnerGridType]="setUserGridType" [showAllType]="1" #childComponent [partnerType]="partnerType" [AvailableUsers]="AvailableUsers" (notifyPartner)="UserGridEvent($event)"></PartnerGrid>-->
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default"   (click)="userGridPopUp.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<message #pop cssClass="modal-msg"></message>

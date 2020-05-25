@@ -1,0 +1,71 @@
+<div class="widget">
+    <div class="widget-body">
+        <div class="widget-header">
+            <div class="widget-buttons">
+                <button class="report-search btn btn-primary btn-sm" style="height: 27px!important;margin-top: -3px!important;" id="report-search" (click)="filter()">
+          <i class="fa fa-filter"></i> Filter
+        </button>
+                <div class="btn-group" style="margin-top: -3px!important;">
+                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" style="background-color: #427fed !important; border-color: #427fed!important;" data-toggle="dropdown">
+            <i class="fa fa-download"></i> Download
+            <span class="caret"></span>
+          </button>
+                    <ul class="dropdown-menu" role="menu" style="min-width:107px!important;">
+                        <li (click)="download('e')"><a href="javascript: void(0);"><i class="fa fa-file-excel-o green"></i> Excel</a></li>
+                        <li class="divider" style="margin: 0px!important;"></li>
+                        <li (click)="download('c')"><a href="javascript: void(0);"><i class="fa fa-file-text green"></i> CSV</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card1 no-padding marginTop34">
+            <div id="report_filter">
+                <div class="form-group padding-top-10">
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">Return Center:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                        <select name="returncenter" class="form-control" ngModel [(ngModel)]="filter_data.return_dc" #returncenter="ngModel">
+              <option value="0" selected>All Centers</option>
+              <option *ngFor='let center of return_centers;' [value]="center.PartnerID">
+                {{center.PartnerName}}</option>
+            </select> </div>
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">Brand: </label>
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                        <select name="brand" class="form-control" ngModel [(ngModel)]="filter_data.brand" #brand="ngModel">
+              <option value="0" selected>All Brands</option>
+              <option *ngFor='let brand of brands;' [value]="brand.PartnerID">
+                {{brand.PartnerName}}</option>
+            </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12" style="padding-top:8px;">Date Range :</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                        <input class="form-control" bsDaterangepicker [bsConfig]="bsConfig" type="text" name="from_to_date" [(ngModel)]="filter_data.from_to_date" />
+                    </div>
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">Status: </label>
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                        <select name="status" class="form-control" ngModel [(ngModel)]="filter_data.status" #brand="ngModel">
+              <option value="0" selected>All Status</option>
+              <option *ngFor='let status of statuses;' [value]="status.TypeLookUpID">
+                {{status.TypeName}}</option>
+            </select>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+
+
+                <div class="clearfix"></div>
+            </div>
+            <ag-grid-angular #agGrid class="agc-grid ag-theme-balham" (gridReady)="onGridReady($event)" [gridOptions]="gridOptions">
+            </ag-grid-angular>
+        </div>
+    </div>
+
+</div>

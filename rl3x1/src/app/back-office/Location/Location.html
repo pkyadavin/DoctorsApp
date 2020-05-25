@@ -1,0 +1,254 @@
+﻿<div class="widget" [hidden]="!ListView">
+    <div class="widget-body">
+        <div class="widget-header widget-header1">
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                </span>
+            </div>
+            <div class="widget-buttons">
+
+                <button class="btn btn-sm btn-primary" type="button" (click)="onAdd()" *ngIf="isAddConfigSetup$ && LocalAccess | contains:'Add'">
+
+                    <i class="glyphicon glyphicon-plus-sign"></i>Add
+                </button>
+                <button class="btn btn-sm btn-primary" id="btnEdit" (click)="onEdit()" *ngIf="isEditConfigSetup$">
+
+                    <i class="glyphicon glyphicon-edit"></i>View
+                </button>
+                <button class="btn btn-sm btn-danger" (click)="onDelete()" *ngIf="isEditConfigSetup$ && LocalAccess | contains:'Delete'">
+                    <!--*ngIf="GridType != 'popup'"-->
+                    <i class="glyphicon glyphicon-trash"></i>Delete
+                </button>
+            </div>
+        </div>
+        <div class="card1 no-padding marginTop34">
+            <ag-grid-angular #agGrid style="height:100%;width:100%" class="ag-theme-balham" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+</div>
+<div class="clearfix"></div>
+
+
+
+<div class="" *ngIf="!ListView">
+    <form name="Location" #f="ngForm" class="css-form" novalidate>
+        <div class="widget">
+            <div class="widget-body">
+                <div class="widget-header widget-header1">
+                    <span class="widget-caption" *ngIf="CurrentLocationObj.PartnerLocationID == undefined"><b>Add {{moduleTitle}}</b> </span>
+                    <span class="widget-caption" *ngIf="CurrentLocationObj.PartnerLocationID > 0"><b><span *ngIf="LocalAccess | contains:'Edit'">View</span> {{moduleTitle}}</b>
+                    </span>
+                    <div class="widget-buttons">
+                        <button class="btn btn-sm btn-danger" type="button" (click)="Cancel()">
+                                <i class="fa fa-arrow-left"></i> Back 
+                        </button>
+                        <button class="btn btn-sm btn-primary" type="submit" *ngIf="LocalAccess | contains:'Edit'" (click)="Save(f.form)">
+                            <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                        </button>
+                    </div>
+                </div>
+                <div class="widget-body no-padding marginTop34">
+                    <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                        <div class="validationmsg">
+                            <b> Please fill the asterisk (*) fields. </b>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <!--row1-->
+                    <div class="form-group" *ngIf="e_localize.LocationCode.isVisible">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.LocationCode.isVisible">{{e_localize.LocationCode.headerName}} <span *ngIf="e_localize.LocationCode.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.LocationCode.isVisible">
+                            <input type="text" class="form-control" name="LocationCode" maxlength="40" #LocationCode="ngModel" [(ngModel)]="CurrentLocationObj.LocationCode" [required]="e_localize.LocationCode.isRequired" [disabled]="!e_localize.LocationCode.isEnabled" placeholder="Location Code">
+
+                            <!--<div style="color:red" [hidden]="GName.valid||GName.pristine">
+                                {{e_localize.GroupName.headername}} is required.
+                            </div>-->
+                        </div>
+
+                        <div *ngIf="e_localize.LocationName.isVisible">
+
+                            <label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.LocationName.headerName}} <span *ngIf="e_localize.LocationName.isRequired" style="color:red;">*</span>:</label>
+                            <div class="col-sm-3 col-md-3 col-lg-3 input-group input-group-sm">
+                                <input type="text" class="form-control" name="LocationName" maxlength="50" #LocationName="ngModel" [(ngModel)]="CurrentLocationObj.LocationName" [required]="e_localize.LocationName.isRequired" [disabled]="!e_localize.LocationName.isEnabled" placeholder="Location Name">
+                                <!--<input type="text" class="form-control" name="FacilityName" #FacilityName="ngModel" [(ngModel)]="CurrentLocationObj.FacilityName" readonly [required]="e_localize.FacilityID.isRequired" [disabled]="!e_localize.FacilityID.isEnabled" placeholder="Search Facility">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default btn-sm" type="button" (click)="selectFacility()"><i class="fa fa-search"></i></button>
+                                </span>-->
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="form-group" *ngIf="e_localize.Partner.isVisible">
+
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.Partner.headerName}} <span *ngIf="e_localize.Partner.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="input-group input-group-sm">
+                                <!--<input type="text" class="form-control" name="LocationName" maxlength="50" #LocationName="ngModel" [(ngModel)]="CurrentLocationObj.LocationName" [required]="e_localize.LocationName.isRequired" [disabled]="!e_localize.LocationName.isEnabled" placeholder="Location Name">-->
+                                <input type="text" class="form-control" name="FacilityName" #FacilityName="ngModel" [(ngModel)]="CurrentLocationObj.PartnerName" readonly [required]="e_localize.Partner.isRequired" [disabled]="!e_localize.Partner.isEnabled" placeholder="Search Facility">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default btn-sm" type="button" (click)="selectFacility()"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <!--row 2-->
+                    <!--<div class="form-group" *ngIf="e_localize.FrameID.isVisible && IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.FrameID.isVisible">{{e_localize.FrameID.headerName}} <span *ngIf="e_localize.FrameID.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.FrameID.isVisible">
+                            <input type="text" class="form-control" name="FrameID" #FrameID="ngModel" [(ngModel)]="CurrentLocationObj.FrameID" [required]="e_localize.FrameID.isRequired" [disabled]="!e_localize.FrameID.isEnabled" placeholder="FrameID">
+    
+    
+                        </div>
+    
+                        <div *ngIf="e_localize.ColorCode.isVisible && IsLoaded">
+    
+                            <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.ColorCode.isVisible">{{e_localize.ColorCode.headerName}} <span *ngIf="e_localize.ColorCode.isRequired" style="color:red;">*</span>:</label>
+                            <div class="col-sm-3 col-md-3 col-lg-3 input-group input-group-sm" *ngIf="e_localize.ColorCode.isVisible">
+                                <input type="text" class="form-control" name="ColorCode" #ColorCode="ngModel" [(ngModel)]="CurrentLocationObj.ColorCode" [required]="e_localize.ColorCode.isRequired" [disabled]="!e_localize.ColorCode.isEnabled" placeholder="Color Code">
+    
+                            </div>
+                            <div class="clearfix"></div>
+    
+                        </div>
+                        <div class="clearfix"></div>
+                    </div><br />-->
+                    <!--3row-->
+                    <!--<div class="form-group" *ngIf="e_localize.RowIndex.isVisible && IsLoaded">
+    
+                            <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.RowIndex.isVisible">{{e_localize.RowIndex.headerName}} <span *ngIf="e_localize.RowIndex.isRequired" style="color:red;">*</span>:</label>
+                            <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.RowIndex.isVisible">
+                                <input type="text" class="form-control" name="RowIndex" #RowIndex="ngModel" [(ngModel)]="CurrentLocationObj.RowIndex" [required]="e_localize.RowIndex.isRequired" [disabled]="!e_localize.RowIndex.isEnabled" placeholder="Row Index">
+    
+                            </div>
+    
+                            <div *ngIf="e_localize.IsActive.isVisible && IsLoaded">
+                                <label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.IsActive.headerName}} <span *ngIf="e_localize.IsActive.isRequired" style="color:red;">*</span>:</label>
+    
+                                <div class="col-sm-3 col-md-3 col-lg-3 input-group input-group-sm">
+                                    <div class="checkbox" style="margin-left: -20px!important;">
+                                        <label>
+                                            <input type="checkbox"
+                                                   [required]="e_localize.IsActive"
+                                                   [disabled]="!e_localize.IsActive"
+                                                   [(ngModel)]="CurrentLocationObj.IsActive" [ngModelOptions]="{standalone: true}"><span class="text">&nbsp;</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+                    <br /><br />
+                    <div class="form-group" *ngIf="CurrentLocationObj.PartnerLocationID > 0">
+                        <label class="control-label">Please name all levels shown in the location map below. If any level is left unnamed this location stucture will not be usable by the system.</label>
+                    </div>
+                    <!--Location control Start-->
+                    <div class="form-group col-md-12" *ngIf="CurrentLocationObj.PartnerLocationID > 0">
+                        <table id="LocationStructure.PartnerLocationID" style="width:100%;" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td colspan="100" data-toggle="dropup" id="Col{{LocationStructure.PartnerLocationID}}" class="dropdown-toggle text-align-left cl-td" [ngStyle]="{'background-color':LocationStructure.ColorCode}">
+                                    <div class="btn-group">
+                                        <div id="div{{LocationStructure.PartnerLocationID}}" class="popover" (mouseleave)="HidePopUp(LocationStructure.PartnerLocationID)" (mouseover)="ShowPopUp(LocationStructure.PartnerLocationID)" style="display:none;position:absolute;width:200px;top:-80px;z-index:9999!important;left:-70px;">
+                                            <div class="arrow" style="left: 50%;"></div>
+                                            <div class="popover-title" style="padding-left: -10px;">
+                                                <ul style="margin:0px;padding:0px;">
+                                                    <li class="dropdown-item padding-top-5" style="list-style:none;margin-bottom:15px;margin-left:-10px;">
+                                                        <i class='fa fa-th fa-lg' (click)="AddRowNColumnEventCallback(LocationStructure);" style="right:5px;cursor:pointer;float:left;color:gray;margin-left:2px;" tooltip-placement="top" tooltip="Add"></i>
+                                                        <!--<i class='fa fa-pencil-square-o fa-lg' (click)="EditRowNColumn(LocationStructure, LocationStructure.PartnerLocationID);" style="right:22px;cursor:pointer;float:left;color:gray;margin-left:5px;" tooltip-placement="top" tooltip="Edit"></i>-->
+                                                        <i class='fa fa-trash fa-lg' (click)="DeleteLocationEventCallback(LocationStructure);" style="right:44px;cursor:pointer;float:left;color:gray;margin-left:5px;" tooltip-placement="top" tooltip="Delete"></i>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="popover-content" style="padding: 5px 5px;font-size: 11px!important;">
+                                                <b>Name:</b> {{LocationStructure.LocationName}}<br />
+                                                <b>Code:</b> {{LocationStructure.TenantLocationCode}}<br />
+                                                <!--<b>Location Map:</b> {{LocationMap(LocationStructure.PartnerLocationID)}}<br />-->
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <button (mouseleave)="HidePopUp(LocationStructure.PartnerLocationID)" (mouseover)="ShowPopUp(LocationStructure.PartnerLocationID)" id="btn{{LocationStructure.PartnerLocationID}}" class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            {{LocationStructure.LocationName}}
+                                        </button>
+                                        <span style="display:none;">{{LocationStructure.LocationCode}}</span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <loc-structure [StructureData]="LocationStructure" (AddRowNColumnEvent)="AddRowNColumnEventCallback($event)" (EditRowNColumnEvent)="EditRowNColumnEventCallback($event)" (DeleteLocationEvent)="DeleteLocationEventCallback($event)" (RenameLocationEvent)="RenameLocationCallback($event)"></loc-structure>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="clearfix"></div>
+                    </div>
+                    <!--Location control End-->
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+<message #pop cssClass="modal-msg"></message>
+<bs-modal #RowNColumn cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="RowNColumn.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Configure Levels in this Bay</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <div class="form-group">
+            <span id="spnRowNColumn" hidden="hidden">1x1</span>
+            <span id="spnLoc"></span>
+            <div id="grid"></div>
+        </div>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="AddDynamicLocations()">OK</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #modelRename cssClass="modal-lg" *ngIf="!ListView">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="modelRename.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Rename Level</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <div class="form-group">
+            <label class="control-label  col-sm-3 col-md-3 col-lg-3">Level Name <span style="color:red;">*</span>:</label>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <input type="text" class="form-control" name="levelname" #levelname="ngModel" [(ngModel)]="Currentlevelname" required placeholder="Level Name">
+            </div>
+
+            <label class="control-label  col-sm-3 col-md-3 col-lg-3">Location Code <span style="color:red;">*</span>:</label>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <input type="text" class="form-control" name="locationCode" #levelname="ngModel" [(ngModel)]="CurrentCode" required placeholder="Location Code">
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="RenameLocation()">OK</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #modalFacility cssClass="modal-lg" *ngIf="!ListView">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="modalFacility.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Select facility</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <PartnerGrid #Partners [partnerGridType]="'popup'" [partnerType]="'PTR001'" (notifyPartner)="PartnerEvent($event)"></PartnerGrid>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="modalFacility.dismiss()">Cancel</button>
+    </bs-modal-footer>
+</bs-modal>

@@ -1,0 +1,663 @@
+﻿<style>
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+    
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0);
+        -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0);
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0);
+        /*background-color: #eee;
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    box-shadow: 0 0 4px rgba(0,0,0,.3);*/
+    }
+    
+    .nav-tabs>li {
+        margin: 0px 3px 0px 3px;
+    }
+    
+    .nav-tabs>li>a,
+    .nav-tabs>li>a:focus {
+        border-radius: 0 !important;
+        color: #777;
+        margin-right: -1px;
+        line-height: 24px;
+        position: relative;
+        z-index: 11;
+    }
+    
+    .nav-tabs>li.active>a,
+    .nav-tabs>li.active>a:hover,
+    .nav-tabs>li.active>a:focus {
+        color: #262626;
+        border: 0;
+        border-top: 2px solid #333;
+        border-bottom-color: transparent;
+        /*background-color: #fbfbfb;*/
+        z-index: 12;
+        line-height: 24px;
+        margin-top: -2px;
+        box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.15);
+    }
+    
+    .nav-tabs>li a:hover {
+        color: #fff;
+        /*border: 0;*/
+        /*border-bottom-color: transparent;*/
+        /*background-color: #BAF3DA;*/
+        /*z-index: 12;*/
+        /*line-height: 24px;*/
+    }
+    
+    .nav-tabs>li>a,
+    .nav-tabs>li>a:focus {
+        border-radius: 0 !important;
+        color: #fff;
+        /* margin-right: -1px;
+                / line-height: 24px;
+                position: relative;
+                z-index: 11;
+                /*background-color: #178E58;*/
+    }
+    
+    .nav>li.disabled>a {
+        color: #fff;
+        background-color: gray;
+    }
+    
+    .nav>li.disabled>a:hover {
+        color: #fff;
+        background-color: gray;
+    }
+</style>
+
+<form #f="ngForm" novalidate>
+    <div class="widget">
+        <div class="widget-body widget-header1">
+            <div class="widget-header widget-header1">
+                <span class="widget-caption pull-left font-40" *ngIf="userId == 0 && GridType != 'popup'"><b>Add {{moduleTitle}}</b>
+        </span>
+                <span class="widget-caption pull-left font-40" *ngIf="userId > 0 && GridType != 'popup'"><b><span *ngIf="permission">View</span> {{moduleTitle}}</b>
+                </span>
+                <div class="widget-buttons">
+                    <button *ngIf="singleUser.UserID" class="btn btn-primary btn-sm" type="button" novalidate (click)="OpenChangePassword()">
+            Change Password
+          </button>
+                    <button type="button" class="btn btn-sm waves-effect waves-light btn-danger mr-2" (click)="CancelUser()">
+            <i class="fa fa-long-arrow-left"></i> Back
+          </button>
+                    <button class="btn btn-sm waves-effect waves-light btn-success" type="button" (click)="onSubmit(f.form)" *ngIf="((LocalAccess | contains:'Add') && singleUser.UserID == 0) || (LocalAccess | contains:'Edit')">
+            <i class="fa fa-floppy-o"></i> Save
+          </button>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="widget-body no-padding">
+                    <div class="no-padding marginTop34">
+                        <div class="form-group">
+                            <label class="control-label col-sm-12 col-md-12 col-lg-12" style="color:red;">{{errorMessage}}</label
+              >
+            </div>
+            <div
+              class="form-group"
+              *ngIf="f.form.touched && !f.form.valid && isSaveClick"
+            >
+              <div class="validationmsg">
+                <b> Please fill the asterisk (*) fields. </b>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.Initials.isVisible"
+                >{{e_localize.Initials.headerName}}<span
+                  *ngIf="e_localize.Initials.isRequired"
+                  style="color:red;"
+                  >*</span
+                >:</label
+              >
+              <div
+                class="col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.Initials.isVisible"
+              >
+                <select
+                  name="Initials"
+                  [(ngModel)]="singleUser.Initials"
+                  class="form-control"
+                  [required]="e_localize.Initials.isRequired"
+                  [disabled]="!e_localize.Initials.isEnabled"
+                  #Initials="ngModel"
+                >
+                  <option
+                    [value]="undefined"
+                    [disabled]="e_localize.Initials.isRequired"
+                    >--Select--
+                  </option>
+                  <option
+                    *ngFor="let INT of userInitials"
+                    [value]="INT.InitialIName"
+                    >{{INT.InitialIName}}
+                  </option>
+                </select>
+                <div class="clearfix"></div>
+              </div>
+
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.FirstName.isVisible"
+                >{{e_localize.FirstName.headerName}}<span
+                  *ngIf="e_localize.FirstName.isRequired"
+                  style="color:red;"
+                  >*</span
+                >:</label
+              >
+              <div
+                class="col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.FirstName.isVisible"
+              >
+                <input
+                  type="text"
+                  name="firstName"
+                  class="form-control"
+                  [(ngModel)]="singleUser.FirstName"
+                  placeholder="First Name"
+                  maxlength="50"
+                  #firstName="ngModel"
+                  [required]="e_localize.FirstName.isRequired"
+                  [disabled]="!e_localize.FirstName.isEnabled"
+                />
+                <div class="clearfix"></div>
+              </div>
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.Scope.isVisible"
+                >{{e_localize.Scope.headerName}}<span
+                  *ngIf="e_localize.Scope.isRequired"
+                  style="color:red;"
+                  >*</span
+                >:</label
+              >
+              <div
+                class="col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.Scope.isVisible"
+              >
+                <select
+                  name="UserType"
+                  class="form-control"
+                  [(ngModel)]="singleUser.Scope"
+                  #Scope="ngModel"
+                  [required]="e_localize.Scope.isRequired"
+                  disabled
+                  (change)="ChangeAssignment()"
+                >
+                  <!-- [disabled]="!e_localize.Scope.isEnabled || singleUser.UserID > 0" -->
+                  <!-- <option [value]="undefined" [disabled]="e_localize.Scope.isRequired">--Select User Type--
+                    </option> -->
+                  <option *ngFor="let type of UserType" [value]="type.Scope"
+                    >{{type.UserType}}</option
+                  >
+                </select>
+                <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.MiddleName.isVisible"
+                >{{e_localize.MiddleName.headerName}}<span
+                  *ngIf="e_localize.MiddleName.isRequired"
+                  style="color:red;"
+                  >*</span
+                >:</label
+              >
+              <div
+                class="col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.MiddleName.isVisible"
+              >
+                <input
+                  type="text"
+                  name="MiddleName"
+                  class="form-control"
+                  [(ngModel)]="singleUser.MiddleName"
+                  placeholder="Middle Name"
+                  maxlength="50"
+                  [required]="e_localize.MiddleName.isRequired"
+                  [disabled]="!e_localize.MiddleName.isEnabled"
+                />
+              </div>
+
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.LastName.isVisible"
+                >{{e_localize.LastName.headerName}}<span
+                  *ngIf="e_localize.LastName.isRequired"
+                  style="color:red;"
+                  >*</span
+                >:</label
+              >
+              <div
+                class="col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.LastName.isVisible"
+              >
+                <input
+                  type="text"
+                  name="LastName"
+                  class="form-control"
+                  [(ngModel)]="singleUser.LastName"
+                  placeholder="Last Name"
+                  maxlength="50"
+                  [required]="e_localize.LastName.isRequired"
+                  [disabled]="!e_localize.LastName.isEnabled"
+                />
+              </div>
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded"
+                >Role:<span style="color:red;">*</span>
+              </label>
+                            <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded">
+                                <select name="UserRole" class="form-control" required [(ngModel)]="SelectedRole">
+                  <option [value]="undefined" disabled="true"
+                    >--Select--</option
+                  >
+                  <option
+                    *ngFor="let type of AllRoleCollection"
+                    [value]="type.RoleID"
+                    >{{type.RoleName}}</option
+                  >
+                </select>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                            <!-- <label class="control-label col-sm-3 col-md-3 col-lg-3"
+                    *ngIf="IsLoaded && e_localize.Email.isVisible">{{e_localize.Email.headerName}}<span
+                        *ngIf="e_localize.Email.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Email.isVisible">
+                    <input type="email" name="Email" validateEmail class="form-control" [(ngModel)]="singleUser.Email"
+                        placeholder="first@someone.com" maxlength="50" #Email="ngModel"
+                        [required]="e_localize.Email.isRequired" [disabled]="!e_localize.Email.isEnabled">
+                    <div style="color:red" [hidden]="Email.valid || Email.pristine">
+                        * Enter valid Email.
+                    </div>
+                    <div class="clearfix"></div>
+          
+                </div> -->
+                            <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.UserName.isVisible">{{e_localize.Email.headerName}}<span
+                  *ngIf="e_localize.UserName.isRequired"
+                  style="color:red;"
+                  >*</span
+                >:</label
+              >
+              <div
+                class="col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.UserName.isVisible"
+              >
+                <input
+                  type="email"
+                  class="form-control"
+                  id="txtUserName"
+                  name="UserName"
+                  [(ngModel)]="singleUser.UserName"
+                  placeholder="{{e_localize.Email.headerName}}"
+                  maxlength="50"
+                  #username="ngModel"
+                  [required]="e_localize.UserName.isRequired"
+                  [disabled]="userId > 0"
+                />
+                <div class="clearfix"></div>
+              </div>
+              <!-- <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded" >Brands:</label >
+              <div class="col-sm-3 col-md-3 col-lg-3">
+                <ng-multiselect-dropdown #brands="ngModel" *ngIf="IsLoaded" name="brands" [placeholder]="'Select Brands'"
+                  [data]="dropdownList" [(ngModel)]="selectedBrands" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+                  (onSelectAll)="onSelectAll($event)" >
+                </ng-multiselect-dropdown>
+              </div> -->
+
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.CellNumber.isVisible"
+                >{{e_localize.CellNumber.headerName}}<span
+                  *ngIf="e_localize.CellNumber.isRequired"
+                  style="color:red;"
+                  >*</span
+                >:</label
+              >
+
+              <div
+                class="col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.CellNumber.isVisible"
+              >
+                <div class="input-group pull-left col-md-3" style="width:100%">
+                  <input
+                    type="tel"
+                    id="mobile-number"
+                    disabled="disabled"
+                    style="width:84px;float: left;height: 28px;"
+                  />
+                  <div style="width: calc(100% - 84px);float:left;">
+                    <input
+                      type="text"
+                      id="CellNumber"
+                      name="CellNumber"
+                      class="form-control"
+                      style="width:100%;float:left"
+                      maxlength="15"
+                      placeholder="Number with area code"
+                      [(ngModel)]="singleUser.CellNumber"
+                      #CellNumber="ngModel"
+                      (focusout)="CheckPhoneVal()"
+                      [required]="e_localize.CellNumber.isRequired"
+                      [disabled]="!e_localize.CellNumber.isEnabled"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="form-group">
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.IsActive.isVisible"
+                >{{e_localize.IsActive.headerName}}<span
+                  *ngIf="e_localize.IsActive.isRequired"
+                  style="color:red;"
+                  >*</span
+                >:</label
+              >
+              <label
+                style="float:left!important; margin-left:12px;"
+                *ngIf="IsLoaded"
+              >
+                <input
+                  name="isactive"
+                  class="checkbox-slider colored-palegreen yesno"
+                  [(ngModel)]="singleUser.IsActive"
+                  type="checkbox"
+                />
+                <span class="text"></span>
+              </label>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group" *ngIf="userId == 0">
+                            <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.Password.isVisible">{{e_localize.Password.headerName}}<span
+                  *ngIf="e_localize.Password.isRequired"
+                  style="color:red;"
+                  >*</span
+                >:</label
+              >
+              <div
+                class="col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.Password.isVisible"
+              >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="Password"
+                  name="Password"
+                  autocomplete="new-password"
+                  [(ngModel)]="singleUser.Password"
+                  placeholder="Password"
+                  maxlength="50"
+                  #Password="ngModel"
+                  [required]="e_localize.Password.isRequired"
+                  [disabled]="!e_localize.Password.isEnabled"
+                  (keypress)="clearConfirmPassword()"
+                  pattern="^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$"
+                />
+                <div class="clearfix"></div>
+              </div>
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.Password.isVisible"
+                >Confirm Password<span
+                  *ngIf="e_localize.Password.isRequired"
+                  style="color:red;"
+                  >*</span
+                >:</label
+              >
+              <div
+                class="col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.Password.isVisible"
+              >
+                <input
+                  type="password"
+                  id="PasswordConfirmation"
+                  class="form-control"
+                  name="PasswordConfirmation"
+                  [(ngModel)]="singleUser.PasswordConfirmation"
+                  pw-check="Password"
+                  placeholder="Confirm Password"
+                  maxlength="50"
+                  #pwdconfirm="ngModel"
+                  [required]="e_localize.Password.isRequired"
+                  [disabled]="!e_localize.Password.isEnabled"
+                  Equalvalidate="Password"
+                  pattern="^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$"
+                />
+                <div class="clearfix"></div>
+
+                <div
+                  *ngIf="(singleUser.PasswordConfirmation!=singleUser.Password) && (pwdconfirm.dirty || pwdconfirm.touched)"
+                  style="color:red"
+                  (change)="logthemessage()"
+                >
+                  Password don't match.
+                </div>
+                <div
+                  style="color:red; font-size: 12px;"
+                  [hidden]="pwdconfirm.valid || pwdconfirm.pristine"
+                >
+                  Password must be of minimum 8 character long and contains one
+                  upper case and one lower case alphabet with at least one
+                  number and one special character
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.UserImage.isVisible"
+                >{{e_localize.UserImage.headerName}}:</label
+              >
+              <div
+                class="col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && e_localize.UserImage.isVisible"
+              >
+                <div class="browsefile" style="margin-bottom:10px;">
+                  <img
+                    [src]="singleUser.UserImage"
+                    id="fileimagethumbnail"
+                    style="height:50px;width:50px;"
+                  />
+                  <input
+                    type="file"
+                    name="userimage"
+                    accept="image/*"
+                    (change)="handleInputChange(userimage, $event);"
+                    validateFile
+                    style="position:initial;height:22px;opacity:1;background:#fbfbfb;width:100%;"
+                  />
+                  <!--<img src="{{singleUser.UserImage}}" id="fileimagethumbnail" style="height:50px;width:50px;" />
+                        <input type="file" onchange="readImageURL(this,true);" id="file" accept="image/*" style="height:50px;width:50px;top:0px !important">-->
+                </div>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="clearfix"></div>
+            <div class="form-group" *ngIf="singleUser.UserID">
+              <label class="control-label col-sm-3 col-md-3 col-lg-3">User Locked:</label>
+                            <label style="float:left!important; margin-left:12px;">
+                <input (change)="checkbox__IsFailedLoginLock($event)" [(ngModel)]="singleUser.IsFailedLoginLock"  name="IsFailedLoginLock"
+                  class="checkbox-slider colored-palegreen yesno"
+                  type="checkbox" />
+                <span class="text"></span>
+              </label>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <!--Tabs Starts Here-->
+    <tabs>
+        <tab [tabTitle]="singleUser.Scope=='PTR001'?'Facility':'Account'">
+            <div class="form-group">
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <!--<label class="control-label"><b>Facility/Account</b></label>-->
+                    <button class="btn btn-sm btn-link pull-right" type="button" (click)="openGridPopup()" *ngIf="IsShowAssignButton">
+            <i class="glyphicon glyphicon-plus-sign"></i>Assign
+            {{SelectedUserType}}
+            <!-- Facility/Account-->
+          </button>
+                    <div class="clearfix"></div>
+                    <ag-grid-angular id="defaultP" #agGridUser style="height: 250px; width:100%;" class="ag-theme-balham" [gridOptions]="usergridOptions" (selectionChanged)="onSelectedUserChanged()" (rowClicked)="DeleteItem($event)">
+                    </ag-grid-angular>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+        </tab>
+    </tabs>
+</form>
+
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+<bs-modal #changePassword>
+    <bs-modal-header class="bg-purple">
+        <button type="button" class="close" (click)="changePassword.dismiss()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+        <h4 class="m-b-0 text-white">Change Password</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <form #passwordPopup="ngForm" (submit)="ChangePassword()">
+            <div class="form-group">
+                <label class="control-label col-sm-5 col-md-5 col-lg-5">New Password <span style="color:red;">*</span>:</label
+        >
+        <div class="col-sm-7 col-md-7 col-lg-7">
+          <input
+            type="password"
+            id="newPassword"
+            name="newPassword"
+            [(ngModel)]="pwdchangeData.newPassword"
+            required
+            maxlength="50"
+            #newPassword="ngModel"
+            class="form-control input-sm"
+            pattern="^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$"
+          />
+          <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-5 col-md-5 col-lg-5"
+          >Confirm Password <span style="color:red;">*</span>:</label
+        >
+        <div class="col-sm-7 col-md-7 col-lg-7">
+          <input
+            type="password"
+            name="confirmPassword"
+            [(ngModel)]="pwdchangeData.confirmPassword"
+            pw-check="newPassword"
+            required
+            maxlength="50"
+            #confirmPassword="ngModel"
+            class="form-control input-sm"
+            pattern="^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$"
+          />
+          <div
+            style="color:red; font-size: 12px;"
+            [hidden]="confirmPassword.valid || confirmPassword.pristine"
+          >
+            Password must be of minimum 8 character long and contains one upper
+            case and one lower case alphabet with at least one number and one
+            special character.
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </form>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button
+      type="button"
+      class="btn btn-danger btn-sm mr-2"
+      (click)="changePassword.dismiss()"
+    ><i class="fa fa-times"></i> 
+      Close
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      [disabled]="passwordPopup.invalid"
+      (click)="ChangePassword()"
+    ><i class="fa fa-check-circle"></i> 
+      Submit
+    </button>
+  </bs-modal-footer>
+</bs-modal>
+<div
+  class="modal fade"
+  id="myModalNorm1"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content"></div>
+  </div>
+</div>
+<bs-modal #userGridPopUp cssClass="modal-xl">
+  <bs-modal-header>
+    <button
+      type="button"
+      class="close"
+      (click)="userGridPopUp.dismiss()"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Add {{SelectedUserType}}</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <!--*ngIf="UserGridPopup"-->
+    <PartnerGrid
+      [partnerGridType]="setUserGridType"
+      [showAllType]="1"
+      #childComponent
+      [partnerType]="partnerType"
+      [AvailableUsers]="AvailableUsers"
+      (notifyPartner)="UserGridEvent($event)"
+    ></PartnerGrid>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <!-- <button type="button" class="btn btn-default" (click)="userGridPopUp.dismiss()">Close</button> -->
+  </bs-modal-footer>
+</bs-modal>
+
+<message #pop cssClass="modal-msg"></message>

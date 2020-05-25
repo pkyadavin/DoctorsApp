@@ -1,0 +1,602 @@
+﻿<style>
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,0);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,0);
+        box-shadow: 0 0 4px rgba(0,0,0,0);
+        /*background-color: #eee;
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    box-shadow: 0 0 4px rgba(0,0,0,.3);*/
+    }
+
+        .nav-tabs > li {
+            margin: 0px 3px 0px 3px;
+        }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #777;
+                margin-right: -1px;
+                line-height: 24px;
+                position: relative;
+                z-index: 11;
+            }
+
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                color: #262626;
+                border: 0;
+                border-top: 2px solid #333;
+                border-bottom-color: transparent;
+                /*background-color: #fbfbfb;*/
+                z-index: 12;
+                line-height: 24px;
+                margin-top: -2px;
+                box-shadow: 0 -2px 3px 0 rgba(0,0,0,.15);
+            }
+
+            .nav-tabs > li a:hover {
+                color: #fff;
+                /*border: 0;*/
+                /*border-bottom-color: transparent;*/
+                /*background-color: #BAF3DA;*/
+                /*z-index: 12;*/
+                /*line-height: 24px;*/
+            }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #fff;
+                /* margin-right: -1px;
+                / line-height: 24px;
+                position: relative;
+                z-index: 11;
+                /*background-color: #178E58;*/
+            }
+
+    .nav > li.disabled > a {
+        color: #fff;
+        background-color: gray;
+    }
+
+        .nav > li.disabled > a:hover {
+            color: #fff;
+            background-color: gray;
+        }
+    /*.inputerrorpopnew{
+        background-color: #fff;
+        color: #ff0000;
+        text-align: left;
+        display: block;
+        overflow: hidden;
+        margin-bottom: 3.9853px;
+        position: relative !important;
+        border: solid 1px #ff0000;
+        z-index: 999;
+        font-size: 11px;
+        margin-bottom: -7px !important;        
+    }
+    .jq-toast-single {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin: 0 0 5px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-family: arial,sans-serif;
+        line-height: 17px;
+        position: relative;
+        pointer-events: all!important;
+    }*/
+</style>
+<form #f="ngForm" (ngSubmit)="onSubmit(f.form)" novalidate>
+    <div class="widget">
+        <div class="widget-header">
+            <span class="widget-caption pull-left font-40"><b>{{MODHeaderName}}</b> </span>
+            <!--<span class="widget-caption ng-binding"></span>-->
+            <div class="widget-buttons">
+
+                <button class="btn btn-sm btn-danger" type="button" (click)="onCancel()">
+                        <i class="fa fa-arrow-left"></i> Back 
+                </button>
+
+                <button class="btn btn-sm btn-primary" type="submit" *ngIf="permission">
+                    <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                </button>
+            </div>
+        </div>
+        <div class="widget-body">
+            <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                <div class="validationmsg">
+                    <b> Please fill the asterisk (*) fields. </b>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.ArticleNumber.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.ArticleNumber.DisplayName}}<span *ngIf="modelmastereditor.ArticleNumber.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" name="ArticleNumber" (blur)="CheckArticleNumber()" id="txtArticleNumber"
+                            [required]="modelmastereditor.ArticleNumber.isRequired" [disabled]="!modelmastereditor.ArticleNumber.isEnabled"
+                            [(ngModel)]="CurrentModelMaster.ArticleNumber">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.ItemName.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.ItemName.DisplayName}}<span *ngIf="modelmastereditor.ItemName.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <textarea rows="2" cols="50" class="form-control" name="ItemName" [required]="modelmastereditor.ItemName.isRequired"
+                            [disabled]="!modelmastereditor.ItemName.isEnabled" [(ngModel)]="CurrentModelMaster.ItemName"></textarea>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.ItemDescription.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.ItemDescription.DisplayName}}<span *ngIf="modelmastereditor.ItemDescription.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" #itemDescription="ngModel" name="ItemDescription"
+                            [required]="modelmastereditor.ItemDescription.isRequired" [disabled]="!modelmastereditor.ItemDescription.isEnabled"
+                            [(ngModel)]="CurrentModelMaster.ItemDescription">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.ItemNumber.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.ItemNumber.DisplayName}} <span *ngIf="modelmastereditor.ItemNumber.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" #itemNumber="ngModel" name="ItemNumber" [required]="modelmastereditor.ItemNumber.isRequired"
+                            [disabled]="!modelmastereditor.ItemNumber.isEnabled" [(ngModel)]="CurrentModelMaster.ItemNumber">
+                    </div>
+                    <!--<Div [hidden]="itemNumber.valid||itemNumber.pristine" style="color:red">
+                        {{modelmastereditor.ItemNumber.DisplayName}} is required.
+                    </Div>-->
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.TypeName.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.TypeName.DisplayName}} <span *ngIf="modelmastereditor.TypeName.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <select [(ngModel)]="CurrentModelMaster.ItemReceiveTypeID" class="form-control" (change)="onReceiveChange($event.target.value)"
+                            name="TypeName" [required]="modelmastereditor.TypeName.isRequired" [disabled]="!modelmastereditor.TypeName.isEnabled">
+                            <option [value]="undefined" [disabled]="modelmastereditor.ManufacturerName.isRequired">--Select
+                                Model Type--</option>
+                            <option *ngFor="let rec of ReceiveTypelist" [value]="rec.ItemReceiveTypeID">
+                                {{rec.TypeName}}
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.ItemModelID.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.ItemModelID.DisplayName}} <span *ngIf="modelmastereditor.ItemModelID.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <div class="input-group input-group-sm">
+                            <select [(ngModel)]="CurrentModelMaster.ItemModelID" class="form-control" (change)="onModelChange($event.target.value)"
+                                name="ItemModelID" [required]="modelmastereditor.ItemModelID.isRequired" [disabled]="!modelmastereditor.ItemModelID.isEnabled">
+                                <option [value]="undefined" [disabled]="modelmastereditor.ItemModelID.isRequired">--Select
+                                    Model--</option>
+                                <!--<option [value]=""></option>-->
+                                <option *ngFor="let gp of Modellist" [value]="gp.ItemModelID">
+                                    {{gp.ModelName}}
+                                </option>
+                            </select>
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary btn-sm" (click)="selectParent()" type="button"><i class="fa fa-plus"></i></button>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.ReturnDays.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.ReturnDays.DisplayName}} <span *ngIf="modelmastereditor.ReturnDays.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" #extWarrantyDays="ngModel" name="ReturnDays" (keypress)="isNumber($event.keyCode)"
+                            [required]="modelmastereditor.ReturnDays.isRequired" [disabled]="!modelmastereditor.ReturnDays.isEnabled"
+                            [(ngModel)]="CurrentModelMaster.ReturnDays">
+                    </div>
+                </div>
+                <!-- <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.ReturnType.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.ReturnType.DisplayName}} <span *ngIf="modelmastereditor.ReturnType.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <select [(ngModel)]="CurrentModelMaster.ItemReturnTypeID" class="form-control" (change)="onReturnChange($event.target.value)"
+                            name="ReturnType" [required]="modelmastereditor.ReturnType.isRequired" [disabled]="!modelmastereditor.ReturnType.isEnabled">
+                            <option [value]="undefined">--Select Return Type--</option>
+                            <option *ngFor="let rec of ReturnTypelist" [value]="rec.ItemReturnTypeID">
+                                {{rec.ReturnType}}
+                            </option>
+                        </select>
+                    </div>
+
+                </div> -->
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.SKUcode.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.SKUcode.DisplayName}}<span *ngIf="modelmastereditor.SKUcode.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" name="SKUcode" [required]="modelmastereditor.SKUcode.isRequired"
+                            [disabled]="!modelmastereditor.SKUcode.isEnabled" [(ngModel)]="CurrentModelMaster.SKUcode">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>   
+                <div class="clearfix"></div>            
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.ManufacturerName.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.ManufacturerName.DisplayName}} <span *ngIf="modelmastereditor.ManufacturerName.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <div class="input-group input-group-sm">
+                            <select [(ngModel)]="CurrentModelMaster.ManufacturerID" class="form-control" (change)="onChange($event.target.value)"
+                                name="ManufacturerName" [required]="modelmastereditor.ManufacturerName.isRequired"
+                                [disabled]="!modelmastereditor.ManufacturerName.isEnabled">
+                                <option [value]="undefined" [disabled]="modelmastereditor.ManufacturerName.isRequired">--Select
+                                    Manufacturer--</option>
+                                <option *ngFor="let Manf of manufacturerlist" [value]="Manf.ManufacturerID">
+                                    {{Manf.ManufacturerName}}
+                                </option>
+                            </select>
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary btn-sm" (click)="selectManufacturer()" type="button"><i
+                                        class="fa fa-plus"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <!--<Div [hidden]="ManufacturerName.valid||ManufacturerName.pristine"  style="color:red">
+                        {{modelmastereditor.ManufacturerName.DisplayName}} is required.
+                    </Div>-->
+                </div>
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.UOMName.isVisible">
+
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.UOMName.DisplayName}} <span *ngIf="modelmastereditor.UOMName.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <div class="input-group input-group-sm">
+                            <select [(ngModel)]="CurrentModelMaster.UOMID" name="uomname" #uOMName="ngModel" class="form-control"
+                                (change)="onunitChange($event.target.value)" [required]="modelmastereditor.UOMName.isRequired"
+                                [disabled]="!modelmastereditor.UOMName.isEnabled">
+                                <option [value]="undefined" [disabled]="modelmastereditor.ManufacturerName.isRequired">--Select
+                                    Unit--</option>
+                                <option *ngFor="let uni of unitlist" [value]="uni.UOMID">
+                                    {{uni.UOMName}}
+                                </option>
+                            </select>
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary btn-sm" type="button" (click)="selectUnit()"><i class="fa fa-plus"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>                
+                <!-- <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.EANCode.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.EANCode.DisplayName}}<span *ngIf="modelmastereditor.EANCode.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" name="EANCode" [required]="modelmastereditor.EANCode.isRequired"
+                            [disabled]="!modelmastereditor.EANCode.isEnabled" [(ngModel)]="CurrentModelMaster.EANCode">
+                    </div>
+                    <div class="clearfix"></div>
+                </div> -->
+                <div class="clearfix"></div>
+            </div>
+
+            <!-- <div class="form-group">
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.ColorName.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.ColorName.DisplayName}} <span *ngIf="modelmastereditor.ColorName.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <div class="input-group input-group-sm">
+                            <select [(ngModel)]="CurrentModelMaster.ColorID" class="form-control" (change)="onColorChange($event.target.value)"
+                                name="ColorName" [required]="modelmastereditor.ColorName.isRequired" [disabled]="!modelmastereditor.ColorName.isEnabled">
+                                <option [value]="undefined" [disabled]="modelmastereditor.ManufacturerName.isRequired">--Select
+                                    Color--</option>
+                                <option *ngFor="let col of colorlist" [value]="col.ColorID">
+                                    {{col.ColorName}}
+                                </option>
+                            </select>
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary btn-sm" type="button" (click)="selectColor()"><i class="fa fa-plus"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.ExtWarrantyDays.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.ExtWarrantyDays.DisplayName}}<span *ngIf="modelmastereditor.ExtWarrantyDays.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" #extWarrantyDays="ngModel" name="ExtWarrantyDays"
+                            (keypress)="isNumber($event.keyCode)" [required]="modelmastereditor.ExtWarrantyDays.isRequired"
+                            [disabled]="!modelmastereditor.ExtWarrantyDays.isEnabled" [(ngModel)]="CurrentModelMaster.ExtWarrantyDays">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div> -->
+            <!-- <div class="form-group">
+
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.ItemDiscountPC.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.ItemDiscountPC.DisplayName}}<span *ngIf="modelmastereditor.ItemDiscountPC.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" #itemDiscountPC="ngModel" name="ItemDiscountPC"
+                            (keypress)="isFloat($event.keyCode)" [required]="modelmastereditor.ItemDiscountPC.isRequired"
+                            [disabled]="!modelmastereditor.ItemDiscountPC.isEnabled" [(ngModel)]="CurrentModelMaster.ItemDiscountPC">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.ItemCost.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+
+                        {{modelmastereditor.ItemCost.DisplayName}}({{CurrentModelMaster.CurrencyCode}})<span *ngIf="modelmastereditor.ItemCost.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" #itemCost="ngModel" name="ItemCost" (keypress)="isFloat($event.keyCode)"
+                            [required]="modelmastereditor.ItemCost.isRequired" [disabled]="!modelmastereditor.ItemCost.isEnabled"
+                            [(ngModel)]="CurrentModelMaster.ItemCost">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div> -->
+            <!-- <div class="form-group">
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.UOMName.isVisible">
+
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.UOMName.DisplayName}} <span *ngIf="modelmastereditor.UOMName.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <div class="input-group input-group-sm">
+                            <select [(ngModel)]="CurrentModelMaster.UOMID" name="uomname" #uOMName="ngModel" class="form-control"
+                                (change)="onunitChange($event.target.value)" [required]="modelmastereditor.UOMName.isRequired"
+                                [disabled]="!modelmastereditor.UOMName.isEnabled">
+                                <option [value]="undefined" [disabled]="modelmastereditor.ManufacturerName.isRequired">--Select
+                                    Unit--</option>
+                                <option *ngFor="let uni of unitlist" [value]="uni.UOMID">
+                                    {{uni.UOMName}}
+                                </option>
+                            </select>
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary btn-sm" type="button" (click)="selectUnit()"><i class="fa fa-plus"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.ItemPrice.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+
+                        {{modelmastereditor.ItemPrice.DisplayName}}({{CurrentModelMaster.CurrencyCode}})<span *ngIf="modelmastereditor.ItemPrice.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" #itemPrice="ngModel" name="ItemPrice" (keypress)="isFloat($event.keyCode)"
+                            [required]="modelmastereditor.ItemPrice.isRequired" [disabled]="!modelmastereditor.ItemPrice.isEnabled"
+                            [(ngModel)]="CurrentModelMaster.ItemPrice">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div> -->
+            <div class="form-group">
+                <div class="col-lg-6"  *ngIf="IsLoaded && modelmastereditor.IsActive.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modelmastereditor.IsActive.DisplayName}}<span *ngIf="modelmastereditor.IsActive.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="checkbox" class="checkbox" style="opacity:1 !important;left:14px" #isActive="ngModel"
+                            [ngModelOptions]="{standalone: true}" [required]="modelmastereditor.IsActive.isRequired"
+                            [disabled]="!modelmastereditor.IsActive.isEnabled" [(ngModel)]="CurrentModelMaster.IsActive">
+                    </div>
+                </div>
+                <div class="col-lg-6" >
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+        <!--<message #pop (Confirm)="onConfirmPopup()" (Cancel)="onCancelPopup()"></message>-->
+    </div>
+</form>
+
+<tabs>
+    <tab tabTitle="Item Master Type" [NullIf]="AllCostBreakDowns">
+        <div class="form-group">
+            <div class="col-sm-7 col-md-7 col-lg-7">
+                <label class="control-label"><b>Item Master Types</b></label>
+                <div class="clearfix"></div>
+                <ag-grid-angular #agGridcb style="height: 250px;min-width: 180px;" class="ag-theme-balham" [gridOptions]="cbgridOptions"
+                    (selectionChanged)="onSelectedCostBreakdownChanged()">
+                </ag-grid-angular>
+            </div>
+            <div class="col-sm-1 col-md-1 col-lg-1 padding-top-30">
+                <button class="btn btn-sm btn-default btn-block" id="moverightcb" type="button" (click)="moveCostBreakDownBack()"><i
+                        class="fa fa-angle-right"></i></button>
+                <button class="btn btn-sm btn-default btn-block" id="moverightallcb" type="button" (click)="moveAllCostBreakDownBack()"><i
+                        class="fa fa-angle-double-right"></i></button>
+                <button class="btn btn-sm btn-default btn-block" id="moveleftcb" type="button" (click)="moveCostBreakDown()"><i
+                        class="fa fa-angle-left"></i></button>
+                <button class="btn btn-sm btn-default btn-block" id="moveleftallcb" type="button" (click)="moveAllCostBreakDown()"><i
+                        class="fa fa-angle-double-left"></i></button>
+            </div>
+
+            <div class="col-sm-3 col-md-3 col-lg-3">
+                <label class="control-label"><b>All Item Master Types</b></label>
+                <div class="clearfix"></div>
+                <!--<select size="6" class="form-control" multiple [(ngModel)]="availableCostBreakDown" [ngModelOptions]="{standalone: true}" style="min-height: 250px;">
+                    <option [value]="i" *ngFor="let i of AllCostBreakDowns">{{i.CostCode}}</option>
+                </select>-->
+
+                <select [(ngModel)]="availableCostBreakDown" size="6" class="List-control" [ngModelOptions]="{standalone: true}"
+                    style="min-height: 250px;min-width: 180px" multiple>
+
+                    <option *ngFor="let i of AllCostBreakDowns" [value]="i">{{i.TypeName}}</option>
+                </select>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+    </tab>
+    <tab tabTitle="Item BOM" *ngIf="false">
+        <div class="form-group">
+            <div>
+                <button id="btnAdd" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068 pull-right"
+                    (click)="SelectItem()"><i class="glyphicon glyphicon-plus-sign"></i>Add</button>
+                <ag-grid-angular #agGridcb style="height: 250px; width:100%" class="ag-theme-balham" [gridOptions]="skugridOptions"
+                    (selectionChanged)="onSelectedSKUChanged()">
+                </ag-grid-angular>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </tab>
+    <tab tabTitle="Item Image">
+        <div class="widget-header col-lg-12 col-md-12 col-sm-12">
+            <div class="widget-buttons">
+                <button id="btnUploadImage" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068"
+                    *ngIf="AllowImageAdd" onclick='$("#returnArtifact").click()'><i class="glyphicon glyphicon-plus-sign"></i>Add</button>
+                <input type="file" (change)="handleReturnDocs($event);" multiple id="returnArtifact"
+                    name="returnArtifact" accept="image/*" style="display:none">
+                <button id="btnEditImage" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068"
+                    *ngIf="ShowImageEdit" (click)="EditImageFile()"><i class="glyphicon glyphicon-edit"></i> {{
+                    ImaheEditButtonText }} </button>
+                <button href="javascript:void(0)" id="btnDelete" class="btn btn-sm btn-danger" *ngIf="ShowImageDelete"
+                    (click)="DeleteItemImage()"><i class="glyphicon glyphicon-trash"></i>Delete</button>
+
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="form-group">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <ag-grid-angular #agGridcb style="height: 250px; width:100%" class="ag-theme-balham" [gridOptions]="imagegridOptions"
+                    (selectionChanged)="onSelectedImageChanged()">
+                </ag-grid-angular>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </tab>
+</tabs>
+<div class="clearfix"></div>
+
+<!--Open Mode popup-->
+<bs-modal #modalAddmodule cssClass="modal-lg" id="divModulepop">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="modalAddmodule.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Model</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <ModelGrid #ModelGrid (notifyItemModel)="ModelGridEvent($event)"></ModelGrid>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="modalAddmodule.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<!--Open Manufacturere popup-->
+<bs-modal #modalManufacturere cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="modalManufacturere.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Manufacturer</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <Manufacturer #Manufacturer [manufacturereGridType]="setUserGridType" (notifyManufacturereModel)="ManufacturereModelEvent($event)"></Manufacturer>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="modalManufacturere.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<!--Open Color popup-->
+<!-- <bs-modal #modalColor cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="modalColor.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Color</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <ColorGrid #ColorGrid [colormodelGridType]="setUserGridType" (notifyColorModel)="ColorModelEvent($event)" ></ColorGrid>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default"  (click)="modalColor.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal> -->
+
+<!--Open Unit popup-->
+<bs-modal #modalUnit cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="modalUnit.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Unit</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <UOMMasterGrid #UOMMasterGrid [unitmodelGridType]="setUserGridType" (notifyUnitModel)="UnitModelEvent($event)"></UOMMasterGrid>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="modalUnit.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #itemSelector cssClass="modal-xxl">
+    <item-selector [Source]="itemSKUList" [ItemmasterId]="CurrentModelMaster.ItemMasterID" (itemListChange)="itemListChange($event)"></item-selector>
+</bs-modal>
+
+<message #pop cssClass="modal-msg"></message>

@@ -1,0 +1,380 @@
+﻿<style>
+    .table thead>tr>th {
+        border-bottom: 0;
+        font-size: 10px !important;
+        font-weight: 600;
+    }
+</style>
+<div class="widget" [hidden]="!ListView">
+    <div class="widget-body">
+        <div class="widget-header widget-header1">
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" placeholder="Search...">
+                <span class="input-group-btn">
+                <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i
+                        class="fa fa-search"></i>Search</button>
+            </span>
+            </div>
+            <div class="widget-buttons">
+                <!-- <button class="btn btn-sm btn-primary add_btn" type="button" (click)="onAddCategory()" *ngIf="LocalAccess | contains:'Add'">
+              <i class="glyphicon glyphicon-plus-sign"></i>Add
+            </button> -->
+                <span class="btn btn-sm btn-success" style="cursor: pointer;font-size: 12px; font-weight: 700;background-color: #53a93f!important;
+            border-color: #53a93f; padding: 5px;" (click)='clearData()' data-toggle="modal" data-target="#myModal"><i class="fa fa-upload"></i> Upload Excel</span>
+
+            </div>
+        </div>
+        <div class="card1 no-padding">
+            <ag-grid-angular #agGrid class="agc-grid ag-theme-balham" [ngClass]="{'agc-grid-popup':(GridType=='popup') }" (gridReady)="onGridReady($event)" [gridOptions]="gridOptions" (selectionChanged)="GridType != 'popup' && onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="clearfix"></div>
+
+
+
+<div class="" *ngIf="!ListView">
+    <form name="B2BUser" #f="ngForm" class="css-form" novalidate>
+        <div class="widget">
+            <div class="widget-body">
+                <div class="widget-header widget-header1">
+                    <span class="widget-caption" *ngIf="CurrentB2BUserObj.MapId == undefined"><b>Account (Bill To)</b>
+                    </span>
+                    <span class="widget-caption" *ngIf="CurrentB2BUserObj.MapId > 0"><b><span
+                                *ngIf="LocalAccess | contains:'Edit'">Edit</span> {{moduleTitle}}</b>
+                    </span>
+                    <div class="widget-buttons">
+                        <!-- <input type="file" #fileupload ngModel 
+                                    id="myFile_{{ind}}" name="myFile_{{ind}}"
+                                        (change)="fileChange($event,fileupload,ID)" multiple="true"
+                                        style="display:none" accept=".xlsx, .xls" />
+                        <button class="btn btn-primary btn-sm" [disabled]="uploadLoader"  (click)="fileupload.click()">
+                            <i *ngIf="uploadLoader" class="glyphicon glyphicon-refresh spinning1"></i>
+                            <i class="fa fa-upload dropbtn"></i> Upload
+                        </button> -->
+                        <button class="btn btn-sm waves-effect waves-light btn-danger mr-2" type="button" (click)="Cancel()">
+                            <i class="fa fa-long-arrow-left"></i> Back
+                        </button>
+                        <button class="btn btn-sm waves-effect waves-light btn-success" type="submit" *ngIf="LocalAccess | contains:'Edit'" (click)="Update()">
+                            <i class="fa fa-floppy-o"></i> Update
+                        </button>
+                    </div>
+                </div>
+                <hr>
+                <div class="widget-body no-padding">
+                    <div class="form-group row" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                        <div class="validationmsg">
+                            <b> Please fill the asterisk (*) fields. </b>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Account No :</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="AccountNo" #AccountNo="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.AccountNo" readonly [required]="true" placeholder="Account No">
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Account Name :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="AccountName" #AccountName="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.AccountName" placeholder="Account Name">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--2row-->
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">First Name :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="txtFirstName" #txtFirstName="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.FirstName" placeholder="First Name">
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Last Name :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="LastName" #LastName="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.LastName" placeholder="Last Name">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Email :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="FirstName" #Email="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.Email"  placeholder="Email">
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Phone No :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="number" class="form-control" name="PhoneNo" #PhoneNo="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.Phone" placeholder="Phone">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Regional Office :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="ARegionalOffice" #ARegionalOffice="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.RegionalOffice" [required]="true" placeholder="Regional Office">
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Account Address1 :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="AAddress1" #AAddress1="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.Address1" placeholder="Address 1">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--3rd row-->
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Account Address2 
+                            :</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="AAddress2" #AAddress2="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.Address2" [required]="true" placeholder="Account Address2">
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Account Country :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <ng-multiselect-dropdown #BilltoCountry="ngModel" id="ddlBilltoCountry" name="BilltoCountry" [placeholder]="'Select Country'" [data]="_BillToCountry" [(ngModel)]="_SelectedBillToCountry" [settings]="DdlSettings" (onSelect)="onItemSelectCountry($event,'BillToState')" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown>
+                            <!-- <input type="text" class="form-control" name="ACountry" #ACountry="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.Country" placeholder="Account Country"> -->
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--4th row-->
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Account State 
+                            :</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <ng-multiselect-dropdown #BilltoState="ngModel" id="ddlBilltoState" name="BilltoState" [placeholder]="'Select State'" [data]="_BillToState" [(ngModel)]="_SelectedBillToState" [settings]="DdlSettings" (onSelect)="onItemSelectState($event,'BillToCity')" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown>
+                            <!-- <input type="text" class="form-control" name="AState" #AState="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.State" [required]="true" placeholder="Account State"> -->
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Account City :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <ng-multiselect-dropdown #BilltoCity="ngModel" id="ddlBilltoCity" name="BilltoCity" [placeholder]="'Select City'" [data]="_BilltoCity" [(ngModel)]="_SelectedBilltoCity" [settings]="DdlSettings" (onSelect)="onItemSelectCity($event,'BillTo')" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown>
+                            <!-- <input type="text" class="form-control" name="ACity" #ACity="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.City" placeholder="Account Name"> -->
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--5th row-->
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Account Postalcode 
+                        :</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="number" class="form-control" name="APostalCode" #APostalCode="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.PostalCode" [required]="true" placeholder="Account PostalCode">
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Bill to Service Type :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <ng-multiselect-dropdown #ServiceType="ngModel" id="ddlServiceType" name="ServiceType" [placeholder]="'Service Type'" [data]="_ServiceType" [(ngModel)]="_SelectedServiceType" [settings]="DdlSettings" (onSelect)="onItemSelectServicetype($event)" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown>
+                            <!-- <input type="text" class="form-control" name="ServiceType" #ServiceType="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto.ServiceType" placeholder="Account ServiceType"> -->
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- <div class="form-group" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                            *ngIf="e_localize.IsActive.isVisible">{{e_localize.IsActive.headerName}} <span
+                                *ngIf="e_localize.IsActive.isRequired" style="color:red;">*</span>:</label>
+    
+                        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.IsActive.isVisible">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" [required]="e_localize.IsActive"
+                                        class="checkbox-slider colored-palegreen yesno"
+                                        [disabled]="!e_localize.IsActive" [(ngModel)]="CurrentB2BUserObj.IsActive"
+                                        [ngModelOptions]="{standalone: true}"><span class="text">&nbsp;</span>
+                                </label>
+                                
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+    
+                    <div class="clearfix"></div> -->
+                </div>
+                <div class="widget-header widget-header1">
+                    <span class="widget-caption" *ngIf="CurrentB2BUserObj.MapId == undefined"><b>Stores (Ship To Address)</b>
+                    </span>
+                </div>
+                <div class="widget-body no-padding">
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Ship to No :</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="ShipToNo" #ShipToNo="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto._StoreShipTo.ShipToNo" readonly [required]="true" placeholder="Shipto No">
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Ship to Name :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="ShipToName" #ShipToName="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto._StoreShipTo.ShipToName" placeholder="Shipto Name">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--2row-->
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Shipto Regional Office 
+                        :</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="SRegionalOffice" #SRegionalOffice="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto._StoreShipTo.RegionalOffice" [required]="true" placeholder="Shipto Regional Office">
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Ship to Address1 :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="SAddress1" #SAddress1="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto._StoreShipTo.Address1" placeholder="Shipto Address 1">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--3rd row-->
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Ship to Address2 
+                        :</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="SAddress2" #SAddress2="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto._StoreShipTo.Address2" [required]="true" placeholder="Shipto Address2">
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Ship to Country :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <ng-multiselect-dropdown #ShiptoCountry="ngModel" id="ddlShiptoCountry" name="ShiptoCountry" [placeholder]="'Select Country'" [data]="_ShipToCountry" [(ngModel)]="_SelectedShipToCountry" [settings]="DdlSettings" (onSelect)="onItemSelectCountry($event,'ShipToState')" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown>
+                            <!-- <input type="text" class="form-control" name="SCountry" #SCountry="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto._StoreShipTo.Country" placeholder="Shipto Country"> -->
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--4th row-->
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Ship to State 
+                        :</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <ng-multiselect-dropdown #ShiptoState="ngModel" id="ddlShiptoState" name="ShiptoState" [placeholder]="'Select State'" [data]="_ShipToState" [(ngModel)]="_SelectedShipToState" [settings]="DdlSettings" (onSelect)="onItemSelectState($event,'ShipToCity')" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown>
+                            <!-- <input type="text" class="form-control" name="SState" #SState="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto._StoreShipTo.State" [required]="true" placeholder="Shipto State"> -->
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Ship to City :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <ng-multiselect-dropdown #BilltoCity="ngModel" id="ddlShiptoCity" name="ShiptoCity" [placeholder]="'Select City'" [data]="_ShiptoCity" [(ngModel)]="_SelectedShiptoCity" [settings]="DdlSettings" (onSelect)="onItemSelectCity($event,'ShipTo')" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown>
+                            <!-- <input type="text" class="form-control" name="SCity" #SCity="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto._StoreShipTo.City" placeholder="Shipto Name"> -->
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--5th row-->
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Ship to Postalcode 
+                    :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="number" class="form-control" name="SPostalCode" #SPostalCode="ngModel" [(ngModel)]="_B2BUserModel._AccountBillto._StoreShipTo.PostalCode" [required]="true" placeholder="Shipto PostalCode">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-purple">
+                <button type="button" class="close" #closebutton data-dismiss="modal">&times;</button>
+                <h4 class="m-b-0 text-white">Upload Excel</h4>
+            </div>
+            <div class="modal-body" style="height: 350px;">
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 col-lg-4 col-xs-12 margin-bottom-5">
+                        <input type="file" #fileupload ngModel id="myExcelFile" name="myExcelFile" (change)="fileChange($event)" multiple="true" style="display:none" accept=".xlsx, .xls" />
+                        <button style="margin-right: 10px;" class="btn btn-success btn-sm" [disabled]="uploadLoader" (click)="fileupload.click()">
+                        <i *ngIf="uploadLoader" class="glyphicon glyphicon-refresh spinning1"></i>
+                        <i class="fa fa-upload dropbtn"></i> Browse
+                    </button>
+                        <button class="btn btn-sm btn-primary" id="closeModal" type="submit" (click)="Save('save')">
+                        <i class="glyphicon glyphicon-floppy-disk"></i> Save
+                    </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 margin-bottom-5">
+                        <div *ngIf="IsLoaded">
+                            <div *ngIf="regXMLData" class="importedData">
+                                <table class="table table-striped" style="font-size: 8px;">
+                                    <thead>
+                                        <tr>
+                                            <th>Account No</th>
+                                            <th>Account Name</th>
+                                            <th>Regional Office</th>
+                                            <th>Account Address 1</th>
+                                            <th>Account Address 2</th>
+                                            <th>Account City</th>
+                                            <th>Account State</th>
+                                            <th>Account Country</th>
+                                            <th>Account Postal Code</th>
+                                            <th>Bill to Service Type</th>
+                                            <th>Ship to #</th>
+                                            <th>Ship to Name</th>
+                                            <th>Ship to Regional Sales Office</th>
+                                            <th>Ship to Address 1</th>
+                                            <th>Ship to Address 2</th>
+                                            <th>Ship to City</th>
+                                            <th>Ship to State</th>
+                                            <th>Ship to Country</th>
+                                            <th>Ship to Postal Code</th>
+                                            <!-- <th style="width: 8%;">Action</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let source of regXMLData; let i = index">
+                                            <td *ngIf="i >1">{{source.AccountNo}}</td>
+                                            <td *ngIf="i >1">{{source.AccountName}}</td>
+                                            <td *ngIf="i >1">{{source.AccountRegionalOffice}}</td>
+                                            <td *ngIf="i >1">{{source.AccountAddress1}}</td>
+                                            <td *ngIf="i >1">{{source.AccountAddress2}}</td>
+                                            <td *ngIf="i >1">{{source.AccountCity}}</td>
+                                            <td *ngIf="i >1">{{source.AccountState}}</td>
+                                            <td *ngIf="i >1">{{source.AccountCountry}}</td>
+                                            <td *ngIf="i >1">{{source.AccountPostalCode}}</td>
+                                            <td *ngIf="i >1">{{source.BillToServiceType}}</td>
+                                            <td *ngIf="i >1">{{source.ShipTo}}</td>
+                                            <td *ngIf="i >1">{{source.ShipToName}}</td>
+                                            <td *ngIf="i >1">{{source.ShipToRegionalSalesOffice}}</td>
+                                            <td *ngIf="i >1">{{source.ShipToAddress1}}</td>
+                                            <td *ngIf="i >1">{{source.ShipToAddress2}}</td>
+                                            <td *ngIf="i >1">{{source.ShipToCity}}</td>
+                                            <td *ngIf="i >1">{{source.ShipToState}}</td>
+                                            <td *ngIf="i >1">{{source.ShipToCountry}}</td>
+                                            <td *ngIf="i >1">{{source.ShipToPostalCode}}</td>
+                                            <!-- <td *ngIf="i >1">
+                                                <span class="fa fa-pencil-square-o text-primary margin-right-10" style="cursor:pointer;font-size:18px;" (click)="editRecord(source)"></span>
+                                                <span class="fa fa-trash text-danger" style="cursor:pointer;font-size:18px;" (click)="openModalDialog(source)"></span>
+                                            </td> -->
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div style="position: absolute; z-index: 9999; left: 38%; top: 40%; border: 0px; font-size: 24px;" *ngIf="!jsonlist">
+                        <!-- *ngIf="!SpecificLotFilesLength"-->
+                        <span> No files found</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

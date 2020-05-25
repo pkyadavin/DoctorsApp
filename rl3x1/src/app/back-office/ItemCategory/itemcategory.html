@@ -1,0 +1,146 @@
+﻿<div class="widget">
+    <div class="widget-header" *ngIf="!IsPopup">
+        <span class="widget-caption ng-scope"><b>{{moduleTitle}}</b> </span>
+    </div>
+    <div class="widget-body" *ngIf="!IsPopup">
+        <div class="form-group">
+            <!--<div class="col-sm-12 col-md-12 col-lg-12">-->
+            <div [ngClass]="{'col-md-4':!IsPopup}">
+                <div class="widget">
+                    <div class="widget-header">
+                        <div class="widget-buttons">
+                            <button class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" type="button" (click)="Show('Add')" *ngIf="!IsPopup && LocalAccess | contains:'Add'">
+                                <i class="glyphicon glyphicon-plus-sign"></i>Add
+                            </button>
+                            <button class="btn btn-sm btn-danger" type="button" (click)="Delete()" *ngIf="currentItem.ItemCategoryID > 0 && !IsPopup && LocalAccess | contains:'Delete'">
+                                <i class="glyphicon glyphicon-trash"></i>Delete
+                            </button>
+                        </div>
+                    </div>
+                    <div class="widget-body no-padding">
+                        <div class="col-md-12" style="height:500px!important;overflow-y:auto!important;">
+                            <br />
+                           <tree-view [directories]="directories" [actionList]="ActionList" [isContext]="isContextMenu" [(selectedID)]="selectedID" (notifyData)="GetData($event)"></tree-view>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="col-md-8" *ngIf="!ListView && !IsPopup">
+                <div>
+                    <form name="ProblemCategoryForm" #f="ngForm" novalidate class="css-form">
+                        <div class="widget">
+                            <div class="widget-header">
+                                <span class="widget-caption" *ngIf="currentItem.ItemCategoryID == 0">
+                                    <b>
+                                        Add {{moduleTitle}} {{CategoryName}}
+                                    </b>
+                                </span>
+                                <span class="widget-caption" *ngIf="currentItem.ItemCategoryID > 0">
+                                    <b>
+                                        <span *ngIf="(LocalAccess | contains:'Edit')">View</span> {{moduleTitle}} {{CategoryName}}
+                                    </b>
+                                </span>
+                                <div class="widget-buttons">
+                                    <button class="btn btn-sm btn-danger" type="button" (click)="Cancel()">
+                                            <i class="fa fa-arrow-left"></i> Back 
+                                    </button>
+                                    <!--<b class="btn-link" (click)="Cancel()"><i class="glyphicon glyphicon-floppy-remove red" style="display:block;"></i></b>-->
+                                    <button class="btn btn-sm btn-primary" type="submit" *ngIf="(LocalAccess | contains:'Edit')" (click)="onSubmit(f.form)">
+                                        <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                                    </button>
+                                    <!--<a href="" widget-maximize></a>-->
+                                    <!--<a href="" widget-collapse></a>-->
+                                </div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="form-group" *ngIf="f.form.touched && !f.form.valid">
+                                    <div class="validationmsg">
+                                        <b> Please fill the asterisk (*) fields. </b>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <br />
+                                <div class="form-group" *ngIf="e_localize.CategoryName.isVisible">
+                                    <label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.CategoryName.headerName}}<span *ngIf="e_localize.CategoryName.isRequired" style="color:red;">*</span>:</label>
+                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                        <input #catname="ngModel" type="text" class="form-control"
+                                               [required]="e_localize.CategoryName.isRequired"
+                                               [disabled]="!e_localize.CategoryName.isEnabled"
+                                               [(ngModel)]="currentItem.CategoryName" name="CatName">
+                                        <!--<div class="clearfix"></div>
+                                        <div style="color:red" [hidden]="catname.valid || catname.pristine">
+                                            {{e_localize.CategoryName.headerName}} is required.
+                                        </div>-->
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="form-group" *ngIf="e_localize.CategoryCode.isVisible">
+                                    <label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.CategoryCode.headerName}}<span *ngIf="e_localize.CategoryCode.isRequired" style="color:red;">*</span>:</label>
+                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                        <input #catcode="ngModel" type="text" class="form-control" name="CatCode"
+                                               [required]="e_localize.CategoryCode.isRequired"
+                                               [disabled]="!e_localize.CategoryCode.isEnabled"
+                                               [(ngModel)]="currentItem.CategoryCode">
+                                        <!--<div class="clearfix"></div>
+                                        <div style="color:red" [hidden]="catcode.valid || catcode.pristine">
+                                            {{e_localize.CategoryCode.headerName}} is required.
+                                        </div>-->
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div *ngIf="e_localize.IsActive.isVisible">
+                                    <div class="form-group">
+                                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.IsActive.headerName}}</label>
+                                        <div class="col-sm-3 col-md-3 col-lg-3">
+
+                                            <div class="checkbox">
+                                                <label >
+                                                    <input #active="ngModel" type="checkbox" [(ngModel)]="currentItem.IsActive"
+                                                           [required]="e_localize.IsActive.isRequired"
+                                                           [disabled]="!e_localize.IsActive.isEnabled"
+                                                           name="IsActive">
+                                                    <span class="text">&nbsp;</span>
+                                                </label>
+                                            </div>
+                                            <!--<div class="clearfix"></div>
+                                                    <div style="color:red" [hidden]="active.valid || active.pristine">
+                                                        {{e_localize.IsActive.headerName}} is required.
+                                                </div>-->
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+            <!--</div>-->
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <div class="widget-body" *ngIf="IsPopup">
+        <div class="form-group">            
+            <div class="widget">
+                <div class="no-padding">
+                    <div class="col-md-12" style="height:350px!important;overflow-y:auto!important;">
+                        <br />
+                        <!-- <tree-view [directories]="directories" [actionList]="ActionList" [isContext]="isContextMenu" [(selectedID)]="selectedID" (notifyData)="GetData($event)"></tree-view> -->
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>            
+        </div>
+    </div>
+</div>
+
+<message #pop cssClass="modal-msg"></message>

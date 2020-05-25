@@ -1,0 +1,50 @@
+﻿<!-- <style>
+.ag-row {
+  display: flex;
+  justify-content: center; /* align horizontal */
+  align-items: center;
+  vertical-align: middle !important;
+}
+</style> -->
+<div class="widget" [hidden]="IsEditorVisible">
+    <div class="widget-body">
+        <div id="divheader" class="widget-header widget-header1">
+            <!-- <span *ngIf="partnerGridType != 'popup'" class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span> -->
+            <div class="input-group pull-left col-xs-3 col-sm-3 col-md-3">
+                <input type="text" name="searchText" (keyup.enter)="onFilterChanged()" class="form-control input-sm" style="margin-top:3px;width:300px;" [(ngModel)]="filterText" placeholder="Search criteria includes all the visible fields..">
+                <span class="input-group-btn">
+                    <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i
+                            class="fa fa-search"></i>Search</button>
+                </span>
+            </div>
+            <div class="widget-buttons">
+
+                <button id="btnAdd" href="javascript:void(0)" class="btn btn-primary btn-sm text-align-center thumb Authorize AUTH_2068" *ngIf="partnerGridType == 'userpopup'" (click)="AddSelected()">
+                    <i class="fa fa-upload"></i>Add Selected
+                </button>
+
+                <button id="btnAdd" href="javascript:void(0)" class="btn btn-primary btn-sm text-align-center thumb Authorize AUTH_2068" *ngIf="partnerType == 'PTR004' && partnerGridType != 'popup' && partnerGridType != 'userpopup'" (click)="selectFile()">
+                    <i class="fa fa-upload"></i>Upload
+                </button>
+
+                <button class="btn btn-sm btn-primary" type="button" (click)="onAddPartner()" *ngIf="partnerGridType != 'popup' && partnerGridType != 'userpopup' && isAddPartner && partnerGridType != 'popup' && partnerGridType != 'userpopup' && LocalAccess | contains:'Add'">
+                    <i class="glyphicon glyphicon-plus-sign"></i>Add
+                </button>
+
+                <button title="Clone" class="btn btn-sm btn-primary" type="button" (click)="ShowForm(singlePartner.PartnerID,true)" *ngIf="isEditPartner && LocalAccess | contains:'Add' && partnerType == 'PTR006'">
+                    <i class="glyphicon glyphicon-duplicate" style="display:block;"></i>
+                </button>
+            </div>
+        </div>
+        <div id="divgrid" class="card1 no-padding">
+            <!--marginTop34-->
+            <ag-grid-angular #agGrid [ngClass]="{'agc-grid-popup':(partnerGridType=='popup' || partnerGridType=='userpopup') }"
+            class="agc-grid ag-theme-balham" (gridReady)="onGridPartnerReady($event)" [gridOptions]="gridOptions" (selectionChanged)="partnerGridType != 'popup' && onSelectionChanged()"
+                (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<Partner-Editor *ngIf="IsEditorVisible" [selectedId]="selectedId" [typeId]="partnerType" [permission]="LocalAccess | contains:'Edit'" (EditorVisibilityChange)="ChangeEditorVisibility($event)">
+</Partner-Editor>

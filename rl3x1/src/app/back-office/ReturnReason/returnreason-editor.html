@@ -1,0 +1,598 @@
+﻿<style>
+  .ui-tabs .ui-tabs-nav li {
+    width: 35px !important;
+  }
+
+  .nav-tabs {
+    margin-bottom: 0;
+    margin-left: 0;
+    border: 0;
+    top: 2px;
+    background: none !important;
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0);
+    -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0);
+  }
+
+  .nav-tabs > li {
+    margin: 0px 3px 0px 3px;
+  }
+
+  .nav-tabs > li > a,
+  .nav-tabs > li > a:focus {
+    border-radius: 0 !important;
+    color: #777;
+    margin-right: -1px;
+    line-height: 24px;
+    position: relative;
+    z-index: 11;
+  }
+
+  .nav-tabs > li.active > a,
+  .nav-tabs > li.active > a:hover,
+  .nav-tabs > li.active > a:focus {
+    color: #262626;
+    border: 0;
+    border-top: 2px solid #333;
+    border-bottom-color: transparent;
+    /*background-color: #fbfbfb;*/
+    z-index: 12;
+    line-height: 24px;
+    margin-top: -2px;
+    box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  .nav-tabs > li a:hover {
+    color: #fff;
+  }
+
+  .nav-tabs > li > a,
+  .nav-tabs > li > a:focus {
+    border-radius: 0 !important;
+    color: #fff;
+  }
+
+  .nav > li.disabled > a {
+    color: #fff;
+    background-color: gray;
+  }
+
+  .nav > li.disabled > a:hover {
+    color: #fff;
+    background-color: gray;
+  }
+
+  .ag-fresh .ag-body {
+    height: 350px !important;
+    overflow-y: scroll !important;
+  }
+</style>
+
+<form #f="ngForm" name="f" novalidate>
+  <div class="widget">
+    <div class="widget-body">
+      <div class="widget-header widget-header1">
+        <div
+          class="input-group pull-left"
+          style="text-align: left; font-size: medium;"
+        >
+          Return Reason Details
+        </div>
+        <div class="widget-buttons">
+          <button
+            type="button"
+            class="btn btn-sm btn-danger"
+            (click)="CancelForm()"
+          >
+            <i class="fa fa-arrow-left"></i> Back
+          </button>
+          <button
+            class="btn btn-sm btn-primary"
+            type="submit"
+            *ngIf="((LocalAccess | contains:'Add') && currentReason.RMAActionCodeID == 0) || (LocalAccess | contains:'Edit')"
+            (click)="onSubmit(f.form)"
+          >
+            <i class="glyphicon glyphicon-floppy-disk"></i>Save
+          </button>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="card1">
+          <div class="widget-body marginTop34">
+            <div
+              class="form-group"
+              *ngIf="f.form.touched && !f.form.valid && isSaveClick"
+            >
+              <div class="validationmsg" style="color:red;">
+                <b> Please fill the asterisk (*) fields. </b>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group row">
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && returnReasonEditor.RMAActionCode.isVisible"
+              >
+                {{returnReasonEditor.RMAActionCode.DisplayName}}<span
+                  *ngIf="returnReasonEditor.RMAActionCode.isRequired"
+                  style="color:red;"
+                  >*</span
+                ></label
+              >
+              <div
+                class="col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && returnReasonEditor.RMAActionCode.isVisible"
+              >
+                <input
+                  type="text"
+                  name="RMAActionCode"
+                  class="form-control"
+                  [(ngModel)]="currentReason.RMAActionCode"
+                  [placeholder]="returnReasonEditor.RMAActionCode.DisplayName"
+                  maxlength="50"
+                  #rmaactioncode="ngModel"
+                  [required]="returnReasonEditor.RMAActionCode.isRequired"
+                  [disabled]="!returnReasonEditor.RMAActionCode.isEnabled"
+                />
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group row">
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && returnReasonEditor.display_name.isVisible"
+              >
+                {{returnReasonEditor.display_name.DisplayName}}<span
+                  *ngIf="returnReasonEditor.display_name.isRequired"
+                  style="color:red;"
+                  >*</span
+                >
+              </label>
+              <div
+                class="col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && returnReasonEditor.RMAActionCode.isVisible"
+              >
+                <input
+                  type="text"
+                  name="RMAActionName"
+                  class="form-control"
+                  [(ngModel)]="currentReason.RMAActionName.enus"
+                  [placeholder]="returnReasonEditor.display_name.DisplayName"
+                  #rmaactionname="ngModel"
+                  [required]="returnReasonEditor.display_name.isRequired"
+                  [disabled]="!returnReasonEditor.display_name.isEnabled"
+                />
+                <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group row">
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && returnReasonEditor.TenantReturnReasonCode.isVisible"
+              >
+                {{returnReasonEditor.TenantReturnReasonCode.DisplayName}}<span
+                  *ngIf="returnReasonEditor.TenantReturnReasonCode.isRequired"
+                  style="color:red;"
+                  >*</span
+                >
+              </label>
+              <div
+                class="col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded && returnReasonEditor.RMAActionCode.isVisible"
+              >
+                <input
+                  type="text"
+                  name="TenantReturnReasonCode"
+                  class="form-control"
+                  [(ngModel)]="currentReason.TenantReturnReasonCode"
+                  [placeholder]="returnReasonEditor.TenantReturnReasonCode.DisplayName"
+                  maxlength="50"
+                  #tenantreturnreasonCode="ngModel"
+                  [required]="returnReasonEditor.TenantReturnReasonCode.isRequired"
+                  [disabled]="!returnReasonEditor.TenantReturnReasonCode.isEnabled"
+                />
+                <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <div
+              class="form-group"
+              style="border:2px solid #ddd; padding-top:10px;padding-bottom:5px;"
+            >
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded"
+              >
+                Parent Reason
+              </label>
+              <div class="col-sm-6 col-md-6 col-lg-6">
+                <table
+                  class="table table-bordered"
+                  *ngIf="currentParentReason.RMAActionCode !='AUTO'"
+                >
+                  <tr>
+                    <td>
+                      <b>
+                        {{returnReasonEditor.display_name.DisplayName}}
+                      </b>
+                    </td>
+                    <td>
+                      {{currentParentReason.display_name}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <b>
+                        {{returnReasonEditor.RMAActionCode.DisplayName}}
+                      </b>
+                    </td>
+                    <td>
+                      {{currentParentReason.RMAActionCode}}
+                    </td>
+                  </tr>
+                </table>
+
+                <label style="float:left!important;" *ngIf="IsLoaded">
+                  <button
+                    class="btn btn-sm btn-link pull-right"
+                    type="button"
+                    style="padding-left:0px !important;"
+                    (click)="openReturnReasonGridPopup()"
+                  >
+                    <span *ngIf="currentParentReason.RMAActionCode == 'AUTO'">
+                      Add Parent Reason</span
+                    >
+                    <span *ngIf="currentParentReason.RMAActionCode != 'AUTO'">
+                      Change Parent Reason</span
+                    >
+                  </button>
+                  <div class="clearfix"></div>
+                </label>
+                <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group row">
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded"
+              >
+                Required on Customer Portal
+              </label>
+              <div class="col-sm-3 col-md-3 col-lg-3">
+                <label
+                  style="float:left!important;margin-left:12px;"
+                  *ngIf="IsLoaded"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox-slider colored-palegreen yesno"
+                    style="left:14px"
+                    [(ngModel)]="currentReason.RequiredonCustomerPortal"
+                    name="RequiredonCustomerPortal"
+                  />
+                  <span class="text"></span>
+                </label>
+                <div class="clearfix"></div>
+              </div>
+
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded"
+              >
+                Required on Back-Office
+              </label>
+              <div class="col-sm-3 col-md-3 col-lg-3">
+                <label
+                  style="float:left!important; margin-left:12px;"
+                  *ngIf="IsLoaded"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox-slider colored-palegreen yesno"
+                    style="left:14px"
+                    [(ngModel)]="currentReason.RequiredonBackOffice"
+                    name="RequiredonBackOffice"
+                  />
+                  <span class="text"></span>
+                </label>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group row">
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded"
+              >
+                File Upload Required
+              </label>
+              <div class="col-sm-3 col-md-3 col-lg-3">
+                <label
+                  style="float:left!important; margin-left:12px;"
+                  *ngIf="IsLoaded"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox-slider colored-palegreen yesno"
+                    style="left:14px"
+                    [(ngModel)]="currentReason.FileUploadRequired"
+                    name="FileUploadRequired"
+                  />
+                  <span class="text"></span>
+                </label>
+                <div class="clearfix"></div>
+              </div>
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded"
+              >
+                Comment Required
+              </label>
+              <div class="col-sm-3 col-md-3 col-lg-3">
+                <label
+                  style="float:left!important; margin-left:12px;"
+                  *ngIf="IsLoaded"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox-slider colored-palegreen yesno"
+                    style="left:14px"
+                    [(ngModel)]="currentReason.CommentRequired"
+                    name="CommentRequired"
+                  />
+                  <span class="text"></span>
+                </label>
+                <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <!-- <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded">
+                    Approval Required
+                </label>
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                    <label style="float:left!important; margin-left:12px;" *ngIf="IsLoaded">
+                        <input type="checkbox" class="checkbox-slider colored-palegreen yesno"
+                            style="left:14px" [(ngModel)]="currentReason.ApprovalRequired"
+                            name="ApprovalRequired" />
+                        <span class="text"></span>
+                    </label>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div> -->
+
+            <div class="form-group row">
+              <label
+                class="control-label col-sm-3 col-md-3 col-lg-3"
+                *ngIf="IsLoaded"
+              >
+                Active
+              </label>
+              <div class="col-sm-3 col-md-3 col-lg-3">
+                <label
+                  style="float:left!important; margin-left:12px;"
+                  *ngIf="IsLoaded"
+                >
+                  <input
+                    type="checkbox"
+                    class="checkbox-slider colored-palegreen yesno"
+                    style="left:14px"
+                    [(ngModel)]="currentReason.isActive"
+                    name="isActive"
+                  />
+                  <span class="text"></span>
+                </label>
+                <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+              <tabs>
+                <tab tabTitle="Translations" *ngIf="Languages">
+                  <div class="col-sm-12 col-md-12 col-lg-12  padding-top-10">
+                    <div
+                      class="form-group"
+                      *ngFor="let lang of Languages | has :'IsDefault':0; let ind = index;"
+                    >
+                      <div class="col-sm-3 col-md-3 col-lg-3">
+                        {{lang.Name}}
+                      </div>
+                      <div class="col-sm-9 col-md-9 col-lg-9">
+                        <input
+                          type="text"
+                          name="RMAActionName{{lang.Code}}"
+                          class="form-control"
+                          *ngIf="IsLoaded"
+                          [(ngModel)]="currentReason.RMAActionName[lang.Code.toString().toLowerCase()]"
+                          placeholder="{{returnReasonEditor.display_name.DisplayName}} in {{lang.Name}}"
+                          #rmaactionname="ngModel"
+                          [disabled]="!returnReasonEditor.display_name.isEnabled"
+                        />
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                  </div>
+                </tab>
+                <tab tabTitle="Rules" *ngIf="IsShowRule">
+                  <div class="widget-header">
+                    <span class="widget-caption pull-left font-40"
+                      ><b>Rules (Applicable Conditions)</b></span
+                    >
+                  </div>
+
+                  <ag-grid-angular
+                    #agGridRuleMap
+                    style="height: 400px; width:100%"
+                    class="ag-theme-balham"
+                    [gridOptions]="agGridOptionRuleMap"
+                    (selectionChanged)="onSelectedRuleMap()"
+                  >
+                  </ag-grid-angular>
+
+                  <div class="clearfix"></div>
+                </tab>
+                <tab tabTitle="Fulfilment Types" *ngIf="ShowFulfilmentType">
+                  <div class="widget">
+                    <div class="widget-header ">
+                      <div class="widget-buttons">
+                        <button
+                          class="btn btn-sm btn-primary"
+                          type="button"
+                          (click)="openFulfilmentPopup()"
+                        >
+                          <i class="glyphicon glyphicon-plus-sign"></i>Add
+                        </button>
+                        <button
+                          class="btn btn-sm btn-danger"
+                          type="button"
+                          *ngIf="CurrentReturnType && CurrentReturnType.RMAActionCodeID > 0"
+                          (click)="RemoveFulfilment()"
+                        >
+                          <i class="glyphicon glyphicon-trash"></i>Delete
+                        </button>
+                      </div>
+                    </div>
+                    <div class="widget-body">
+                      <div class="clearfix"></div>
+                      <ag-grid-angular
+                        #agGridRuleMap
+                        style="height: 400px; width:100%"
+                        class="ag-theme-balham"
+                        [gridOptions]="agGridfulfilment"
+                        (selectionChanged)="onSelectedfulfilmentChanged()"
+                      >
+                      </ag-grid-angular>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <br />
+                  </div>
+                </tab>
+              </tabs>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</form>
+
+<message #pop cssClass="modal-msg"></message>
+
+<bs-modal #fulfilmentPopUp cssClass="modal-xl">
+  <bs-modal-header>
+    <h4 class="modal-title">Add Fulfilment</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <all-returntype
+      [GridType]="'popup'"
+      (notifyFulfilment)="notifyFulfilment($event)"
+    ></all-returntype>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button
+      type="button"
+      class="btn btn-default"
+      (click)="fulfilmentPopUp.dismiss()"
+    >
+      Close
+    </button>
+  </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #retReasonGridPopUp backdrop="static" cssClass="modal-xl">
+  <bs-modal-header>
+    <button
+      type="button"
+      class="close"
+      (click)="retReasonGridPopUp.dismiss()"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Add Parent Return Reason</h4>
+  </bs-modal-header>
+  <bs-modal-body>
+    <div class="widget">
+      <div class="widget-body no-padding">
+        <div class="widget">
+          <div class="widget-header widget-header1">
+            <div class="input-group pull-left margin-left-20 col-md-3">
+              <input
+                type="text"
+                name="searchText"
+                class="form-control input-sm"
+                style="margin-top:3px;width:250px;"
+                [(ngModel)]="filterText"
+                placeholder="Search..."
+              />
+              <span class="input-group-btn">
+                <button
+                  (click)="onFilterChanged()"
+                  class="btn btn-secondary btn-sm"
+                  style="margin-top:3px;"
+                >
+                  <i class="fa fa-search"></i>Search
+                </button>
+              </span>
+            </div>
+            <div class="widget-buttons">
+              <button
+                class="btn btn-sm btn-primary"
+                type="button"
+                (click)="onSelectionChanged()"
+              >
+                <i class="glyphicon glyphicon-plus-sign"></i>Add Selected
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="widget-body no-padding marginTop34"
+            style="overflow:hidden;"
+          >
+            <!-- (selectionChanged)="onSelectionChanged()" -->
+            <ag-grid-angular
+              #agReturnReasonGrid1
+              class="agc-grid ag-theme-balham agc-grid-popup"
+              (gridReady)="onReturnReasonGridReady($event)"
+              [gridOptions]="ReturnReasongridOption"
+              (rowClicked)="onRowClicked($event)"
+            >
+            </ag-grid-angular>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </bs-modal-body>
+  <bs-modal-footer>
+    <button
+      type="button"
+      class="btn btn-default"
+      (click)="retReasonGridPopUp.dismiss()"
+    >
+      Close
+    </button>
+  </bs-modal-footer>
+</bs-modal>

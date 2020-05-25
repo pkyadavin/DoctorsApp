@@ -1,0 +1,894 @@
+<!--Fonts-->
+
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+<!--Head Ends-->
+<nav class="navbar navbar-inverse site-header">
+    <div class="deux-container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img src="../../assets/img/RL-logo.png" alt="ReverseLogix"></a>
+        </div>
+        <div class="navbar-collapse collapse main-navigation site-navigation" id="bs-example-navbar-collapse-1"
+            aria-expanded="false" style="height: 1px;">
+            <ul class="nav navbar-nav navbar-right nav-menu" style="margin-top: 12px;">
+                <li><a href="http://www.reverselogix.com/">Home</a></li>
+                <li><a href="https://www.reverselogix.com/why.html">Why</a></li>
+                <li><a href="https://www.reverselogix.com/technology.html">Technology</a></li>
+                <li><a href="https://www.reverselogix.com/segments.html">Segments</a></li>
+                <li><a href="https://www.reverselogix.com/about.html">About</a></li>
+                <li><a href="http://www.new2019.reverselogix.com/more/">More</a></li>
+                <li><a href="https://www.reverselogix.com/contact.aspx">Contact</a></li>
+            </ul>
+
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</nav>
+<!--Body-->
+<div class="clearfix"></div>
+<div class="videoarea videodimention" style="background-image:url('assets/img/homebanner.png');padding-top:3vw!important;padding-bottom:3vw!important;">
+    <div class="compartment">
+        <div class="videocontent">
+            <div class="blank10"></div>
+            <h1 class="h2" style="margin-bottom: 0px;margin-top: 0px;">Welcome to ReverseLogix</h1>
+            <p><img width="147" height="33" src="assets/img/h2-underline-padding-top.png" class="vc_single_image-img attachment-full"
+                    alt=""></p>
+            <!--<p class="subText"><strong></strong></p>-->
+            <p class="subText" id="headingText">
+                Let’s get started. Please enter your Profile information and Subscription Type in the columns provided
+                below.
+                You will be the initial Administrator and will be responsible for selecting the configuration options
+                needed to prepare your company’s Domain Environment within Reverselogix.
+                You will be able to delegate this responsibility to other authorized users later.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<div class="container-fuild" style="background-color:#f8f8f8;">
+    <div class="container">
+        <div style="height:10px;"></div>
+        <div id="registration-form">
+            <form #f="ngForm">
+                <div class="col-md-12"><span style="font-size:18px;font-weight: bold;">Tenant Contact</span>
+                    <div class="clearfix"></div>
+                    <hr class="hr">
+                </div>
+                <div class="col-md-6">
+                    <div class="formBG">
+                        <div class="form-group">
+                            <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">User ID (Email):<span
+                                    class="requiredfield">*</span></label>
+                            <div class="clearfix"></div>
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                <div class="form-group">
+                                    <span class="input-icon icon-right inverted">
+                                        <input name="email" type="email" autocomplete="off" id="email" maxlength="50"
+                                            class="form-control" (blur)="checkemail()" validateEmail [(ngModel)]="CurrentTenantdata.email"
+                                            [ngModelOptions]="{standalone: true}" />
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                <label class="control-label">Password:<span class="requiredfield">*</span><span style="cursor:pointer;"
+                                        data-toggle="tooltip" data-placement="top" title="(Password must be between 8 and 32 characters long and must contain at least 1 upper case letter, 1 lower case letter, 1 number and 1 special character.)"><i
+                                            class="fa fa-question-circle"></i></span></label>
+                                <div class="form-group">
+                                    <span class="input-icon icon-right inverted">
+                                        <input name="pswd" id="password" type="password" #password="ngModel"
+                                            autocomplete="off" maxlength="50" validateEqual="confirmpassword" reverse="true"
+                                            class="form-control" [(ngModel)]="CurrentTenantdata.password"
+                                            [ngModelOptions]="{standalone: true}" placeholder="e.g. Password@123" />
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                <label class="control-label">Confirm Password:<span class="requiredfield">*</span></label>
+                                <div class="form-group">
+                                    <span class="input-icon icon-right inverted">
+                                        <input type="password" id="confirmpassword" name="confirmpassword" autocomplete="off"
+                                            maxlength="50" #confirmpassword="ngModel" validateEqual="password" reverse="false"
+                                            placeholder="e.g. Password@123" class="form-control"
+                                            [(ngModel)]="CurrentTenantdata.confirmpassword" [ngModelOptions]="{standalone: true}" />
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Your Company’s
+                                Name:<span class="requiredfield">*</span></label>
+                            <div class="clearfix"></div>
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                <div class="form-group">
+                                    <span class="input-icon icon-right inverted">
+                                        <input name="companyname" type="text" autocomplete="off" id="companyname"
+                                            (focusout)="CheckCompanyIfExists()" maxlength="200" [(ngModel)]="CurrentTenantdata.companyname"
+                                            [ngModelOptions]="{standalone: true}" class="form-control" />
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Your
+                                Preferred
+                                Domain Name:<span class="requiredfield">*</span></label>
+                            <div class="clearfix"></div>
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                <div class="form-group">
+                                    <span class="input-icon icon-right inverted">
+                                        <input type="text" name="domain" class="form-control" id="domain"
+                                            autocomplete="off" placeholder="Use single word with letters upto 20 characters"
+                                            maxlength="20" style="width:68%;float:left;" (focusout)="CheckDomaIfExists()"
+                                            [(ngModel)]="CurrentTenantdata.domainname" [ngModelOptions]="{standalone: true}" onkeyup="this.value = this.value.toLowerCase();" />
+                                        
+                                        <div style="padding:7px 5px 7px 0px;text-align:center;cursor:pointer;border:1px solid #cccccc!important;background-color:#f8f8f8!important;color:#666666!important;font-weight: bold;border-radius:0px;">
+                                            .reverselogix.co
+                                            <div style="float:right;margin-right:5px;">
+                                                <i id="Domaini" class="fa fa-thumbs-up fa-lg" style="display:none;"></i>
+                                                <i class="fa fa-info-circle tooltip-right white" style="display:none;"
+                                                    title="sub domain name for your Company Portal within <i>Reverselogix</i>"></i>
+                                            </div>
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-12 col-md-2 col-lg-2 col-xs-12">
+                                <label class="control-label">Prefix:<span class="requiredfield">*</span></label>
+                                <div class="clearfix"></div>
+                                <div>
+                                    <div class="form-group">
+                                        <span class="input-icon icon-right inverted">
+                                            <select id="ddlPrefix" style="padding-left:0px!important;padding-right:0px!important;"
+                                                name="ddlPrefix" [(ngModel)]="CurrentTenantdata.prefix" 
+                                                class="form-control">
+                                                <option value="Miss">Miss</option>
+                                                <option value="Mr.">Mr.</option>
+                                                <option value="Mrs.">Mrs.</option>
+                                                <option value="Ms.">Ms.</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-5 col-lg-5 col-xs-12">
+                                <label class="control-label ">First Name:<span class="requiredfield">*</span></label>
+                                <div class="clearfix"></div>
+                                <div>
+                                    <div class="form-group">
+                                        <span class="input-icon icon-right inverted">
+                                            <input name="firstname_error" type="text" autocomplete="off" id="firstname"
+                                                maxlength="200" [(ngModel)]="CurrentTenantdata.firstname" class="form-control" />
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-5 col-lg-5 col-xs-12">
+                                <label class="control-label">Last Name:<span class="requiredfield">*</span></label>
+                                <div class="clearfix"></div>
+                                <div>
+                                    <div class="form-group">
+                                        <span class="input-icon icon-right inverted">
+                                            <input name="lastname" type="text" autocomplete="off" id="lastname" 
+                                                maxlength="200" [(ngModel)]="CurrentTenantdata.lastname" class="form-control" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="blank10"></div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="formBG">
+                        <div class="form-group">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                <label class="control-label">Address Line 1:<span class="requiredfield">*</span></label>
+                                <div class="clearfix"></div>
+                                <div class="form-group">
+                                    <span class="input-icon icon-right inverted">
+                                        <input name="address1" type="text" autocomplete="off" maxlength="100" id="address1"
+                                            class="form-control" [(ngModel)]="CurrentTenantdata.address1" />
+                                    </span>
+                                </div>
+                            </div>                            
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="form-group">                            
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                <label class="control-label">Address Line 2:</label>
+                                <div class="clearfix"></div>
+                                <div class="form-group">
+                                    <span class="input-icon icon-right inverted">
+                                        <input name="address2" type="text" autocomplete="off" maxlength="100" id="address2"
+                                            class="form-control" [(ngModel)]="CurrentTenantdata.address2" />
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                <label class="control-label">Home Country:<span class="requiredfield">*</span></label>
+                                <div class="clearfix"></div>
+                                <span class="input-icon icon-right inverted">
+                                    <select name="ddlcontrol" type="text" id="ddlcontrol" class="form-control" (change)="selectCountryDDL($event)">
+                                        <option [value]="''"></option>
+                                        <option [value]="i.CountryID" *ngFor="let i of countries">{{i.CountryName}}</option>
+                                    </select>
+                                </span>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                <label class="control-label">State:<span class="requiredfield">*</span></label>
+                                <div class="clearfix"></div>
+                                <span class="input-icon icon-right inverted">
+                                    <select name="ddlstate" type="text" id="ddlstate" class="form-control" (change)="selectStateDDL($event)">
+                                        <option [value]="''"></option>
+                                        <option [value]="i.StateID" *ngFor="let i of states">{{i.StateName}}</option>
+                                    </select>
+                                </span>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                <label class="control-label">City:<span class="requiredfield">*</span></label>
+                                <div class="clearfix"></div>
+
+                                <span class="input-icon icon-right inverted">
+                                    <input name="city" type="text" autocomplete="off" maxlength="50" id="city" 
+                                        class="form-control" [(ngModel)]="CurrentTenantdata.city" />
+                                </span>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                <label class="control-label">Zip Code:<span class="requiredfield">*</span></label>
+                                <div class="clearfix"></div>
+
+                                <span class="input-icon icon-right inverted">
+                                    <input name="zipcode" type="text" autocomplete="off" maxlength="100" id="zipcode"
+                                        class="form-control" [(ngModel)]="CurrentTenantdata.zipcode" />
+                                </span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                <label class="control-label">Operating
+                                    Currency:<span class="requiredfield">*</span></label>
+                                <div class="clearfix"></div>
+                                <div class="form-group">
+                                    <span class="input-icon icon-right inverted">
+                                        <select #tenantadmin="ngModel" [(ngModel)]="CurrentTenantdata.currency" name="TenantAdmin"
+                                            class="form-control">
+                                            <option [value]="i.CurrencyCode" *ngFor="let i of currencies">{{i.CurrencyCode}}</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                <label class="control-label">Mobile Number:<span class="requiredfield">*</span></label>
+                                <div class="clearfix"></div>
+                                <div class="form-group">
+                                    <div class="form-control" style="width:60px;float:left;padding: 6px 12px!important;border-radius:0px;border-right: 0px!important;"
+                                        [innerHTML]="countrydata.TeleCode==null?'':'(+'+countrydata.TeleCode+')'"></div>
+                                    <input name="phone" type="text" id="Phone" #Phone="ngModel" style="width:calc(100% - 60px);float:left;"
+                                        autocomplete="off" class="form-control" (focusout)="PhoneValue()" [(ngModel)]="CurrentTenantdata.phone"
+                                        [ngModelOptions]="{standalone: true}" />
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="blank10"></div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+                <div style="padding-top:20px;padding-bottom:20px;">
+                    <div class="col-md-12">
+                        <span style="font-size:18px;font-weight: bold;">Subscription Type</span>
+                        <!-- <div style="float:right;position:relative;padding-top:5px;">
+                            <i style="font-size:18px;" class="fa fa-info-circle tooltip-right" onmouseout="UnTip()"
+                                onmouseover="Tip('Select your orders as per your requirment.')"></i>
+                        </div> -->                       
+                        <div class="clearfix"></div>
+                        <hr class="hr">
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <div class="col-md-12">
+                        <div class="formBG">
+                            <div *ngFor="let i of features;let idx = index">  
+                                <div class="col-md-6">                                    
+                                    <div class="panel panel-default ng-isolate-scope ">
+                                        <div class="panel-heading" style="cursor:pointer;" (click)="selectModules(i)">
+                                            <h4 class="panel-title">
+                                                <a>
+                                                    <span class="ng-binding">
+                                                        {{i.FeatureName}}
+                                                    </span>
+                                                </a>
+                                                <div style="float:right;padding-top:0px;">
+                                                    <i style="font-size:20px;" [ngClass]="{'fa-square-o': !i.IsSelected, 'fa-check-square-o': i.IsSelected}"
+                                                        class="fa fa-check-square-o" aria-hidden="true"></i>
+                                                </div>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <!-- <div *ngIf="i.FeatureCode =='B2BReturn'">
+                                        <div class="form-group" *ngIf="IsBusinessSupportSelected" style="margin-bottom: 10px!important;color:#ffffff;">
+                                            <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Your
+                                                Preferred
+                                                Domain Name:<span class="requiredfield">*</span></label>
+                                            <div class="clearfix"></div>
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right inverted">
+                                                        <input type="text" name="domain" class="form-control" id="domain"
+                                                            autocomplete="off" placeholder="Use single word with letters upto 20 characters"
+                                                            maxlength="20" style="width:68%;float:left;" (focusout)="CheckDomaIfExists()"
+                                                            [(ngModel)]="CurrentTenantdata.domainname" [ngModelOptions]="{standalone: true}" onkeyup="this.value = this.value.toLowerCase();" />
+                                                        
+                                                        <div style="padding:7px 5px 7px 0px;text-align:center;cursor:pointer;border:1px solid #cccccc!important;background-color:#f8f8f8!important;color:#666666!important;font-weight: bold;border-radius:0px;">
+                                                            .reverselogix.co
+                                                            <div style="float:right;margin-right:5px;">
+                                                                <i id="Domaini" class="fa fa-thumbs-up fa-lg" style="display:none;"></i>
+                                                                <i class="fa fa-info-circle tooltip-right white" style="display:none;"
+                                                                    title="sub domain name for your Company Portal within <i>Reverselogix</i>"></i>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div> -->
+                                    <!-- <div *ngIf="i.FeatureCode =='B2CReturn'">
+                                        <div class="form-group" *ngIf="IsConsumerSupportSelected" style="margin-bottom: 10px!important;color:#ffffff;">
+                                            <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Your
+                                                Preferred
+                                                Domain For Consumer Portal:<span class="requiredfield">*</span></label>
+                                            <div class="clearfix"></div>
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                <div class="form-group">
+                                                    <span class="input-icon icon-right inverted">
+                                                        <input type="text" name="cdomain" class="form-control" [readonly]="tid > 0"
+                                                            id="Cdomain" autocomplete="off" maxlength="20" placeholder="Use single word with letters upto 20 characters"
+                                                            style="width:68%;float:left;" 
+                                                            (focusout)="CheckCDomaIfExists()" [(ngModel)]="CurrentTenantdata.consumerdomain"
+                                                            [ngModelOptions]="{standalone: true}" onkeyup="this.value = this.value.toLowerCase();" />
+                                                        
+                                                        <div style="padding:7px 5px 7px 0px;text-align:center;cursor:pointer;border:1px solid #cccccc!important;background-color:#f8f8f8!important;color:#666666!important;font-weight: bold;border-radius:0px;">
+                                                            .reverselogix.co
+                                                            <div style="float:right;margin-right:5px;">
+                                                                <i id="Domaini" class="fa fa-thumbs-up fa-lg" style="display:none;"></i>
+                                                                <i class="fa fa-info-circle tooltip-right white" style="display:none;"
+                                                                    title="sub domain name for your Company Portal within <i>Reverselogix</i>"></i>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="blank10"></div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>    -->
+                                </div>
+                                <!-- <div *ngIf="idx==1"  class="clearfix"></div>                              -->
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label  col-sm-2 col-md-2 col-lg-2 col-xs-12" style="padding:8px!important"><b>Captcha:</b><span
+                                            class="requiredfield">*</span></label>
+                                    <div class="col-sm-10 col-md-10 col-lg-10 col-xs-12 no-padding-right">
+                                        <div class="form-group">
+                                            <span class="input-icon icon-right inverted">
+                                                <input name="captcha" id="txtCapcha" style="width:68%;float:left;height:32px!important;"
+                                                    type="text" autocomplete="off" maxlength="10" class="form-control"
+                                                    [(ngModel)]="txtCapcha" placeholder="Enter Captcha Code" />
+                                                <div style="padding:4px 5px 3px 0px;text-align:center;cursor:pointer;font-size:18px;font-weight:bold;letter-spacing:6px;color:#333333;background-image:url('assets/img/capchabg.png');border:1px solid rgba(255, 255, 255, 0.4 )!important;">
+                                                    {{CapchaText}}
+                                                    <div style="float:right;margin-right:10px;"><i class="fa fa-refresh"
+                                                            (click)="refreshCapcha()"></i></div>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-12" style="padding-top: 15px;">
+                    <div class="text-center">
+                        <button type="submit" id="btnSubmit" class="btn btn-lg btn-default margin-right-10" required
+                            (click)="selectedPlan('Trial');tenantSignup('Trial')">Free Trial</button>
+                        <button class="btn btn-lg btn-primary" (click)="selectedPlan('pro');tenantSignup('GOTOPRO')">Paid
+                            Version</button>
+                    </div>
+                </div>
+                <div class="blank60"></div>
+            </form>
+
+        </div>
+        <div id="payment-form" style="display:none;">
+            <form id="paymentForm" name="payuform" method="POST" novalidate>
+                <div class="col-md-6">
+                    <div class="panel panel-default panel-hovered panel-stacked mb20">
+                        <div class="panel-heading">
+                            <span style="font-size:18px;">Buy Other Features</span>
+                            <div style="float:right;position:relative;padding-top:3px;">
+                                <i style="font-size:18px;color:#2DC3E8;" class="fa fa-info-circle" onmouseout="UnTip()"
+                                    onmouseover="Tip('Select other orders as per your requirment.')"></i>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group" *ngFor="let i of features | has:'FeatureType':'AddOn'">
+                                <div class="panel panel-default ng-isolate-scope ">
+                                    <div class="panel-heading" style="cursor:pointer;" (click)="addAddOns(i.ProductFeatureID)">
+                                        <h4 class="panel-title">
+                                            <a>
+                                                <span class="ng-binding"> {{i.FeatureName}} </span>
+                                            </a>
+                                            <div style="float:right;margin-top:0px;">
+
+                                                <div style="position:relative;float:left;"><span>${{i.Price}}/{{i.PriceUnit}}-Days&nbsp;</span></div>
+                                                <i style="font-size:20px;float:left;margin-top:-1px;" class="fa fa-plus-square"
+                                                    aria-hidden="true"></i>
+                                            </div>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="panel panel-default panel-hovered panel-stacked mb20">
+                        <div class="panel-heading">
+                            <span style="font-size:18px;">Payment Info</span>
+                            <div style="float:right;position:relative;padding-top:3px;">
+                                <!--<i style="font-size:18px;color:#2DC3E8;" class="fa fa-info-circle"></i>-->
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Name On Card:<span
+                                    class="requiredfield">*</span></label>
+                            <div class="form-group col-md-12">
+                                <span class="input-icon icon-right inverted">
+                                    <input name="nameoncard" type="text" autocomplete="off" maxlength="50" id="nameoncard"
+                                        class="form-control" placeholder=""
+                                        [(ngModel)]="CurrentTenantdata.nameoncard" />
+                                    <i class="fa fa-info-circle tooltip-right" onmouseout="UnTip()" onmouseover="Tip('Your name on card.')"></i>
+                                    <!-- <div class="jq-toast-single inputerrorpop" id="cardname_error">
+                                        <i class="fa fa-info-circle"></i>
+                                        <span></span>
+                                    </div> -->
+                                </span>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Card Number:<span
+                                    class="requiredfield">*</span></label>
+                            <div class="form-group col-md-12">
+                                <span class="input-icon icon-right inverted">
+                                    <input name="cardnumber" style="width:80%;float:left;" type="text" autocomplete="off"
+                                        maxlength="50" id="cardnumber" class="form-control"
+                                        placeholder="" [(ngModel)]="CurrentTenantdata.cardnumber" />
+                                    <div style="padding:1px 5px 1px 0px;text-align:center;cursor:pointer;color:#333333;background-color:#6CD5EE;">
+                                        <img src="../../../Assets/img/visa.png" />&nbsp;<img src="../../../Assets/img/mastercard.png" />
+                                        <div style="float:right;margin-right:5px;padding-top:6px;">
+                                            <i class="fa fa-info-circle tooltip-right white" onmouseout="UnTip()"
+                                                onmouseover="Tip('Your card number.')"></i>
+                                        </div>
+                                    </div>
+                                    <div class="jq-toast-single inputerrorpop" id="cardnumber_error">
+                                        <i class="fa fa-info-circle"></i>
+                                        <span></span>
+                                    </div>
+                                </span>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="form-group col-md-12">
+                                <div class="col-md-6" style="padding-left:0px;padding-right:2px">
+                                    <label class="control-label col-sm-12 col-md-12 col-lg-12 col-xs-12" style="padding-left:2px;padding-right:2px">Expiration:<span
+                                            class="requiredfield">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <span class="input-icon icon-right inverted">
+                                        <input name="cardexpiry" type="text" autocomplete="off" maxlength="50" id="cardexpiry"
+                                            class="form-control" placeholder="MM/YY"
+                                            [(ngModel)]="CurrentTenantdata.cardexpiry" />
+                                        <i class="fa fa-info-circle tooltip-right" onmouseout="UnTip()" onmouseover="Tip('Expiration on card.')"></i>
+                                        <!-- <div class="jq-toast-single inputerrorpop" id="cardexpiry_error">
+                                            <i class="fa fa-info-circle"></i>
+                                            <span></span>
+                                        </div> -->
+                                    </span>
+                                </div>
+
+                                <div class="col-md-6" style="padding-left:0px;padding-right:2px">
+                                    <label class="control-label col-sm-12 col-md-12 col-lg-12 col-xs-12" style="padding-left:2px;padding-right:2px">CVV:<span
+                                            class="requiredfield">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <span class="input-icon icon-right inverted">
+                                        <input name="cvvnumber" type="password" style="width:75%;float:left;"
+                                            autocomplete="off" maxlength="50" id="cvvnumber" 
+                                            class="form-control" placeholder="" [(ngModel)]="CurrentTenantdata.cvvnumber" />
+                                        <div style="padding:4px 5px 4px 0px;text-align:center;cursor:pointer;color:#333333;background-color:#6CD5EE;">
+                                            <img src="../../../Assets/img/cvv.png" />
+                                            <div style="float:right;margin-right:5px;padding-top:3px;"> <i class="fa fa-info-circle tooltip-right white"
+                                                    onmouseout="UnTip()" onmouseover="Tip('Your card cvv number.')"></i></div>
+                                        </div>
+                                        <!-- <div class="jq-toast-single inputerrorpop" id="cardcvv_error">
+                                            <i class="fa fa-info-circle"></i>
+                                            <span></span>
+                                        </div> -->
+                                    </span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="blank5"></div>
+                            <div class="clearfix"></div>
+                            <div class="form-group col-md-12">
+                                We will save this card for monthly transaction of your ReverseLogix subscription.<div
+                                    class="clearfix"></div>
+                                <i>At any point of time you can add/remove your card information.</i>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default panel-hovered panel-stacked mb20">
+                        <div class="panel-heading">
+                            <span style="font-size:18px;">Subscription Type</span>
+                            <!-- <div style="float:right;position:relative;padding-top:3px;">
+                                <i style="font-size:18px;color:#2DC3E8;" class="fa fa-info-circle tooltip-right"
+                                    onmouseout="UnTip()" onmouseover="Tip('Select your subscription type as per your requirment.')"></i>
+                            </div> -->
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group" *ngFor="let i of features">
+                                <div class="panel panel-default ng-isolate-scope ">
+                                    <div class="panel-heading" style="cursor:pointer;" (click)="selectModules(i)">
+                                        <h4 class="panel-title">
+                                            <a>
+                                                <span class="ng-binding">{{i.FeatureName}}</span>
+                                            </a>
+                                            <div style="float:right;padding-top:0px;">
+                                                <i style="font-size:20px;" [ngClass]="{'fa-square-o': !i.IsSelected, 'fa-check-square-o': i.IsSelected}"
+                                                    class="fa fa-check-square-o" aria-hidden="true"></i>
+                                            </div>
+                                        </h4>
+                                    </div>
+                                </div>
+                                <!-- <div *ngIf="i.FeatureCode =='FC00015'"> *ngIf="IsConsumerSupportSelected"-->
+                                <div class="form-group" style="margin-bottom: 10px!important;">
+                                    <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Your
+                                        Preferred Domain For Consumer Portal:<span class="requiredfield">*</span></label>
+                                    <div class="clearfix"></div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                        <div class="form-group">
+                                            <span class="input-icon icon-right inverted">
+                                                <input type="text" name="cdomain" class="form-control" [readonly]="tid > 0"
+                                                    id="Cdomain" autocomplete="off" maxlength="20" placeholder="Use single word with letters upto 20 characters"
+                                                    style="width:68%;float:left;" (focusout)="CheckCDomaIfExists()"
+                                                    [(ngModel)]="CurrentTenantdata.consumerdomain" [ngModelOptions]="{standalone: true}" />
+                                                <div style="padding:7px 5px 7px 0px;text-align:center;cursor:pointer;color:#333333;background-color:#6CD5EE;">
+                                                    .reverselogix.co
+                                                    <div style="float:right;margin-right:5px;">
+                                                        <i id="CDomaini" class="fa fa-thumbs-up fa-lg" style="display:none;"></i>
+                                                        <i class="fa fa-info-circle tooltip-right white" style="display:none;"
+                                                            title="sub domain name for your company’s Customer Portal."></i>
+                                                    </div>
+                                                </div>                                                
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="blank10"></div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <!-- </div> -->
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <button class="btn btn-lg  blackText" style="background-color:gray!important;color:#FFFFFF!important;"
+                            (click)="goToProfile()">
+                            <i style="font-size:20px;" class="fa fa-reply" aria-hidden="true"></i>&nbsp;
+                            Review Profile and Orders
+                        </button>
+
+                        <input type="hidden" name="key" value="gtKFFx" />
+                        <input type="hidden" name="hash_string" value="" />
+                        <input type="hidden" name="amount" value="1" />
+                        <input type="hidden" name="productinfo" value="test" />
+                        <input type="hidden" name="firstname" value="reverse" />
+                        <input type="hidden" name="email" value="reverse@reverselogix.com" />
+                        <input type="hidden" name="phone" value="4564556564" />
+                        <input type="hidden" name="surl" value="https://reverselogix.io/" />
+                        <input type="hidden" name="furl" value="https://reverselogix.io/" />
+                        <input type="hidden" name="hash" value="ab4514a6f33fb7208d7181ee6762483938a43d7258b0d00decd2eab4d2aee2704d2d96ab2a6aa98b53a8c824c34053bfd8d0a8f254c4251176f52a2e995c0ddb" />
+                        <input type="hidden" name="txnid" value="545656" />
+
+                        <input type="submit" (click)="selectedPlan('PRO');tenantSignup('PRO')" formnovalidate="formnovalidate"
+                            class="btn btn-lg  blackText" style="background-color:rgba(45, 195, 232, 1)!important;color:#FFFFFF!important;"
+                            value="Submit" />
+                    </div>
+                </div>
+                <div class="blank60"></div>
+
+                <!--<div class="actions actions-footer" id="tabbedwizard-actions">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm btn-prev" disabled="disabled"> <i class="fa fa-angle-left"></i>Prev</button>
+                        <button type="button" class="btn btn-default btn-sm btn-next" data-last="Finish">Next<i class="fa fa-angle-right"></i></button>
+                    </div>
+                </div>-->
+            </form>
+        </div>
+        <div id="divprofileconfirmation" style="display:none;">
+            <div>
+                <div class="col-md-6 formBG">
+                    <div class="col-md-12">
+                        <span style="font-size:18px;font-weight: bold;">Please check your profile info before
+                            submission!</span>
+                        <div style="float:right;position:relative;padding-top:3px;">
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr class="hr">
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>User ID(Email):</b>
+                            {{CurrentTenantdata.email}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>Your Preferred Domain
+                                Name:</b> {{CurrentTenantdata.domainname}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group" *ngIf="CurrentTenantdata.consumerdomain !=''">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>Your Preferred Domain
+                                For Consumer Portal:</b> {{CurrentTenantdata.consumerdomain}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>Your Company’s Name:</b>
+                            {{CurrentTenantdata.companyname}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>Prefix:</b>
+                            {{CurrentTenantdata.prefix}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>First Name:</b>
+                            {{CurrentTenantdata.firstname}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>Last Name:</b>
+                            {{CurrentTenantdata.lastname}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>Address Line 1:</b>
+                            {{CurrentTenantdata.address1}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>Address Line 2:</b>
+                            {{CurrentTenantdata.address2}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>Home Country:</b>
+                            {{CurrentTenantdata.country}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>State:</b>
+                            {{CurrentTenantdata.state}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>City:</b>
+                            {{CurrentTenantdata.city}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>Zip Code:</b>
+                            {{CurrentTenantdata.zipcode}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>Operating Currency:</b>
+                            {{CurrentTenantdata.currency}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>Mobile Number:</b>
+                            +{{countrydata.TeleCode}} {{CurrentTenantdata.phone}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group" id="divTrialUser">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12"><b>Number of Users:</b>
+                            {{CurrentTenantdata.noofusers}}</label>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group" id="divPaidUser">
+                        <label class="control-label  col-md-4"><b>Number of Users:</b></label>
+                        <div class="col-md-3">
+                            <select class="form-control" id="ddlNumber" name="ddlNumber">
+                                <option *ngFor="let i of NoOfUsers;" [value]="i.Description">
+                                    {{i.Description}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group" id="divPaidYear">
+                        <label class="control-label  col-md-4"><b>Number of Year:</b></label>
+                        <div class="col-md-3">
+                            <select class="form-control" id="ddlValidYear" name="ddlValidYear">
+                                <option *ngFor="let i of NoOfYear;" [value]="i.Description">
+                                    {{i.Description}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="col-md-6" style="padding-top:20px;padding-bottom:20px;">
+                    <div class="col-md-12">
+                        <span style="font-size:18px;font-weight:bold;">Your Subscription Type</span>
+                        <div style="float:right;position:relative;padding-top:3px;">
+                            <!--<i style="font-size:18px;color:#2DC3E8;" class="fa fa-info-circle"></i>-->
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <hr class="hr">
+
+                    <div class="form-group">
+
+                        <div class="panel ng-isolate-scope " *ngFor="let i of selectedFeatures">
+                            <div class="panel-heading" style="cursor:pointer;">
+                                <h4 class="panel-title">
+                                    <a>
+                                        <span class="ng-binding"> {{i.FeatureName}} </span>
+                                    </a>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                </div>
+                <div class="blank30"></div>
+                <div class="clearfix"></div>
+                <div class="col-md-12" style="padding-top: 15px;">
+                    <div class="text-left">
+                        <button type="submit" id="btnSubmit" class="btn btn-lg btn-default margin-right-10" required
+                            (click)="proceedToTerms()">Continue</button>
+                        <button class="btn btn-lg btn-primary" (click)="gotoEditProfile()">Go back</button>
+                    </div>
+                </div>
+                <div class="blank60"></div>
+            </div>
+        </div>
+        <div id="divtermsandconditions" style="display:none;position: relative;z-index: 999999;padding:10px 0px;">
+            <div style="background-color:#FFFFFF; ">
+                <div style="width:100%;text-align:center;height:50px;padding:10px;">
+                    <h3 style="margin:0px!important;"><strong>{{TermsAndConditions.Name}}</strong></h3>
+                    <i style="font-size:11px;font-weight:bold;">Please Accept/Reject these Terms at the bottom of this
+                        page.</i>
+                    <br />
+                </div>
+                <hr class="hr" />
+                <div class="blank10 clearfix"></div>
+                <div style="width:100%;">
+                    <div style="padding:10px;" [innerHTML]="TermsAndConditions.Value">                        
+                    </div>
+                </div>
+                <div class="blank30"></div>
+
+                <div class="clearfix"></div>
+                
+                <div class="blank30"></div>
+                <div class="clearfix"></div>
+                <div class="col-md-12" style="padding-top: 15px;">
+                    <div class="text-left">
+                        <button type="submit" id="btnSubmit" class="btn btn-lg btn-default margin-right-10" required
+                            (click)="tenantSignup('1')">Accept</button>
+                        <button class="btn btn-lg btn-primary margin-right-10" (click)="tenantSignup('0')">Reject</button>
+                        <button class="btn btn-lg btn-primary" (click)="goToReviewProfile()">Go back</button>                        
+                    </div>
+                </div>
+                <div class="blank60"></div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="height60"></div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<message #pop cssClass="modal-msg"></message>
+
+<div class="modal fade" tabindex="-1" id="reject-popup">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">          
+          <h4 class="modal-title" id="myModalLabel">Alert</h4>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to reject Terms & Condition? This will void all information entered by you.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="RejectTenantSignup('yes')">Yes</button>
+          <button type="button" class="btn btn-primary" (click)="RejectTenantSignup('no')">No</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<ngx-ui-loader fgsType="rectangle-bounce"></ngx-ui-loader>
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+
+<!--Body Ends-->

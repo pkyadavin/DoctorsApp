@@ -1,0 +1,140 @@
+﻿
+
+<div class="" [hidden]="!ListView">
+    <div class="widget">
+        <div class="widget-header">
+            <span class="widget-caption pull-left font-40"><b>MetaData Group</b> </span>
+            <div class="col-sm-3 col-md-3 col-lg-3">
+
+                <span class="pull-left" style="margin-top:4px;width:200px;">
+                    <select name="MetaDataGrp" [(ngModel)]="SelectedMataDataGroup" class="form-control" #MetadataGrp="ngModel" (ngModelChange)="GetSelectedMataDataGroup($event)">
+                        <option [value]="null" selected>--Select MetaData Group--</option>
+                        <option *ngFor="let grp of metaDataGroups" [value]="grp.TypeGroup">{{grp.TypeGroup}}</option>
+                    </select>
+                </span>
+            </div>
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+            <div class="input-group pull-left col-md-3">
+                <input type="text" name="searchText" class="input-sm pull-left margin-left-20" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" [(value)]="filterText" (keyup.enter)="onFilterChanged($event)" placeholder="Search...">
+                <span class="input-group-btn pull-left">
+                    <button (click)="onFilterChanged($event)" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                </span>
+            </div>
+            <div class="widget-buttons">
+                <button class="btn btn-sm btn-primary" type="button" (click)="Show()" *ngIf="LocalAccess | contains:'Add'">
+                    <i class="glyphicon glyphicon-plus-sign"></i>Add
+                </button>
+                <button class="btn btn-sm btn-primary" type="button" (click)="ShowMetaData()" *ngIf="CurrentMetaData.TypeLookUpID > 0">
+                    <i class="glyphicon glyphicon-edit"></i>View
+                </button>
+                <button class="btn btn-sm btn-danger" type="button" (click)="Delete()" *ngIf="(LocalAccess | contains:'Delete') && CurrentMetaData.TypeLookUpID > 0">
+                    <i class="glyphicon glyphicon-trash"></i>Delete
+                </button>
+            </div>
+        </div>
+        <div class="widget-body no-padding" style="overflow:hidden;">
+            <ag-grid-angular #agGrid class="agc-grid ag-theme-balham"
+                         [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+        </div>
+    </div>
+</div>
+<div class="" *ngIf="!ListView">
+    <form name="metadataform" novalidate #metadataConfigForm="ngForm">
+        <div class="widget">
+            <div class="widget-header ">
+                <span class="widget-caption" *ngIf="CurrentMetaData.TypeLookUpID == 0"><b>Add {{moduleTitle}}</b> </span>
+                <span class="widget-caption" *ngIf="CurrentMetaData.TypeLookUpID > 0"><b><span *ngIf="LocalAccess | contains:'Edit'">View</span> {{moduleTitle}}</b> </span>
+                <div class="widget-buttons">
+                    <button class="btn btn-sm btn-danger" type="button" (click)="Cancel()">
+                            <i class="fa fa-arrow-left"></i> Back 
+                    </button>
+                    <button class="btn btn-sm btn-primary" type="submit" *ngIf="LocalAccess | contains:'Edit'" (click)="onSubmit(metadataConfigForm.form)">
+                        <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                    </button>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="form-group" *ngIf="metadataConfigForm.form.touched && !metadataConfigForm.form.valid && isSaveClick">
+                    <div class="validationmsg">
+                        <b> Please fill the asterisk (*) fields. </b>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group">
+                    <div *ngIf="e_localize.TypeCode.isVisible">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.TypeCode.headerName}} <span *ngIf="e_localize.TypeCode.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="Code" [(ngModel)]="CurrentMetaData.TypeCode" [required]="e_localize.TypeCode.isRequired" [disabled]="!e_localize.TypeCode.isEnabled" placeholder="">
+                        </div>
+                    </div>
+                    <div *ngIf="e_localize.TypeName.isVisible">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.TypeName.headerName}}<span *ngIf="e_localize.TypeName.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="Name" [(ngModel)]="CurrentMetaData.TypeName" [required]="e_localize.TypeName.isRequired" [disabled]="!e_localize.TypeName.isEnabled" placeholder="">
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <div *ngIf="e_localize.TypeGroup.isVisible">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.TypeGroup.headerName}} <span *ngIf="e_localize.TypeGroup.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <select name="TypeGroup" [(ngModel)]="CurrentMetaData.TypeGroup" style="width:100%;"
+                                    [required]="e_localize.TypeGroup.isRequired"
+                                    [disabled]="!e_localize.TypeGroup.isEnabled" class="form-control"
+                                    #MetadataGrp="ngModel"
+                                    (ngModelChange)="GetSelectedMataDataGroup($event)">
+                                <option selected value="undefined" [disabled]="e_localize.TypeGroup.isRequired">--MetaData Group--</option>
+                                <option *ngFor="let grp of metaDataGroups" [value]="grp.TypeGroup">{{grp.TypeGroup}}</option>
+                            </select>
+
+                            <!--<input style="width:100%;" name="Description" rows="5" [(ngModel)]="CurrentMetaData.TypeGroup" [required]="e_localize.TypeGroup.isRequired" [disabled]="!e_localize.TypeGroup.isEnabled" placeholder="TypeGroup"></input>-->
+                        </div>
+                    </div>
+                    <div *ngIf="e_localize.Description.isVisible">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.Description.headerName}} <span *ngIf="e_localize.Description.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input style="width:100%;" class="form-control" name="Description" [(ngModel)]="CurrentMetaData.Description" [required]="e_localize.Description.isRequired" [disabled]="!e_localize.Description.isEnabled" placeholder="" />
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group" *ngIf="e_localize.SortOrder.isVisible">
+                    <div *ngIf="e_localize.SortOrder.isVisible">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.SortOrder.headerName}} <span *ngIf="e_localize.SortOrder.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input style="width:100%;" name="SortOrder" class="form-control" [(ngModel)]="CurrentMetaData.SortOrder" [required]="e_localize.SortOrder.isRequired" [disabled]="!e_localize.SortOrder.isEnabled" placeholder="" />
+                        </div>
+                    </div>
+                    <!--<div *ngIf="e_localize.IsActive.isVisible">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.IsActive.headerName}} <span *ngIf="e_localize.IsActive.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="checkbox" class="checkbox" name="IsActive" rows="5" [(ngModel)]="IsActive" [required]="e_localize.IsActive.isRequired" [disabled]="!e_localize.IsActive.isEnabled" />
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>-->
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.IsActive.isVisible">{{e_localize.IsActive.headerName}}<span *ngIf="e_localize.IsActive.isRequired" style="color:red;">*</span>:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.IsActive.isVisible" style="left:-20px;">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="IsActive" class="form-control"
+                                       [required]="e_localize.IsActive.isRequired"
+                                       [disabled]="!e_localize.IsActive.isEnabled"
+                                       [(ngModel)]="CurrentMetaData.IsActive"><span class="text">&nbsp;</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+    </form>
+</div>
+
+<message cssClass="modal-msg" #pop></message>

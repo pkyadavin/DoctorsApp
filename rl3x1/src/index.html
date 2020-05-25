@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html class="stretch-html" xmlns="http://www.w3.org/1999/xhtml">
+<!-- Head -->
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <meta name="description" content="ReverseLogix" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link id="appFavicon" rel="shortcut icon" href="assets/img/favicon.ico" type="image/x-icon">
+
+    <link id="bootstrap-rtl-link" href="" rel="stylesheet" />
+    <link id="skin-link" href="" rel="stylesheet" type="text/css" />
+    <!--Fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+    <!--ckeditor-->
+    <script src="//cdn.ckeditor.com/4.7.1/full/ckeditor.js"></script>
+    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
+    <script src="https://www.google.com/recaptcha/api.js" ></script>
+
+    <script>
+        // !important: You want to give this variable(var googleLoaded = false;). This is used to run multiple chart in your jade.
+        var googleLoaded = false;
+        // !important: Define which chart packages to preload.Because this package uses ChartWrappers you can use any chart type that Google supports, but if it // isn't loaded it will load it on demand. 
+        var googleChartsPackagesToLoad = ['geochart'];
+    </script>
+    <base href="/">
+</head>
+<!-- /Head -->
+<!-- Body -->
+
+<body>
+    <app-root></app-root>
+</body>
+
+</html>

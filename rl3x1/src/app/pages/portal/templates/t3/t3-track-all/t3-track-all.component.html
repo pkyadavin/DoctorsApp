@@ -1,0 +1,75 @@
+<section class="top_info_box">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 pr-0">
+                <p style="margin: 0px;"><strong>{{getlangval('lbl_hi')}} {{cust_name}} !</strong></p>
+                <p style="margin: 0px;">
+                    <strong>{{getlangval('lbl_email')}}:</strong> {{cust_email}}
+                </p>
+                <p style="margin: 0px;"><strong>{{getlangval('lbl_phone')}} -</strong> {{cust_phone}}</p>
+            </div>
+            <div class="col-md-3">
+                <div class="pull-right">
+                    <button class="btn btn_rounded" (click)="goSearchPage()">{{getlangval('lbl_Request_replacement')}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="main_content_area">
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group pull-right">
+                    <input type="text" class="form-control" [(ngModel)]="search_history_text" (keyup.enter)="seachreturnHistory()"
+                    placeholder="Search Ref# / RMA# / Ship to Company / Status / Own Ref#" name="returnlist" />
+                    <div class="input-group-append">
+                        <button class="btn" type="button" (click)="seachreturnHistory()">
+                          <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table warranty_check_table fixed_table_header">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">{{getlangval('lbl_ref_number')}}</th>
+                                <th scope="col">{{getlangval('lbl_rma_number')}}</th>
+                                <th scope="col">{{getlangval('lbl_ship_to_company')}}</th>
+                                <th scope="col">{{getlangval('lbl_requested_date')}}</th>
+                                <th scope="col">{{getlangval('lbl_status')}}</th>
+                                <th scope="col">{{getlangval('lbl_own_reference_numner')}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of all_returns; let i = index">
+                                <td>
+                                    <a [routerLink]="" (click)="goToTrackStatus(item.internal_ref_number,item.url)">{{item.return_number}}</a>
+                                  <!-- rahul  <a href="" onclick="checkREF()">{{item.return_number}}</a> -->
+                                </td>
+                                <td>
+                                    <a (click)="goToTrackStatus(item.internal_ref_number,item.url)">{{item.rma_number}}</a>
+                                </td>
+                                <td>{{item.ship_to_company}}</td>
+                                <td>{{item.requested_date}}</td>
+                                <td>
+                                    <label for="" class={{item.status_class}}>{{item.status}}</label>
+                                </td>
+                                <td>{{item.own_ref_number}}</td>
+                            </tr>
+                            <tr *ngIf="all_returns.length==0">
+                                <td colspan="6" style="text-align: center;">{{getlangval('lbl_return_noReocrdFoundMsg')}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- /.container -->
+</div>
+<ngx-ui-loader></ngx-ui-loader>

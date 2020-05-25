@@ -1,0 +1,475 @@
+<!-- <form #orderForm="ngForm" > -->
+<section class="top_info_box">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <!-- {{processableItems | json}} -->
+                <!-- {{customer_display.name}} -->
+                <h6>
+                    {{ getlangval("lbl_hi") }} {{ _addHeaderInfo.select_customer.name1 }} {{ _addHeaderInfo.select_customer.name2 }} !
+                </h6>
+                <address>
+          <strong>{{ getlangval("lbl_shipping_address") }}</strong>
+          {{ _addHeaderInfo.select_customer.address.complete_address }}
+        </address>
+                <!-- <address *ngIf="!hasShippingAddress">
+          <strong>Shipping Address:</strong> {{ _address.complete_address }}
+        </address> -->
+
+                <a data-toggle="modal" data-target="#addressModal" style="cursor: pointer;">Edit your shipping address
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i
+        ></a>
+            </div>
+            <div class="col-md-6">
+                <div class="req_date_box pull-right">
+                    <div class="iconbox">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </div>
+                    <div class="datebx">
+                        <p>{{ getlangval("lbl_request_date") }}</p>
+                        <span>{{ today | date: "MMM d, y" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="freight">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a data-toggle="tab" href="#inboundFreight">{{
+              getlangval("lbl_inbound_freight")
+            }}</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#outboundFreight">{{
+              getlangval("lbl_outbound_freight")
+            }}</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="inboundFreight" class="tab-pane active">
+                        <div class="freight_options" *ngFor="let item_in of selected_in_freight_value; let i = index">
+                            <label class="radio" style="padding-left:0px;padding-right:8px;">
+                <input
+                  type="radio"
+                  [value]="true"
+                  [(ngModel)]="item_in.isSelected"
+                  name="in_freight"
+                  class="colored-primary"
+                  style="display: none;"
+                  (change)="selectFreight(item_in)"
+                />
+                <span class="text">
+                  {{ item_in.feight_service }} - {{ item_in.feight_charge }}-{{
+                    item_in.currency
+                  }}</span
+                >
+              </label>
+                        </div>
+                    </div>
+                    <div id="outboundFreight" class="tab-pane ">
+                        <div class="freight_options" *ngFor="let item_out of selected_out_freight_value; let i = index">
+                            <label class="radio" style="padding-left:0px;padding-right:8px;">
+                <input
+                  type="radio"
+                  [value]="true"
+                  [(ngModel)]="item_out.isSelected"
+                  name="out_freight"
+                  class="colored-primary"
+                  style="display: none;"
+                  (change)="selectFreightOut(item_out)"
+                />
+                <span class="text">
+                  {{ item_out.feight_service }} -
+                  {{ item_out.feight_charge }}-{{ item_out.currency }}</span
+                >
+              </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="email_notification_box">
+                    <h5>{{ getlangval("lbl_add_info_email_notify") }}</h5>
+                    <div class="row">
+                        <div class="col-md-3 pr-0">
+                            <div class="form-group">
+                                <label for="">{{
+                  getlangval("lbl_add_info_primary_email")
+                }}</label>
+                                <!-- <input type="text" class="form-control" value="{{item.customer.primary_email}}"> -->
+                                <input type="email" class="form-control" [(ngModel)]="_addHeaderInfo.primary_email" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 pr-0">
+                            <div class="form-group text-center">
+                                <label for="">{{ getlangval("lbl_add_info_order_conf") }}
+                  <i class="fa fa-question-circle" aria-hidden="true"></i
+                ></label>
+                                <span><i class="fa fa-check-square" aria-hidden="true"></i
+                ></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 pl-0">
+                            <div class="form-group text-center">
+                                <label for="">{{
+                  getlangval("lbl_add_info_shipping_sticker")
+                }}</label>
+                                <span><i class="fa fa-check-square" aria-hidden="true"></i
+                ></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 pl-0">
+                            <div class="form-group text-center">
+                                <label for="">{{
+                  getlangval("lbl_add_info_shipping_tracknotification")
+                }}</label>
+                                <span><i class="fa fa-check-square" aria-hidden="true"></i
+                ></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 pr-0">
+                            <div class="form-group">
+                                <label for="">{{
+                  getlangval("lbl_add_info_secondary_email")
+                }}</label>
+                                <input type="email" class="form-control" [(ngModel)]="_addHeaderInfo.secondary_email" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 pr-0">
+                            <div class="form-group text-center">
+                                <label for="" class="invisible">{{ getlangval("lbl_add_info_order_conf") }}
+                  <i class="fa fa-question-circle" aria-hidden="true"></i
+                ></label>
+                                <span><i class="fa fa-check-square" aria-hidden="true"></i
+                ></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 pl-0">
+                            <div class="form-group text-center">
+                                <label for="" class="invisible">{{
+                  getlangval("lbl_add_info_shipping_sticker")
+                }}</label>
+                                <span class="colorred"><i class="fa fa-times" aria-hidden="true"></i
+                ></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 pl-0">
+                            <div class="form-group text-center">
+                                <label for="" class="invisible">{{
+                  getlangval("lbl_add_info_shipping_tracknotification")
+                }}</label>
+                                <span><i class="fa fa-check-square" aria-hidden="true"></i
+                ></span>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <label for="" class="col-md-3">{{
+              getlangval("lbl_add_info_add_own_ref")
+            }}</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" placeholder="Enter reference #" [(ngModel)]="_addHeaderInfo.add_own_reference_number" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pro_header">
+                    <h5>{{ getlangval("lbl_line_item_header") }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row product_detail_box" *ngFor="let item of processableItems; let i = index">
+            <div class="col-md-1 pr-0">
+                <div class="imgbx">
+                    <!-- <img class="v-center" src="../../../../../../assets/img/jabra_pro_img1.png" alt="" /> -->
+                    <img *ngIf="brand == 'dsc2'" style="height: 100%;width: auto;" src="../../../../../../assets/customer_portal/images/arcteryx-product1.png" alt="" />
+                    <img *ngIf="brand == 'dsc3'" style="height: 100%;width: auto;" src="../../../../../../assets/customer_portal/images/arcteryx-product1.png" alt="" />
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="v-center">
+                    <label for="">{{ item.items[0].name }}</label>
+                    <label for="">{{ getlangval("lbl_item_serialnumber") }} :
+            <span>{{ item.serial_number }}</span></label
+          >
+          <label for=""
+            >{{ getlangval("lbl_product_number") }} :
+            <span>{{ item.items[0].product_number }}</span></label
+          >
+        </div>
+      </div>
+
+      <div class="col-md-2">
+        <div class="v-center">
+          <label
+            for=""
+            style="color:colorgreen"
+            [ngClass]="
+              item.warranty_status_id == 84 ? 'colorred' : 'colorgreen'
+            "
+            ><i class="fa fa-shield"></i>&nbsp;{{ item.warranty_status }}</label
+          >
+          <!-- {{item.items[0].files | json}}
+         {{item.items[0].files.length | json}} -->
+          <p class="proofop" for="" *ngIf="item.items[0].files.length > 0">
+            <a href="{{ item.items[0].files[0].url }}" target="_blank"
+              >View POP
+              <!--{{
+              item.items[0].files[0].name
+            }}--></a
+            >
+          </p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="v-center">
+          <label for="">{{ getlangval("lbl_item_returnreason") }}</label>
+                    <p>{{ item.items[0].return_reason.rma_action_name }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="v-center">
+                    <label for="">{{ getlangval("lbl_item_comment") }}</label>
+                    <p>{{ item.items[0].remark === "" ? "-" : item.items[0].remark }}</p>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <hr />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="terms">
+                    <label>
+            <input
+              type="checkbox"
+              name="terms"
+              class="colored-primary"
+              [(ngModel)]="checked"
+              style="opacity: 0;position: absolute;"
+            />
+            <span class="text">
+              {{ getlangval("lbl_term_cond_1") }}
+              <a href="">{{ getlangval("lbl_term_cond_2") }}</a>
+              {{ getlangval("lbl_term_cond_3") }}</span
+            >
+          </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-primary pl-pr-40 prev_button" (click)="goPrevStep1()" type="submit">
+          <i class="fa fa-arrow-left" aria-hidden="true"></i>
+          {{ getlangval("lbl_btn_prev") }}
+        </button>
+                <button type="button" class="btn btn-primary pl-pr-40 pull-right" (click)="SaveRMA()" [disabled]="!checked">
+          {{ getlangval("lbl_btn_submit") }}
+          <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        </button>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- </form> -->
+
+<!-- Address -->
+
+<div class="modal" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" [ngStyle]="{ display: address_popupdisplay }">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;{{ getlangval("lbl_add_popup_header") }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="col-md-4 pl-0">
+                    <div class="address_selection_box" *ngFor="let item of customerShippingAddressList; let i = index">
+                        <label class="radio" style="padding-left:0px;padding-right:8px;" (change)="chechkAddress(item, i)">
+              <input
+                type="radio"
+                name="address{{ i }}"
+                class="colored-primary"
+                style="display: none;"
+                [value]="true"
+                [(ngModel)]="item.isDefault"
+              />
+              <span class="text">
+                {{ getlangval("lbl_add_popup_left_caption") }} {{ i + 1 }}</span
+              >
+            </label>
+                        <address>
+              {{ item.complete_address }}
+            </address>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="addnew_addres">
+                        <h4>
+                            {{ getlangval("lbl_add_popup_sec_header") }}
+                            <span class="pull-right"><sup>*</sup> {{ getlangval("lbl_add_popup_required") }}</span
+              >
+            </h4>
+            <hr />
+            <!-- <form id="addressPopUp" #addressDetail="ngForm" style="float: left;cursor: pointer;"> -->
+            <!-- <form
+              #userlogin="ngForm"
+              (ngSubmit)="updateAddress(userlogin.value)"
+            > -->
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for=""
+                      >{{ getlangval("lbl_add_popup_contact_name") }}
+                      <span>*</span></label>
+                            <input type="text" class="form-control" name="txt_company" placeholder="Enter contact/company name" [(ngModel)]="new_added_address.Company" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">{{ getlangval("lbl_add_popup_building")
+                      }}<span>*</span></label
+                    >
+                    <input
+                      type="text"
+                      name="txt_building"
+                      class="form-control"
+                      placeholder="Enter building #"
+                      [(ngModel)]="new_added_address.building"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for=""
+                      >{{ getlangval("lbl_add_popup_street1")
+                      }}<span>*</span></label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="txt_street1"
+                      placeholder="Enter street 1"
+                      [(ngModel)]="new_added_address.street1"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="">{{
+                      getlangval("lbl_add_popup_street2")
+                    }}</label>
+                        <input type="text" name="txt_street2" class="form-control" placeholder="Enter street 2" [(ngModel)]="new_added_address.street2" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">{{ getlangval("lbl_add_popup_country")
+                      }}<span>*</span></label
+                    >
+                    <select
+                      name="ddlCountry"
+                      class="form-control"
+                      [disabled]="new_added_address.country_code == 'US'"
+                      [(ngModel)]="new_added_address.country_code"
+                    >
+                      <option value="" selected>--Select--</option>
+                      <option
+                        *ngFor="let cou of _country"
+                        [value]="cou.CountryCode"
+                        >{{ cou.CountryName }}</option
+                      >
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <!-- (change)="changeState()" -->
+                  <div class="form-group">
+                    <label for=""
+                      >{{ getlangval("lbl_add_popup_state")
+                      }}<span>*</span></label
+                    >
+                    <select
+                      name="ddlState"
+                      class="form-control"
+                      [(ngModel)]="new_added_address.state"
+                    >
+                      <option value="" selected>--Select--</option>
+                      <option
+                        *ngFor="let state of _states"
+                        [value]="state.StateName"
+                        >{{ state.StateName }}</option
+                      >
+                    </select>
+                    <div class="clearfix"></div>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="">{{ getlangval("lbl_add_popup_city") }}</label>
+                        <input type="text" name="txt_city" class="form-control" placeholder="Enter City" [(ngModel)]="new_added_address.city" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="">{{ getlangval("lbl_add_popup_postalcode")
+                      }}<span>*</span></label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="new_added_address.postal_code"
+                      placeholder="Enter postal / zip code"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="form-group  pull-right">
+                    <label for="" class="invisible">actions</label>
+                        <button class="btn btn-default btn-danger" data-dismiss="modal" (click)="closeModalDialog()">
+                      <i class="fa fa-times-circle-o" aria-hidden="true"></i>
+                      {{ getlangval("lbl_add_popup_cancel") }}
+                    </button>
+
+                        <button class="btn btn-default btn-primary" (click)="updateAddress()">
+                      <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                      {{ getlangval("lbl_add_popup_save") }}
+                    </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- </form> -->
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ngx-ui-loader></ngx-ui-loader>

@@ -1,0 +1,204 @@
+﻿<style>
+    .input-group-btn > .btn {
+        line-height: 23px!important;
+    }
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,0);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,0);
+        box-shadow: 0 0 4px rgba(0,0,0,0);
+        /*background-color: #eee;
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    box-shadow: 0 0 4px rgba(0,0,0,.3);*/
+    }
+
+        .nav-tabs > li {
+            margin: 0px 3px 0px 3px;
+        }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #777;
+                margin-right: -1px;
+                line-height: 24px;
+                position: relative;
+                z-index: 11;
+            }
+
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                color: #262626;
+                border: 0;
+                border-top: 2px solid #333;
+                border-bottom-color: transparent;
+                /*background-color: #fbfbfb;*/
+                z-index: 12;
+                line-height: 24px;
+                margin-top: -2px;
+                box-shadow: 0 -2px 3px 0 rgba(0,0,0,.15);
+            }
+
+            .nav-tabs > li a:hover {
+                color: #fff;
+                /*border: 0;*/
+                /*border-bottom-color: transparent;*/
+                /*background-color: #BAF3DA;*/
+                /*z-index: 12;*/
+                /*line-height: 24px;*/
+            }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #fff;
+                /* margin-right: -1px;
+                / line-height: 24px;
+                position: relative;
+                z-index: 11;
+                /*background-color: #178E58;*/
+            }
+
+    .nav > li.disabled > a {
+        color: #fff;
+        background-color: gray;
+    }
+
+        .nav > li.disabled > a:hover {
+            color: #fff;
+            background-color: gray;
+        }
+
+    /*Legend Style Sheet*/
+    legend a {
+        color: inherit;
+    }
+
+    legend.legendStyle {
+        padding-left: 5px;
+        padding-right: 5px;
+        margin-bottom: 0px !important;
+    }
+
+    fieldset.fsStyle {
+        border: 1px solid #ccc !important;
+        padding: 5px !important;
+        margin: 0px !important;
+    }
+
+    legend.legendStyle {
+        font-size: 14px;
+        color: #555;
+        background-color: transparent;
+        font-weight: bold;
+    }
+
+    legend {
+        width: auto;
+        border-bottom: 0px;
+    }
+</style>
+
+
+<form #f="ngForm" novalidate>
+    <br />
+    <div class="form-group">
+        <div class="col-md-6 no-padding" *ngIf="IsLoaded &&  e_localize.PartnerParentID.isVisible">
+            <label class="control-label col-md-6">{{e_localize.PartnerParentID.headerName}} <span *ngIf="IsLoaded && e_localize.PartnerParentID.isRequired" style="color:red;">*</span>:</label>
+            <div class="col-md-6">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" name="PartnerParentID" ngControl="PartnerParentID" #PartnerParentID="ngModel" [(ngModel)]="CurrentPartner.ParentFacilityName" [required]="e_localize.PartnerParentID.isRequired" readonly="readonly" placeholder="{{e_localize.PartnerParentID.headerName}}">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-sm" type="button" (click)="selectParent()" [disabled]="!e_localize.PartnerParentID.isEnabled"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+    <br />
+    <div class="form-group" style="display:none;">
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <label class="control-label"><b>Return Reason</b></label>
+            <button class="btn btn-sm btn-primary pull-right" type="button" (click)="openReturnReasonGridPopup()" *ngIf="CurrentPartner.PartnerParentID == NULL">
+                <i class="glyphicon glyphicon-plus-sign"></i>Add
+            </button>
+            <button class="btn btn-sm btn-danger pull-right" style="margin-right: 2px;" type="button" *ngIf="CurrentPartner.PartnerParentID == NULL && CurrentReturnReason" (click)="RemoveReturnReason()">
+                <i class="glyphicon glyphicon-trash"></i>Delete
+            </button>
+            <div class="clearfix"></div>
+            <ag-grid-angular #agGridReturnReason style="height: 250px; width:100%" class="ag-theme-balham"
+                         [gridOptions]="reasonGridOptions" (selectionChanged)="onSelectedReasonChanged()">
+            </ag-grid-angular>
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+            <label class="control-label"><b>Rules (Applicable Conditions)</b></label>
+
+            <ag-grid-angular #agGridReasonRule style="height: 250px; width:100%" class="ag-theme-balham"
+                         [gridOptions]="ruleGridOptions" [rowData]="AvailableRules">
+            </ag-grid-angular>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+</form>
+
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+<bs-modal #userGridPopUp cssClass="modal-xl">
+    <bs-modal-header>
+        <button type="button" class="close"  (click)="userGridPopUp.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add Users</h4>
+    </bs-modal-header>
+    <bs-modal-body *ngIf="UserGridPopup">
+        <UserGrid [userGridType]="setUserGridType" [Scope]="typeId" [AvailableUsers]="AvailableUsers" (notifyUser)="UserGridEvent($event)"></UserGrid>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default"  (click)="userGridPopUp.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #retReasonGridPopUp cssClass="modal-xl">
+    <bs-modal-header>
+        <button type="button" class="close"  (click)="retReasonGridPopUp.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add Return Reason</h4>
+    </bs-modal-header>
+    <bs-modal-body *ngIf="ReturnReasonGridPopup">
+        <!--<UserGrid [retReasonGridType]="setReturnReasonGridType" (notifyReturnReason)="ReturnReasonGridEvent($event)"></UserGrid>-->
+        <ReturnReasonGrid [GridType]="setUserGridType" [ScopeType]="'RRA002'" [AvailableReasons]="AvailableReasons" (notifyReason)="ReturnReasonGridEvent($event)"></ReturnReasonGrid>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default"   (click)="retReasonGridPopUp.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #modalPartner cssClass="modal-lg" *ngIf="IsLoaded">
+    <bs-modal-header>
+        <button type="button" class="close"  (click)="modalPartner.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Facility</h4> 
+    </bs-modal-header>
+    <bs-modal-body>
+        <PartnerGrid #Partners [partnerGridType]="'popup'" [partnerType]="'PTR001'" (notifyPartner)="FacilityEvent($event)"></PartnerGrid>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default"   (click)="modalPartner.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<message #pop cssClass="modal-msg"></message>

@@ -1,0 +1,158 @@
+<div>
+    <form #SearchForm="ngForm">
+        <div class="search_bar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="text-right">
+                            {{ getlangval("lbl_return_instruction_1") }}
+                            <a [href]="ancjabrasupportURL" id="ancjabrasupportURL" target="_blank">{{ getlangval("lbl_return_instruction_2") }}</a
+              >
+              {{ getlangval("lbl_return_instruction_3") }}
+            </p>
+            <div class="row">
+              <label for="" class="col-md-2">
+                {{ getlangval("lbl_customer_serial") }}
+                <a
+                  [href]="anclocateserialnumberURL"
+                  id="anclocateserialnumberURL"
+                  target="_blank"
+                  class="mb-0 location_link"
+                >
+                  {{ getlangval("lbl_howtolocateSerial") }}</a
+                >
+              </label>
+              <div class="col-md-10">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i class="fa fa-search" aria-hidden="true"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="PO / WO #"
+                    name="ordernumber"
+                    [(ngModel)]="ordernumber"
+                    [placeholder]="
+                      getlangval('lbl_customer_placeholder_serial') == undefined
+                        ? ''
+                        : getlangval('lbl_customer_placeholder_serial')
+                    "
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-primary btn-lg"
+                      type="submit"
+                      style="padding:9px 16px!important;"
+                      (click)="onSearch(SearchForm)"
+                    >
+                      {{ getlangval("lbl_check_warranty_button") }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  -->
+    <div class="main_content_area">
+      <main
+        role="main"
+        class="container"
+        *ngIf="current_customer_data.length > 0"
+      >
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table warranty_check_table">
+                <thead id="tbheadChechkALL" class="thead-dark">
+                  <tr>
+                    <th scope="col">{{ getlangval("lbl_tbl_SrNo") }}</th>
+                    <th scope="col">{{ getlangval("lbl_tbl_SerialNo") }}</th>
+                    <th scope="col">{{ getlangval("lbl_tbl_Product") }}</th>
+                    <th scope="col">{{ getlangval("lbl_tbl_ProductNo") }}</th>
+                    <th scope="col">{{ getlangval("lbl_tbl_Warranty") }}</th>
+                    <th scope="col">
+                      {{ getlangval("lbl_tbl_Troubleshoot") }}
+                    </th>
+                    <!-- <th (change)="chechkALL($event)" id="selectall" scope="col">
+                      <input type="checkbox" />
+                    </th> -->
+                    <th><input type="checkbox" (change)="chechkALL($event)" id="allcb" name="allcb"/></th>
+                    <th>{{ getlangval("lbl_tbl_Action") }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of current_customer_data; let i = index">
+                    <td class="img_box">
+                      <!-- <img
+                        src="../../../../../assets/customer_portal/images/product1.png"
+                        alt=""
+                      /> -->
+                      <img *ngIf="brand == 'dsc2'"
+                                      src="../../../../../../assets/customer_portal/images/arcteryx-product1.png"
+                                      alt=""
+                                    />
+                                    <img *ngIf="brand == 'dsc3'"
+                                      src="../../../../../../assets/customer_portal/images/arcteryx-product1.png"
+                                      alt=""
+                                    />
+                    </td>
+                    <td>{{ item.serial_number }}</td>
+                    <td>{{ item.items[0].name }}</td>
+                    <td>{{ item.items[0].product_number }}</td>
+                    <td
+                      style="color:colorgreen"
+                      [ngClass]="
+                        item.warranty_status_id == 84
+                          ? 'colorred'
+                          : 'colorgreen'
+                      "
+                    >
+                      <i class="fa fa-shield"></i>&nbsp;{{
+                        item.warranty_status
+                      }}
+                    </td>
+                    <td>
+                      <a
+                        [href]="ancjabrasupportURL"
+                        id="ancjabrasupportURL"
+                        target="_blank"
+                        >{{ getlangval("lbl_tbl_Troubleshoot") }}</a
+                      >
+                    </td>
+                    <td id="chechkSRNO">
+                      <input
+                        type="checkbox"
+                        [checked]="item.isSelected"
+                        (change)="chechkSRNO($event, item.serial_number)"
+                      />
+                    </td>
+                    <td>
+                      <button class="del_button" (click)="deleteItem(i)">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-md-12 text-right">
+            <button
+              class="btn btn-default btn-primary replacementBtn"
+              (click)="replaceProduct()"
+            >
+              {{ getlangval("lbl_btn_Replacement") }}
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </form>
+</div>
+<ngx-ui-loader></ngx-ui-loader>

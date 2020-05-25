@@ -1,0 +1,30 @@
+﻿<div class="widget" [hidden]="IsEditorVisible">
+    <div class="widget-header ">
+        <span class="widget-caption pull-left font-40"><b>UOM Master</b> </span>
+        <div class="input-group pull-left margin-left-20 col-md-3">
+            <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterValue" placeholder="Search...">
+             <span class="input-group-btn">
+                 <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+            </span>
+        </div>
+        <div class="widget-buttons">
+            <button id="btnAdd" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068"  *ngIf="ShowPerMission('Add')" (click)="OnEditUOM(0)"><i class="glyphicon glyphicon-plus-sign"></i>Add</button>
+            <button href="javascript:void(0)" id="btnEdit" class="btn btn-sm btn-primary ng-hide Authorize AUTH_3068" *ngIf="isEditVisible" (click)="OnEditUOM(CurrentUOM.UOMID)"><i class="glyphicon glyphicon-edit"></i>View</button>
+    
+        </div>
+        
+    </div>
+    <div class="widget-body no-padding">
+        <div class="widget">
+            <div class="widget-body no-padding">
+                <ag-grid-angular #agGrid style="height:400px;width:100%" class="ag-theme-balham"
+                             [gridOptions]="gridOptions"  (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+                </ag-grid-angular>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<uommaster-editor *ngIf="IsEditorVisible" [GridType]="unitmodelGridType" (close)="closepopup()" [selectedId]="selectedId" [permission]="ShowPerMission('Edit')" (EditorVisibilityChange)="ChangeEditorVisibility($event)"></uommaster-editor>

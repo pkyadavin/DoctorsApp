@@ -1,0 +1,107 @@
+﻿<form #f="ngForm" name="f" novalidate>
+    <div class="widget">
+        <div class="widget-header ">
+            <span class="widget-caption pull-left font-40"><b>{{UOMHeaderName}}</b> </span>
+            <!--<span class="widget-caption ng-binding"></span>-->
+            <div class="widget-buttons">
+
+                <button class="btn btn-sm btn-danger" type="button"  (click)="onCancel()">
+                        <i class="fa fa-arrow-left"></i> Back 
+                </button>
+                <button class="btn btn-sm btn-primary" type="submit" [disabled]="!(f.form.valid && CurrentUOM.UOMTypeID>0)" *ngIf="permission" (click)="onSubmit(f.form)">
+                    <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                </button>
+
+            </div>
+        </div>
+        <div class="widget-body">
+
+            <div class="form-group" *ngIf="f.form.touched && (!f.form.valid || !(CurrentUOM.UOMTypeID>0))">
+                <div class="validationmsg">
+                    <b> Please fill the asterisk (*) fields. </b>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && uomeditor.UOMCode.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{uomeditor.UOMCode.DisplayName}}  <span *ngIf="uomeditor.UOMCode.isRequired" style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" #modelname="ngModel" name="txtUmoCode" ngControl="txtUmoCode"
+                               [required]="uomeditor.UOMCode.isRequired"
+                               maxlength="10"
+                               [disabled]="!uomeditor.UOMCode.isEnabled"
+                               [(ngModel)]="CurrentUOM.UOMCode">
+                    </div>
+
+                    <!--<Div [hidden]="modelname.valid||modelname.pristine" style="color:red">
+                        {{uomeditor.UOMCode.DisplayName}} is required.
+                    </Div>-->
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && uomeditor.UOMName.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{uomeditor.UOMName.DisplayName}}  <span *ngIf="uomeditor.UOMName.isRequired" style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" #uomname="ngModel" name="txtUmoName" ngControl="txtUmoName"
+                               [required]="uomeditor.UOMName.isRequired"
+                               [disabled]="!uomeditor.UOMName.isEnabled"
+                               [(ngModel)]="CurrentUOM.UOMName">
+                    </div>
+
+                    <!--<Div [hidden]="uomname.valid||uomname.pristine" style="color:red">
+                        {{uomeditor.UOMName.DisplayName}} is required.
+                    </Div>-->
+                </div>
+                <div class="clearfix"></div>
+            </div>                       
+            <div class="form-group">
+                <div class="col-lg-6">
+                    <label class="col-lg-6">UOM Type:<span style="color: red;">*</span></label>
+                    <div class="control-label col-lg-6 ng-binding" *ngIf="IsLoaded">
+                        <select id="UOMTypeID" name="UOMTypeID" class="form-control" 
+                                [(ngModel)]="CurrentUOM.UOMTypeID" #UOMTypeID="ngModel">
+                            <option value="undefined">--Select Unit--</option>
+                            <option *ngFor="let UOMList of UOMTypeList" [value]="UOMList.TypeLookUpID">{{UOMList.TypeCode}} | {{UOMList.TypeName}}</option>
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && uomeditor.IsActive.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{uomeditor.IsActive.DisplayName}}<span *ngIf="uomeditor.IsActive.isRequired" style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="checkbox" class="checkbox" style="opacity:1 !important;left:14px" #isActive="ngModel" [ngModelOptions]="{standalone: true}"
+                               [required]="uomeditor.IsActive.isRequired"
+                               [disabled]="!uomeditor.IsActive.isEnabled"
+                               [(ngModel)]="CurrentUOM.IsActive">
+                    </div>
+                    <!--<Div [hidden]="isActive.valid||isActive.pristine" style="color:red">
+                        {{uomeditor.IsActive.DisplayName}} is required.
+                    </Div>-->
+
+                </div>
+                <div class="clearfix"></div>
+            </div>        
+
+                <div class="clearfix"></div>
+            </div>
+        <div class="clearfix"></div>
+        
+    </div>
+
+</form>
+
+<!-- <message #pop cssClass="modal-msg"></message> -->
+
+

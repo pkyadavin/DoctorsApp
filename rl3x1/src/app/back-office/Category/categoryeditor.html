@@ -1,0 +1,445 @@
+﻿<style>
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,0);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,0);
+        box-shadow: 0 0 4px rgba(0,0,0,0);
+        /*background-color: #eee;
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    box-shadow: 0 0 4px rgba(0,0,0,.3);*/
+    }
+
+        .nav-tabs > li {
+            margin: 0px 3px 0px 3px;
+        }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #777;
+                margin-right: -1px;
+                line-height: 24px;
+                position: relative;
+                z-index: 11;
+            }
+
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                color: #262626;
+                border: 0;
+                border-top: 2px solid #333;
+                border-bottom-color: transparent;
+                /*background-color: #fbfbfb;*/
+                z-index: 12;
+                line-height: 24px;
+                margin-top: -2px;
+                box-shadow: 0 -2px 3px 0 rgba(0,0,0,.15);
+            }
+
+            .nav-tabs > li a:hover {
+                color: #fff;
+                /*border: 0;*/
+                /*border-bottom-color: transparent;*/
+                /*background-color: #BAF3DA;*/
+                /*z-index: 12;*/
+                /*line-height: 24px;*/
+            }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #fff;
+                /* margin-right: -1px;
+                / line-height: 24px;
+                position: relative;
+                z-index: 11;
+                /*background-color: #178E58;*/
+            }
+
+    .nav > li.disabled > a {
+        color: #fff;
+        background-color: gray;
+    }
+
+        .nav > li.disabled > a:hover {
+            color: #fff;
+            background-color: gray;
+        }
+</style>
+
+
+<form #f="ngForm" novalidate>
+    <div class="widget">
+        <div id="divEditHeader">
+            <!--class="widget-header widget-header1"-->
+            <span class="widget-caption pull-left font-40"><b>{{CatHeaderName}}</b> </span>
+            <!--<span class="widget-caption ng-binding"></span>-->
+            <div class="widget-buttons">
+
+                <button class="btn btn-sm btn-danger" type="button" (click)="onCancel()">
+                        <i class="fa fa-arrow-left"></i> Back 
+                </button>
+
+                <button class="btn btn-sm btn-primary" type="submit" (click)="onSubmit(f.form)">
+                    <i class="glyphicon glyphicon-floppy-disk" *ngIf="permission"></i>Save
+                </button>
+
+            </div>
+        </div>
+        <div id="divEditForm" class="widget-body">
+            <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                <div class="validationmsg">
+                    <b> Please fill the asterisk (*) fields. </b>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && modeleditor.CategoryName.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modeleditor.CategoryName.DisplayName}} <span *ngIf="modeleditor.CategoryName.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <span class="input-icon icon-right inverted">
+                            <input type="text" class="form-control" #category="ngModel" name="CategoryName" readonly="readonly"
+                                [required]="modeleditor.CategoryName.isRequired" [disabled]="!modeleditor.CategoryName.isEnabled"
+                                [(ngModel)]="CurrentModel.CategoryName">
+
+                            <i id="btnSelect" class="glyphicon glyphicon-search danger circular Authorize AUTH_2068"
+                                (click)="OnSelect()" style="top:2px;cursor:pointer;"></i>
+
+                        </span>
+
+                        <!--<select [(ngModel)]="CurrentModel.CategoryID" #category="ngModel" class="form-control" (change)="ongroupChange($event.target.value)"
+                                [ngModelOptions]="{standalone: true}" [required]="modeleditor.CategoryName.isRequired"
+                                [disabled]="!modeleditor.CategoryCode.isEnabled">
+                            <option [value]="">--Select Category--</option>
+                            <option *ngFor="let gp of grouplist" [value]="gp.CategoryID">
+                                {{gp.CategoryName}}
+                            </option>
+                        </select>-->
+
+
+                    </div>
+
+                </div>
+                <!--<a id="btnSelect" href="javascript:void(0)" class="btn-link text-align-center thumb Authorize AUTH_2068" (click)="OnSelect()"><i class="glyphicon glyphicon-ok-circle"></i></a>-->
+
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && modeleditor.ModelName.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modeleditor.ModelName.DisplayName}} <span *ngIf="modeleditor.ModelName.isRequired" style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" #modelname="ngModel" name="ModelName" [required]="modeleditor.ModelName.isRequired"
+                            [disabled]="!modeleditor.ModelName.isEnabled" [(ngModel)]="CurrentModel.ModelName">
+                    </div>
+
+                    <!--<Div [hidden]="modelname.valid||modelname.pristine" style="color:red">
+                        {{modeleditor.ModelName.DisplayName}} is required.
+                    </Div>-->
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && modeleditor.ModelDescription.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modeleditor.ModelDescription.DisplayName}}<span *ngIf="modeleditor.ModelDescription.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" #itemNumber="ngModel" name="ModelDescription"
+                            [required]="modeleditor.ModelDescription.isRequired" [disabled]="!modeleditor.ModelDescription.isEnabled"
+                            [(ngModel)]="CurrentModel.ModelDescription">
+                    </div>
+                    <!--<Div [hidden]="itemNumber.valid||itemNumber.pristine" style="color:red">
+                        {{modeleditor.ModelDescription.DisplayName}} is required.
+                    </Div>-->
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && modeleditor.OtherName.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modeleditor.OtherName.DisplayName}}<span *ngIf="modeleditor.OtherName.isRequired" style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="text" class="form-control" name="OtherName" [required]="modeleditor.OtherName.isRequired"
+                            [disabled]="!modeleditor.OtherName.isEnabled" [(ngModel)]="CurrentModel.OtherName">
+                    </div>
+
+                </div>
+                <div class="clearfix"></div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && modeleditor.PackingInstructions.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modeleditor.PackingInstructions.DisplayName}}<span *ngIf="modeleditor.PackingInstructions.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <textarea rows="2" cols="50" class="form-control" name="PackingInstructions" [required]="modeleditor.PackingInstructions.isRequired"
+                            [disabled]="!modeleditor.PackingInstructions.isEnabled" [(ngModel)]="CurrentModel.PackingInstructions"></textarea>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && modeleditor.ShippingInstructions.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modeleditor.ShippingInstructions.DisplayName}}<span *ngIf="modeleditor.ShippingInstructions.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <textarea rows="2" cols="50" class="form-control" name="ShippingInstructions" [required]="modeleditor.ShippingInstructions.isRequired"
+                            [disabled]="!modeleditor.ShippingInstructions.isEnabled" [(ngModel)]="CurrentModel.ShippingInstructions"></textarea>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && modeleditor.InstructionDoc.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modeleditor.InstructionDoc.DisplayName}}<span *ngIf="modeleditor.InstructionDoc.isRequired"
+                            style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="file" (change)="handleReturnDocs(ProductDoc, $event,controls);" id="ProductDoc"
+                            name="ProductDoc" />
+
+                        <!--<input type="text" class="form-control" name="InstructionDoc"
+                               [required]="modeleditor.InstructionDoc.isRequired"
+                               [disabled]="!modeleditor.InstructionDoc.isEnabled"
+                               [(ngModel)]="CurrentModel.InstructionDoc">-->
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && modeleditor.InstructionDoc.isVisible">
+                    <div class="col-lg-6"></div>
+                    <div class="col-lg-6">
+                        <a href="{{CurrentModel.InstructionDoc}}" target="_blank" *ngIf="IsFileAvailable">Download File</a>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="form-group">
+
+                <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && modeleditor.IsActive.isVisible">
+                    <label class="control-label col-lg-6 ng-binding">
+                        {{modeleditor.IsActive.DisplayName}}<span *ngIf="modeleditor.IsActive.isRequired" style="color:red;">*</span>
+                    </label>
+                    <div class="col-lg-6">
+                        <input type="checkbox" class="checkbox" style="opacity:1 !important;left:14px" #isActive="ngModel"
+                            name="IsActive" [required]="modeleditor.IsActive.isRequired" [disabled]="!modeleditor.IsActive.isEnabled"
+                            [(ngModel)]="CurrentModel.IsActive">
+                    </div>
+                    <!--<Div [hidden]="isActive.valid||isActive.pristine" style="color:red">
+                        {{modeleditor.IsActive.DisplayName}} is required.
+                    </Div>-->
+
+                </div>
+                <div class="clearfix"></div>
+
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+        <br />
+        <tabs>
+            <tab tabTitle="SKU" *ngIf="false">
+                <div class="form-group">
+                    <div>
+                        <!--<a id="btnAdd" href="javascript:void(0)" class="btn-link text-align-center thumb Authorize AUTH_2068 pull-right" (click)="SelectItem()"><i class="glyphicon glyphicon-plus-sign"></i></a>-->
+                        <ag-grid-angular #agGrid style="height:200px;width:100%" class="ag-theme-balham" [gridOptions]="SKUgridOptions"
+                            (selectionChanged)="onGridSelectionChanged()">
+                        </ag-grid-angular>
+                    </div>
+                </div>
+            </tab>
+            <tab tabTitle="Return Reasons/Rules" *ngIf="IsReturnReasonShow">
+                <div class="form-group">
+                    <div class="widget-buttons pull-right">
+                        <!--<label class="control-label"><b>Return Reason</b></label>-->
+                        <button class="btn btn-sm btn-primary pull-right" type="button" (click)="openReturnReasonGridPopup()">
+                            <i class="glyphicon glyphicon-plus-sign"></i>Add
+                        </button>
+                        <button class="btn btn-sm btn-danger pull-right" style="margin-right: 2px;" type="button"
+                            (click)="RemoveReturnReason()">
+                            <i class="glyphicon glyphicon-trash"></i>Delete
+                        </button>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="clearfix"></div>
+                        <ag-grid-angular #agGridReturnReason style="height: 250px; width:100%" class="ag-theme-balham"
+                            [gridOptions]="reasonGridOptions" (selectionChanged)="onSelectedReasonChanged()">
+                        </ag-grid-angular>
+                    </div>
+                    <!--<div class="col-sm-7 col-md-7 col-lg-7">
+                        <label class="control-label"><b>Rules (Applicable Conditions)</b></label>
+                        <ag-grid-angular #agGridReasonRule style="height: 250px; width:100%" class="ag-theme-balham"
+                                     [gridOptions]="ruleGridOptions" [rowData]="AvailableRules">
+                        </ag-grid-angular>
+                        <div class="clearfix"></div>
+                    </div>-->
+                    <div class="clearfix"></div>
+                </div>
+            </tab>
+            <tab tabTitle="Accessories">
+                <div class="form-group">
+                    <div class="widget-buttons pull-right">
+                        <!--<label class="control-label"><b>Accessories</b></label>-->
+                        <button class="btn btn-sm btn-primary pull-right" type="button" (click)="openAccessoriesPopup()">
+                            <i class="glyphicon glyphicon-plus-sign"></i>Add
+                        </button>
+                        <button class="btn btn-sm btn-danger pull-right" style="margin-right: 2px;" type="button"
+                            (click)="RemoveAccessories()">
+                            <i class="glyphicon glyphicon-trash"></i>Delete
+                        </button>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="clearfix"></div>
+                        <ag-grid-angular #agGridAccessories style="height:200px;width:100%" class="ag-theme-balham"
+                            [gridOptions]="AccessoriesGridOptions" (selectionChanged)="onAccessoriesSelectionChanged()">
+                        </ag-grid-angular>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </tab>
+            <tab tabTitle="Damaged Type">
+                <div class="form-group" [hidden]="IsDamagedEditorVisible">
+                    <div class="widget-buttons pull-right">
+                        <div class="text-right" style="margin-bottom:5px;">
+                            <button class="btn btn-sm btn-primary" type="button" (click)="AddDamaged()">
+                                <i class="glyphicon glyphicon-plus-sign"></i>Add
+                            </button>
+                            <button class="btn btn-sm btn-danger" style="margin-right: 2px;" type="button" (click)="RemoveDamaged()"
+                                *ngIf="CurrentDamaged != null">
+                                <i class="glyphicon glyphicon-trash"></i>Delete
+                            </button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="clearfix"></div>
+                        <ag-grid-angular #agGridAccessories style="height:200px;width:100%" class="ag-theme-balham"
+                            [gridOptions]="DamagedGridOptions" (selectionChanged)="onDamagedSelectionChanged()">
+                        </ag-grid-angular>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group" [hidden]="!IsDamagedEditorVisible">
+                    <div class="widget-buttons pull-right">
+                        <button class="btn btn-sm btn-primary" type="button" (click)="SaveDamaged()">
+                            <i class="glyphicon glyphicon-plus-sign"></i>Save
+                        </button>
+                        <button class="btn btn-sm btn-danger" style="margin-right: 2px;" type="button" (click)="CancelDamaged()">
+                            <i class="glyphicon glyphicon-trash"></i>Cancel
+                        </button>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="col-sm-6 col-md-6 col-lg-6" style="padding-top:8px;height:100px;">
+                        <label class="control-label col-lg-6 ng-binding">
+                            Damaged Type<span style="color:red;">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" name="DamagedType" [(ngModel)]="DamagedName">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </tab>
+        </tabs>
+        <div class="clearfix"></div>
+    </div>
+</form>
+
+<bs-modal #rulePopUp cssClass="modal-xl">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="rulePopUp.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Rules (Applicable Conditions)</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <ag-grid-angular #agGridReasonRule style="height: 350px; width:100%" class="ag-theme-balham" [gridOptions]="ruleGridOptions"
+            [rowData]="AvailableRules">
+        </ag-grid-angular>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-text btn-primary" data-dismiss="rulePopUp" (click)="ApplyRule()">OK</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #itemSelector cssClass="modal-xxl">
+    <item-selector [Paramdata]="Paramdata" (itemListChange)="itemListChange($event)"></item-selector>
+</bs-modal>
+
+<bs-modal #pop2 cssClass="modal-lg" *ngIf="IsLoaded">
+    <form #f="ngForm" (ngSubmit)="SelectCategory()">
+        <bs-modal-header>
+            <button type="button" class="close" (click)="pop2.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Product Category</h4>
+        </bs-modal-header>
+        <bs-modal-body>
+            <ItemCategoryComponent (notifyData)="GetDataNew($event)"></ItemCategoryComponent>
+            <div class="clearfix"></div>
+            <div class="modal-footer" style="background-color:white">
+            </div>
+        </bs-modal-body>
+        <bs-modal-footer>
+            <button type="button" class="btn btn-default" (click)="pop2.dismiss()">Close</button>
+            <button type="submit" class="btn btn-primary">Select</button>
+        </bs-modal-footer>
+    </form>
+</bs-modal>
+
+<bs-modal #retReasonGridPopUp cssClass="modal-xl">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="retReasonGridPopUp.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add Return Reason</h4>
+    </bs-modal-header>
+    <bs-modal-body *ngIf="ReturnReasonGridPopup">
+
+        <ReturnReasonGrid [GridType]="setUserGridType" [ScopeType]="'RRA'" [AvailableReasons]="AvailableReasons"
+            (notifyReason)="ReturnReasonGridEvent($event)"></ReturnReasonGrid>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="retReasonGridPopUp.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #itemModelGridPopUp cssClass="modal-xl" id="divItemModelPopup">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="itemModelGridPopUp.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Item Model</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <ModelGrid [itemmodelGridType]="setmodelPopupType" (notifyItemModel)="ItemModelGridEvent($event)"></ModelGrid>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="itemModelGridPopUp.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<!-- <message #pop cssClass="modal-msg"></message> -->

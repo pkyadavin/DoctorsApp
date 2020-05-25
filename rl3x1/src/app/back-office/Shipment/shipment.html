@@ -1,0 +1,28 @@
+﻿<div class="widget" *ngIf="!IsEditorVisible">
+    <div class="widget-header ">
+        <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+        <div class="input-group pull-left margin-left-20 col-md-3">
+            <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterValue" placeholder="Search...">
+            <span class="input-group-btn">
+                <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+            </span>
+            <!--<i aria-hidden="true" class="fa fa-download pull-right" (click)="ExportToExcel()" ng-if="1!=0" style="cursor:pointer;margin-left:10px;margin-top:10px;"></i>-->
+        </div>
+        <div class="widget-buttons">
+            <button id="btnTrack" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" *ngIf="CurrentShipmentOrder && CurrentShipmentOrder.CarrierID > 0 && CurrentShipmentOrder.AWBNumber" (click)="TrackShipment()"><i class="glyphicon glyphicon-send"></i>Track Shipment</button>
+            <button id="btnLabel" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" *ngIf="CurrentShipmentOrder && CurrentShipmentOrder.ShippingLabelURL" (click)="DownloadLabel()"><i class="glyphicon glyphicon-download"></i>Shipping Label</button>
+
+            <button id="btnAdd" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" (click)="OnEditSROrder('')"><i class="glyphicon glyphicon-plus-sign"></i>Add</button>
+            <!-- <button id="btnAdd" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" *ngIf="LocalAccess | contains:'Add'" (click)="OnEditSROrder('')"><i class="glyphicon glyphicon-plus-sign"></i>Add</button> -->
+        </div>
+    </div>
+    <div class="widget-body no-padding">
+        <ag-grid-angular #agGrid class="agc-grid ag-theme-balham"  (gridReady)="onGridReady($event)"
+                     [gridOptions]="gridOptionsOpenOrders" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+        </ag-grid-angular>
+
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<Shipment-Editor *ngIf="IsEditorVisible" [selectedId]="selectedId" [sroReq]="sroReq" [PermDetails]="LocalAccess" (EditorVisibilityChange)="ChangeEditorVisibility($event)"></Shipment-Editor>

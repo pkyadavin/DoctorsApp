@@ -1,0 +1,39 @@
+.mt-0 {
+    margin-top: 0px!important;
+}
+
+.mt-20 {
+    margin-top: 20px!important;
+}
+
+.highlight {
+    background-color: #e1e1e1;
+    color: #455a64;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 5px 10px;
+}
+
+.bg-success {
+    background-color: #dcedc8!important;
+    padding: 5px 10px;
+    border: 1px solid #c9d8b7;
+    margin-top: 30px;
+}
+
+.bg-success .close i {
+    color: #ef5350;
+    opacity: 1;
+}
+
+.bg-success .close {
+    opacity: 1;
+}
+
+.bg-success p {
+    margin: 0px;
+}
+
+.bg-success.alert.alert-dismissible.show p {
+    color: #455a64;
+}

@@ -1,0 +1,80 @@
+<div class="table-responsive pt-2">
+  <table class="table table-striped w-auto" style='font-family:Arial, Arial, monospace; font-size:90%'>
+    <thead>
+      <tr scope="row">
+        <ng-container *ngFor="let acol of parentGridColumn;let i=index">
+          <th scope="col" style="text-align:center">
+            {{acol.val}}
+          </th>
+        </ng-container>
+</tr>
+    </thead>
+    <tbody *ngFor="let adata of parentGridData| paginate: { itemsPerPage: 10, currentPage: p };let i=index">
+      <tr class="table-info">
+        <ng-container *ngFor="let acol of parentGridColumn;let j=index">
+          
+          <td scope="row" style="text-align:center" *ngIf='adata[j].val==acol.val'>
+            <ng-container *ngIf='j==0'>
+              <i class="fa fa-plus" style="cursor:pointer;" (click)="clickEventPlusP(adata[j].id)" *ngIf="isClickedId!=adata[j].id" attr.aria-controls={{adata[j].id}}></i>
+              <i class="fa fa-minus" style="cursor:pointer;" (click)="clickEventMinusP()" *ngIf="isClickedId==adata[j].id"></i>
+              {{adata[j].pdata}}
+            </ng-container>
+            <ng-container *ngIf='j>0'>
+              <ng-container *ngIf='adata[j].coltype=="button"'>
+                <button class="btn btn-info btn-sm" (click)="clickEditVal(adata[j].id)" style="font-size: 12px;">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                </button>
+              </ng-container>
+              <ng-container *ngIf='adata[j].coltype=="text"'>
+                {{adata[j].pdata}}
+              </ng-container>
+            </ng-container>
+            
+
+          </td>
+
+        </ng-container>
+          
+      </tr>
+      <tr class="table-info">
+        <ng-container *ngFor="let acol of parentGridColumn;let j=index">
+          <ng-container *ngIf='j==0'>
+            <td [attr.colspan]="childGridColumn.length" *ngIf="isClickedId==adata[j].id">
+              <div id={{adata[j].id}} class="collapse {{isCollapsed}}" aria-labelledby="headingOne">
+                <table class="table table-striped" style='font-family:Arial, Arial, monospace; font-size:80%'>
+                  
+                    <tr scope="row">
+                      <ng-container *ngFor="let acol of childGridColumn;let i=index">
+                        <th scope="col" style="text-align:center">
+                          {{acol.val}}
+                        </th>
+                      </ng-container>
+                    </tr>
+                  
+                  <tbody *ngFor="let adata of childGridData;let i=index">
+                    <tr>
+                      <ng-container *ngFor="let acol of childGridColumn;let j=index">
+                        <td scope="row" style="text-align:center">
+                          <ng-container *ngIf='adata[j].coltype=="button"'>
+                            <button class="btn btn-info btn-sm" (click)="clickEditValChild(adata[j].id)" style="font-size: 12px;">
+                              <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </button>
+                          </ng-container>
+                          <ng-container *ngIf='adata[j].coltype=="text"'>
+                            {{adata[j].cdata}}
+                          </ng-container>
+                        </td>
+                      </ng-container>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </ng-container>
+        </ng-container>
+       </tr>
+    </tbody>
+  </table>
+  <div class="clearfix"></div>
+  <pagination-controls (pageChange)="p = $event" class="pageinationbox"></pagination-controls>
+</div>

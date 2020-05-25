@@ -1,0 +1,416 @@
+<div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="widget-buttons pull-right back_btn_box">
+        <button
+          class="btn btn-sm btn-primary"
+          data-toggle="tooltip"
+          data-placement="top"
+          type="button"
+          (click)="goBackToQueue()"
+        >
+          <i class="fa fa-arrow-left"></i> Back
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="widget">
+        <div class="widget-body rma_box">
+          <p>
+            <label for=""
+              ><strong>Ref. #:</strong> {{ returnOrder.return_number }}</label
+            >
+          </p>
+          <p>
+            <label for=""
+              ><strong>Requested Date:</strong>
+              {{ returnOrder.created_date | date: "MMM d, y" }}</label
+            >
+          </p>
+          <p *ngIf="return_header_status">
+            <label for="" class="colorred"
+              ><i class="fa fa-shield"></i> Out of Warranty</label
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="widget">
+        <div class="widget-body rma_box">
+          <div class="row">
+            <div class="col-md-1 pr-0">
+              <div class="iconbx">
+                <i class="fa fa-truck" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="col-md-11">
+              <h3>
+                Customer Shipping Detail <small>(Standard)</small>
+                <button
+                  class="btn btn-default btn-sm pull-right {{
+                    returnOrder.status.statusClass
+                  }}"
+                >
+                  {{ returnOrder.status.showinBO }}
+                </button>
+              </h3>
+              <address>
+                <strong>{{ returnOrder.customer.name }}</strong
+                ><br />
+                {{ returnOrder.customer.address.complete_address }}
+              </address>
+              <ul>
+                <li>
+                  <label for=""><strong>Own Reference #</strong></label>
+                  <p>{{ returnOrder.add_own_reference_number }}</p>
+                </li>
+                <li>
+                  <div class="iconbx">
+                    <i
+                      class="fa fa-envelope"
+                      aria-hidden="true"
+                      style="font-size: 25px;"
+                    ></i>
+                  </div>
+                  <label for=""><strong>Primary Email</strong></label>
+                  <p>{{ returnOrder.primary_email }}</p>
+                </li>
+                <li>
+                  <div class="iconbx">
+                    <i
+                      class="fa fa-envelope"
+                      aria-hidden="true"
+                      style="font-size: 25px;"
+                    ></i>
+                  </div>
+                  <label for=""><strong>Secondary Email</strong></label>
+                  <p>{{ returnOrder.secondary_email }}</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="widget">
+        <div class="widget-body listofprod">
+          <div class="row">
+            <div class="col-md-8">
+              <h3>
+                List of Product(s)
+                <small>(Product Count: {{ returnOrder.items.length }})</small>
+              </h3>
+            </div>
+            <div class="col-md-4 text-right" *ngIf="return_header_status">
+              <button
+                class="btn btn-default btn-sm btn-danger"
+                data-toggle="modal"
+                (click)="showRejectApproveReason('Reject')"
+              >
+                Reject
+              </button>
+              <!-- <button class="btn btn-default btn-sm btn-success" (click)="saveRejectreason('Approve')">
+                Approve
+              </button> -->
+              <button
+                class="btn btn-default btn-sm btn-success"
+                (click)="showRejectApproveReason('Approve')"
+              >
+                Approve
+              </button>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-md-12">
+              <div class="tbl">
+                <table class="table" id="productlist" cellspacing="10">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>#</th>
+                      <th>Serial #</th>
+                      <th>Product</th>
+                      <th>Product #</th>
+                      <th>Reaon for Return</th>
+                      <th *ngIf="is_item_warranty">POP</th>
+                      <th *ngIf="return_header_status">
+                        <label>
+                          <input
+                            type="checkbox"
+                            name="selectall"
+                            id="selectall"
+                            class="colored-success"
+                            (change)="chechkALL($event)"
+                          />
+                          <span class="text"><strong> Select All</strong></span>
+                        </label>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="panel"
+                    *ngFor="let item of returnOrder.items; let i = index"
+                  >
+                    <tr class="active">
+                      <td>
+                        <i
+                          data-toggle="collapse"
+                          data-target="#demo{{ i }}"
+                          id="demo{{ i }}"
+                          data-parent="#productlist"
+                          class="fa fa-minus-square"
+                          aria-hidden="true"
+                        ></i>
+                      </td>
+                      <td>
+                        <img
+                          *ngIf="brandCode == 'dsc3'"
+                          src="../../../../assets/img/bp_logo_1.png"
+                          alt=""
+                        />
+                        <img
+                          *ngIf="brandCode == 'dsc2'"
+                          src="../../../../assets/img/jabra_pro_img1.png"
+                          alt=""
+                        />
+                      </td>
+                      <td>
+                        <label
+                          for=""
+                          [ngClass]="
+                            item.warranty_status_id == 84
+                              ? 'colorred'
+                              : 'colorgreen'
+                          "
+                          ><i class="fa fa-shield"></i>&nbsp;
+                          {{ item.serial_number }}
+                        </label>
+                      </td>
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.sku }}</td>
+                      <td>{{ item.return_reason.rma_action_name }}</td>
+                      <td>
+                        <button
+                          class="btn btn-default btn-info btn-sm"
+                          *ngIf="item.warranty_status_id == 84"
+                        >
+                          <i class="fa fa-download" aria-hidden="true"></i>
+                          <a
+                            href="{{ item.files[0].url }}"
+                            style="color: white;"
+                            >View POP</a
+                          >
+                        </button>
+                      </td>
+                      <td>
+                        <label *ngIf="item.status.code == 'Requested_Item'">
+                          <input
+                            type="checkbox"
+                            class="colored-success"
+                            [checked]="item.isSelected"
+                            (change)="
+                              checkSelectedItems($event, item.serial_number)
+                            "
+                          />
+                          <span class="text"></span>
+                        </label>
+                      </td>
+                    </tr>
+
+                    <tr id="demo{{ i }}" class="collapse in">
+                      <td colspan="8" class="hiddenRow">
+                        <div
+                          [ngClass]="
+                            item.authorize_action.actiontaken == 0 &&
+                            item.status.code != 'Cancelled_Item'
+                              ? 'col-md-12'
+                              : 'col-md-6'
+                          "
+                        >
+                          <h5>Customer Reference Field</h5>
+                          <p>
+                            {{ item.remark == "" ? "-" : item.remark }}
+                          </p>
+                        </div>
+                        <div
+                          class="col-md-6"
+                          *ngIf="
+                            item.authorize_action.actiontaken == 1 &&
+                            item.status.code != 'Cancelled_Item'
+                          "
+                        >
+                          <h5>
+                            Action
+                            <span style="font-size: 11px;"
+                              >taken by
+                              <strong>{{
+                                item.authorize_action.authorized_by_name
+                              }}</strong>
+                              dated on
+                              <strong>{{
+                                item.authorize_action.authorized_date
+                              }}</strong></span
+                            >
+                          </h5>
+                          <p
+                            *ngIf="
+                              item.authorize_action.actiontaken == '1' &&
+                              item.authorize_action.isauthorized == true
+                            "
+                          >
+                            <strong>Date code:</strong><br />
+                            {{
+                              item.authorize_action.authorized_approve_date_code
+                            }}
+                          </p>
+                          <p
+                            *ngIf="
+                              item.authorize_action.actiontaken == '1' &&
+                              item.authorize_action.isauthorized == false
+                            "
+                          >
+                            <strong>Reject Reason:</strong><br />
+                            {{ item.authorize_action.authorized_reason_name }}
+                          </p>
+                          <p>
+                            <strong>Comment:</strong><br />
+                            {{ item.authorize_action.authorized_comment }}
+                          </p>
+                        </div>
+                        <div
+                          class="col-md-6"
+                          *ngIf="
+                            item.authorize_action.actiontaken == 0 &&
+                            item.status.code == 'Cancelled_Item'
+                          "
+                        >
+                          <p>
+                            <strong>Cancel remark:</strong>
+                            {{ item.cancel_action.cancelled_remarks }}
+                          </p>
+                          <p>
+                            <strong>Dated on:</strong>
+                            {{ item.cancel_action.cancelled_date }}
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Return Request Popup -->
+
+<!--Reject/approve Modal -->
+<div
+  id="myModal"
+  #ItemPopup
+  id="divItemPopup"
+  class="modal fade reject_popup"
+  role="dialog"
+>
+  <div class="modal-dialog">
+    <!-- Modal content-->
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+        <h4 class="modal-title" *ngIf="showModel == 'Approve'">
+          Approve Return Request
+        </h4>
+        <h4 class="modal-title" *ngIf="showModel == 'Reject'">
+          Reject Return Request
+        </h4>
+      </div>
+      <div class="modal-body">
+        <!-- rrr {{RejectApproveReason |json}} -->
+        <div
+          class="form-group"
+          *ngIf="RejectApproveReason && showModel == 'Reject'"
+        >
+          <label for=""><strong>Reject Reason:</strong></label>
+          <select
+            [(ngModel)]="
+              returnReason.value === null ? undefined : returnReason.value
+            "
+            id="itemReturnReason"
+            name="itemreturnReason"
+            #returnReason="ngModel"
+            class="form-control"
+            (change)="onReasonChange(returnReason.value)"
+          >
+            <option value="undefined"
+              >-------Select Return reason-------</option
+            >
+            <option
+              *ngFor="let returnReason of RejectApproveReason"
+              [value]="returnReason.TypeCode"
+            >
+              {{ returnReason.TypeName }}</option
+            >
+          </select>
+        </div>
+        <div
+          class="form-group"
+          *ngIf="RejectApproveReason && showModel == 'Approve'"
+        >
+          <!-- <input ng2-datetime-picker date-only="true" name="txtFromDate" class="form-control"> -->
+          <label for=""><strong>Date Code:</strong></label>
+          <input
+            name="txtFromDate"
+            class="form-control"
+            placeholder="Select Date"
+            bsDatepicker
+            placement="bottom"
+            [ngModel]="authorized_approve_date_code"
+            (ngModelChange)="changedate($event)"
+          />
+        </div>
+        <div class="form-group">
+          <label for=""><strong>Comment:</strong></label>
+          <textarea
+            [(ngModel)]="comment"
+            id="txtComment"
+            cols="30"
+            rows="10"
+            class="form-control"
+            placeholder="Comment here..."
+          ></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-default btn-danger btn-sm"
+          data-dismiss="modal"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          (click)="saveRejectreason()"
+          class="btn btn-default btn-success btn-sm"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Model End here -->

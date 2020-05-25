@@ -1,0 +1,42 @@
+﻿<bs-modal-header>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Select Item</h4>
+</bs-modal-header>
+<bs-modal-body>
+    <div class="widget">
+        <div class="widget-header ">
+            <!--<span class="widget-caption pull-left font-40"><b>Purchase Order Details</b> </span>-->
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterValue" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                </span>
+            </div>
+        </div>
+        <div class="widget-body no-padding">
+            <div class="widget">
+                <div class="widget-body no-padding">
+                    <ag-grid-angular #agGrid style="height:200px;width:100%" class="ag-theme-balham"
+                                 [gridOptions]="gridOptions" (rowClicked)="SelectItem($event)" >
+                    </ag-grid-angular>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="widget">
+                <div class="widget-body no-padding">
+                    <ag-grid-angular #agGridselectitem (rowClicked)="DeleteItem($event)" style="height:200px;width:100%" class="ag-theme-balham"
+                                 [gridOptions]="gridOptionsselecteditem">
+                    </ag-grid-angular>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</bs-modal-body>
+ <bs-modal-footer>
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="CloseItemPopup()">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SelectItemList();CloseItemPopup()">Ok</button>
+</bs-modal-footer>
+    <message #pop cssClass="modal-msg"></message>

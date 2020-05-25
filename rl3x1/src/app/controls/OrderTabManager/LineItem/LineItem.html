@@ -1,0 +1,9 @@
+﻿<div class="widget-buttons pull-right">
+    <button id="btnAdd" href="javascript:void(0)" (click)="SelectItem()" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068"><i class="glyphicon glyphicon-plus-sign"></i>Add</button>
+</div>
+<ag-grid-angular #agGrid style="height:100%;width:100%" class="ag-theme-balham"
+             [gridOptions]="gridOptionsOrderLineItems">
+</ag-grid-angular>
+<bs-modal #itemSelector cssClass="modal-xxl">
+    <!-- <item-selector [Source]="OrderLineItemsList" (itemListChange)="itemListChange($event)"></item-selector> -->
+</bs-modal>

@@ -1,0 +1,85 @@
+<!-- Page Sidebar -->
+<div class="page-sidebar" id="sidebar">
+    <!-- Page Sidebar Header-->
+
+    <!-- Sidebar Menu -->
+    <ul class="nav sidebar-menu">
+        <!-- <li [routerLinkActive]="['active']">
+            <a [routerLink]="['/dashboard']">
+                <i class="menu-icon glyphicon glyphicon-dashboard"></i>
+                <span class="menu-text"> Home </span>
+            </a>
+        </li> -->
+        <!-- open:_proute | contains:mod.Title -->
+        <li *ngFor="let mod of Menus; let i = index; trackBy: trackByFn" [routerLinkActive]="['active']" [ngClass]="{open:mod.Childs | indexOf: 'NavigateURL': _route}" id="p{{mod.ID}}">
+           <!-- <div *ngIf="i==5">{{mod|json}}</div> -->
+            <a *ngIf="mod.Childs.length > 0" href="javascript:void(0)" class="menu-dropdown">
+                <i class="{{mod.LabelCode}}"></i>&nbsp;&nbsp;<span class="menu-text">{{mod.Title}}</span>
+                <i class="menu-expand"></i>
+            </a>
+            <ul *ngIf="mod.Childs.length > 0" class="submenu childUL">
+                <li *ngFor="let submenu of mod.Childs; let k = index; trackBy: trackByFn" id="psub{{submenu.ID}}" [ngClass]="{active:_route.indexOf(submenu.NavigateURL) > -1, open:_proute | contains:submenu.Title}">
+                    <a *ngIf="submenu.Childs.length == 0" [routerLink]="[submenu.NavigateURL]" [ngClass]="submenu.Childs.length > 1 ?'menu-dropdown':''">
+                        <span class="menu-text spnMenuLabel" id="spn{{submenu.ID}}"><i class="{{submenu.LabelCode}}"></i>{{submenu.Title}}</span>
+                        <i *ngIf="submenu.Childs.length > 1" class="menu-expand"></i>
+                    </a>
+                    <a *ngIf="submenu.Childs.length > 0" href="javascript:void(0)" [ngClass]="submenu.Childs.length > 1 ?'menu-dropdown':''">
+                        <i class="{{submenu.LabelCode}}"></i> &nbsp;&nbsp;
+                        <span class="menu-text spnMenuLabel" id="spn{{submenu.ID}}">{{submenu.Title}}</span>
+                        <i *ngIf="submenu.Childs.length > 1" class="menu-expand"></i>
+                    </a>
+                    <ul *ngIf="submenu.Childs.length > 1" class="submenu">
+                        <li *ngFor="let modk of submenu.Childs " id="psub{{modk.ID}}" [ngClass]="{active:modk.NavigateURL==_route}">
+                            <a [routerLink]="[modk.NavigateURL]">
+                                <span class="menu-text spnSubMenuLabel1" id="subspn{{modk.ID}}"><i class="{{modk.LabelCode}}"></i>{{modk.Title}}
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- <a href="#" *ngIf="mod.Childs.length == 1" [routerLink]="[mod.Childs[0].NavigateURL]">
+                <i [ngClass]="mod.Childs[0].LabelCode" aria-hidden="true"></i>&nbsp;
+                <span class="menu-text">{{mod.Childs[0].Title}} </span>
+            </a> -->
+        </li>
+    </ul>
+    <!-- /Sidebar Menu -->
+    <!-- /Sidebar Menu -->
+    <ul class="datapoints" style="display: none;">
+        <li class="nav-devider"></li>
+        <li>
+            <div style="color:#708e9d;padding:10px 10px;">
+                Data Points
+            </div>
+        </li>
+        <li>
+            <div style="color:#bdcfd8;padding:0px 10px 0px 10px;">
+                <div style="padding:0px 0px 10px 0px;"><span style="display:block;float:left;">Received</span><span style="display:block;float:right;">70%</span>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:70%; height:4px;"> <span class="sr-only">50% Complete</span></div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div style="color:#bdcfd8;padding:20px 10px 0px 10px;">
+                <div style="padding:0px 0px 10px 0px;">
+                    <span style="display:block;float:left;">Closed</span><span style="display:block;float:right;">45%</span>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:45%; height:4px;"> <span class="sr-only">50% Complete</span></div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="powered-by" style="margin-top: 20px;width: 218px;padding: 10px;z-index: 9999;left: 5px;position: relative; text-align: center; color: #bdcfd8;">
+        <h6>Powered by</h6>
+        <img src="assets/img/RL-logo-white.png" />
+    </div>
+</div>
+<!-- /Page Sidebar -->

@@ -1,0 +1,338 @@
+﻿<div class="row">
+  <div class="col-sm-3 col-md-3 col-lg-3"></div>
+  <div class="col-sm-5 col-md-5 col-lg-5">
+    <div class="input-group" style="top:-3px; width: 100%;">
+      <input class="form-control form-control-sm " id="serialNbrid" (keydown.enter)="onFilterChanged()" maxlength="50"
+        placeholder="PO / WO No"
+        style="border-radius: 25px!important;padding:8px 10px!important;height: 40px!important;border-color: #00bcd4!important;border-width: 2px;"
+        type="text" [(ngModel)]="filterText">
+      <div class="input-group-append scanBox">
+        <span class="input-group-text">
+          <button (click)="onFilterChanged()"><i class="fa fa-search"></i></button>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4 col-md-4 col-lg-4"></div>
+  <div class="clearfix"></div>
+</div>
+
+<div class="widget" [style.display]="IsLoaded ? 'block' : 'none'">
+  <div class="widget-body">
+    <div class="widget-header ">
+      <div class="widget-buttons">
+        <button class="btn btn-sm btn-primary" type="button" (click)="onAddOrders()"
+          *ngIf="isAddConfigSetup$ && LocalAccess | contains:'Add'">
+          <i class="glyphicon glyphicon-plus-sign"></i>Add
+        </button>
+        <button class="btn btn-sm btn-primary" id="btnEdit" *ngIf="isEditConfigSetup$" (click)="onEditOrders()">
+          <i class="glyphicon glyphicon-edit"></i>Edit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="widget" [style.display]="IsLoaded ? 'block' : 'none'">
+  <div class="widget-body">
+    <div class="card-sm no-padding marginTop34">
+      <ag-grid-angular #agGrid class="agc-grid ag-theme-balham" [ngClass]="{'agc-grid-popup':(GridType=='popup') }"
+        (gridReady)="onGridReady($event)" [gridOptions]="gridOptions"
+        (selectionChanged)="GridType != 'popup' && onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+      </ag-grid-angular>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>
+
+<div class="widget" *ngIf="!ListView">
+  <div class="widget-body">
+    <div class="">
+      <form name="Orders" #f="ngForm" class="css-form" novalidate>
+        <div class="widget">
+          <div class="widget-header ">
+            <span class="widget-caption" *ngIf="CurrentOrdersObj.order_Id == undefined"><b>Add {{moduleTitle}}</b>
+            </span>
+            <span class="widget-caption" *ngIf="CurrentOrdersObj.order_Id > 0"><b><span
+                  *ngIf="LocalAccess | contains:'Edit'">Edit</span> {{moduleTitle}}</b>
+            </span>
+            <div class="widget-buttons">
+              <button class="btn btn-sm waves-effect waves-light btn-danger mr-2" type="button" (click)="Cancel()">
+                <i class="glyphicon glyphicon-floppy-remove"></i> Cancel
+              </button>
+              <button class="btn btn-sm waves-effect waves-light btn-success" type="submit"
+                *ngIf="LocalAccess | contains:'Edit'" (click)="Save(f.form)">
+                <i class="fa fa-floppy-o"></i> Save
+              </button>
+            </div>
+          </div>
+          <div class="widget-body">
+            <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+              <div class="validationmsg">
+                <b> Please fill the asterisk (*) fields. </b>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!-- Row 1 -->
+            <div class="form-group" *ngIf="IsLoaded">
+              <div *ngIf="IsLoaded">
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.order_Id.isVisible">{{e_localize.order_Id.headerName}} <span
+                    *ngIf="e_localize.order_Id.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.order_Id.isVisible">
+                  <input DigitOnly maxlength="20" type="text"  type="text" class="form-control" name="order_Id" #order_Id="ngModel"
+                    [(ngModel)]="CurrentOrdersObj.order_Id" [required]="e_localize.order_Id.isRequired"
+                    [disabled]="!e_localize.order_Id.isEnabled" placeholder="{{e_localize.order_Id.headerName}}">
+                </div>
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.order_number.isVisible">{{e_localize.order_number.headerName}} <span
+                    *ngIf="e_localize.order_number.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.order_number.isVisible">
+                  <input DigitOnly maxlength="20" type="text" class="form-control" name="OrdersName" #OrdersName="ngModel"
+                    [(ngModel)]="CurrentOrdersObj.order_number" [required]="e_localize.order_number.isRequired"
+                    [disabled]="!e_localize.order_number.isEnabled"
+                    placeholder="{{e_localize.order_number.headerName}} ">
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!-- Row 2 -->
+            <div class="form-group" *ngIf="IsLoaded">
+              <div *ngIf="IsLoaded">
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.vendor_number.isVisible">{{e_localize.vendor_number.headerName}} <span
+                    *ngIf="e_localize.vendor_number.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.vendor_number.isVisible">
+                  <input DigitOnly maxlength="20" type="text" class="form-control" name="vendor_number" #vendor_number="ngModel"
+                    [(ngModel)]="CurrentOrdersObj.vendor_number" [required]="e_localize.vendor_number.isRequired"
+                    [disabled]="!e_localize.vendor_number.isEnabled"
+                    placeholder="{{e_localize.vendor_number.headerName}}">
+                </div>
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.req_by_date.isVisible">{{e_localize.req_by_date.headerName}} <span
+                    *ngIf="e_localize.req_by_date.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.req_by_date.isVisible">
+                  <input bsDatepicker type="text" class="form-control" name="req_by_date" #req_by_date="ngModel"
+                    [(ngModel)]="CurrentOrdersObj.req_by_date" [required]="e_localize.req_by_date.isRequired"
+                    [disabled]="!e_localize.req_by_date.isEnabled" placeholder="{{e_localize.req_by_date.headerName}}">
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="form-group" *ngIf="IsLoaded">
+              <div *ngIf="IsLoaded">
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.price_year.isVisible">{{e_localize.price_year.headerName}} <span
+                    *ngIf="e_localize.price_year.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.price_year.isVisible">
+                  <input  DigitOnly maxlength="20" type="text" class="form-control" name="price_year" #price_year="ngModel"
+                    [(ngModel)]="CurrentOrdersObj.price_year" [required]="e_localize.price_year.isRequired"
+                    [disabled]="!e_localize.price_year.isEnabled" placeholder="{{e_localize.price_year.headerName}}">
+                </div>
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.season_code_id.isVisible">{{e_localize.season_code_id.headerName}}
+                   <span *ngIf="e_localize.season_code_id.isRequired"
+                    style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.season_code_id.isVisible">
+                  <select #season_code_id="ngModel" [(ngModel)]="CurrentOrdersObj.season_code_id"
+                    [required]="e_localize.season_code_id.isRequired" name="season_code_id" class="form-control">
+                    <option [value]="i.SeasonCode" *ngFor="let i of SeasonList">{{i.SeasonCode}} </option>
+                  </select>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!-- Row 4 new -->
+            <div class="form-group" *ngIf="IsLoaded">
+              <div *ngIf="IsLoaded">
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.product_number.isVisible">{{e_localize.product_number.headerName}} <span
+                    *ngIf="e_localize.product_number.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.product_number.isVisible">
+                  <input DigitOnly maxlength="20" type="text" class="form-control" name="product_number" #product_number="ngModel"
+                    [(ngModel)]="CurrentOrdersObj.product_number" [required]="e_localize.product_number.isRequired"
+                    [disabled]="!e_localize.product_number.isEnabled"
+                    placeholder="{{e_localize.product_number.headerName}}">
+                </div>
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.category_code_id.isVisible">{{e_localize.category_code_id.headerName}} <span
+                    *ngIf="e_localize.category_code_id.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.category_code_id.isVisible">
+                  <select #category_code_id="ngModel" [(ngModel)]="CurrentOrdersObj.category_code_id"
+                    [required]="e_localize.category_code_id.isRequired" name="category_code_id" class="form-control">
+                    <option [value]="i.CatCd" *ngFor="let i of CategoryList">{{i.Description}} </option>
+                  </select>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!-- Row 5 new -->
+            <div class="form-group" *ngIf="IsLoaded">
+              <div *ngIf="IsLoaded">
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.grade_code_id.isVisible">{{e_localize.grade_code_id.headerName}} <span
+                    *ngIf="e_localize.grade_code_id.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.grade_code_id.isVisible">
+                  <select #grade_code_id="ngModel" [(ngModel)]="CurrentOrdersObj.grade_code_id"
+                    [required]="e_localize.grade_code_id.isRequired" name="grade_code_id" class="form-control">
+                    <option [value]="i.GradeCd" *ngFor="let i of GradeList">{{i.Description}} </option>
+                  </select>
+                </div>
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.subcategory_code_id.isVisible">{{e_localize.subcategory_code_id.headerName}} <span
+                    *ngIf="e_localize.subcategory_code_id.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.subcategory_code_id.isVisible">
+                  <select #subcategory_code_id="ngModel" [(ngModel)]="CurrentOrdersObj.subcategory_code_id"
+                    [required]="e_localize.subcategory_code_id.isRequired" name="subcategory_code_id"
+                    class="form-control">
+                    <option [value]="i.SubCatCd" *ngFor="let i of SubcategoryList">{{i.Description}} </option>
+                  </select>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!-- Row 6 new -->
+            <div class="form-group" *ngIf="IsLoaded">
+              <div *ngIf="IsLoaded">
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.sex_code.isVisible">{{e_localize.sex_code.headerName}} <span
+                    *ngIf="e_localize.sex_code.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.sex_code.isVisible">
+                  <input maxlength="20" type="text" class="form-control" name="sex_code" #sex_code="ngModel"
+                    [(ngModel)]="CurrentOrdersObj.sex_code" [required]="e_localize.sex_code.isRequired"
+                    [disabled]="!e_localize.sex_code.isEnabled" placeholder="{{e_localize.sex_code.headerName}}">
+                </div>
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.hstariff_id.isVisible">{{e_localize.hstariff_id.headerName}} <span
+                    *ngIf="e_localize.hstariff_id.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.hstariff_id.isVisible">
+                  <input maxlength="200" type="text" class="form-control" name="hstariff_id" #hstariff_id="ngModel"
+                    [(ngModel)]="CurrentOrdersObj.hstariff_id" [required]="e_localize.hstariff_id.isRequired"
+                    [disabled]="!e_localize.hstariff_id.isEnabled" placeholder="{{e_localize.hstariff_id.headerName}}">
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!-- Row 7 new -->
+            <div class="form-group" *ngIf="IsLoaded">
+              <div *ngIf="IsLoaded">
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.country_of_origin_id.isVisible">{{e_localize.country_of_origin_id.headerName}} <span
+                    *ngIf="e_localize.country_of_origin_id.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.country_of_origin_id.isVisible">
+                  <select #country_of_origin_id="ngModel" [(ngModel)]="CurrentOrdersObj.country_of_origin_id"
+                    [required]="e_localize.country_of_origin_id.isRequired" name="country_of_origin_id"
+                    class="form-control">
+                    <option [value]="i.CountryCode" *ngFor="let i of CountryList">{{i.CountryName}} </option>
+                  </select>
+                </div>
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.prim_season_code.isVisible">{{e_localize.prim_season_code.headerName}} <span
+                    *ngIf="e_localize.prim_season_code.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.prim_season_code.isVisible">
+                  <select #prim_season_code="ngModel" [(ngModel)]="CurrentOrdersObj.prim_season_code"
+                    [required]="e_localize.prim_season_code.isRequired" name="prim_season_code" class="form-control">
+                    <option [value]="i.SeasonCode" *ngFor="let i of SeasonList">{{i.Description}} </option>
+                  </select>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!-- Row 8 -->
+            <div class="form-group" *ngIf="IsLoaded">
+              <div *ngIf="IsLoaded">
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.product_sku.isVisible">{{e_localize.product_sku.headerName}} <span
+                    *ngIf="e_localize.product_sku.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.product_sku.isVisible">
+                  <input maxlength="200" type="text" class="form-control" name="product_sku" #product_sku="ngModel"
+                    [(ngModel)]="CurrentOrdersObj.product_sku" [required]="e_localize.product_sku.isRequired"
+                    [disabled]="!e_localize.product_sku.isEnabled" placeholder="{{e_localize.product_sku.headerName}}">
+                </div>
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.product_qty.isVisible">{{e_localize.product_qty.headerName}} <span
+                    *ngIf="e_localize.product_qty.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.product_qty.isVisible">
+                  <input DigitOnly maxlength="20" type="text" class="form-control" name="product_qty" #product_qty="ngModel"
+                    [(ngModel)]="CurrentOrdersObj.product_qty" [required]="e_localize.product_qty.isRequired"
+                    [disabled]="!e_localize.product_qty.isEnabled" placeholder="{{e_localize.product_qty.headerName}} ">
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!-- Row 9 -->
+            <div class="form-group" *ngIf="IsLoaded">
+              <div *ngIf="IsLoaded">
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.product_weight.isVisible">{{e_localize.product_weight.headerName}} <span
+                    *ngIf="e_localize.product_weight.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.product_weight.isVisible">
+                  <input DigitOnly maxlength="20" type="text" class="form-control" name="product_weight" #product_weight="ngModel"
+                    [(ngModel)]="CurrentOrdersObj.product_weight" [required]="e_localize.product_weight.isRequired"
+                    [disabled]="!e_localize.product_weight.isEnabled"
+                    placeholder="{{e_localize.product_weight.headerName}}">
+                </div>
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.size_code_id.isVisible">{{e_localize.size_code_id.headerName}}<span
+                    *ngIf="e_localize.size_code_id.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.size_code_id.isVisible">
+                  <select #size_code_id="ngModel" [(ngModel)]="CurrentOrdersObj.size_code_id"
+                    [required]="e_localize.size_code_id.isRequired" name="size_code_id" class="form-control">
+                    <option [value]="i.SizeCode" *ngFor="let i of ProductSizeList">{{i.SizeCode}} </option>
+                  </select>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!-- Row 10 -->
+            <div class="form-group" *ngIf="IsLoaded">
+              <div *ngIf="IsLoaded">
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.sort_order.isVisible">{{e_localize.sort_order.headerName}} <span
+                    *ngIf="e_localize.sort_order.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.sort_order.isVisible">
+                  <input DigitOnly maxlength="20" type="text" class="form-control" name="sort_order" #sort_order="ngModel"
+                    [(ngModel)]="CurrentOrdersObj.sort_order" [required]="e_localize.sort_order.isRequired"
+                    [disabled]="!e_localize.sort_order.isEnabled" placeholder="{{e_localize.sort_order.headerName}}">
+                </div>
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.color_description.isVisible">{{e_localize.color_description.headerName}} <span
+                    *ngIf="e_localize.color_description.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.color_description.isVisible">
+                  <select #color_description="ngModel" [(ngModel)]="CurrentOrdersObj.color_description"
+                    [required]="e_localize.color_description.isRequired" name="color_description" class="form-control"
+                    (ngModelChange)="getSelectedColors(CurrentOrdersObj.color_description)">
+                    <option [value]="i.Description" *ngFor="let i of ColorsList">{{i.Code}} |
+                      {{i.Name}} | {{i.Description}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!-- Row 11 -->
+            <div class="form-group" *ngIf="IsLoaded">
+              <div *ngIf="IsLoaded">
+                <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                  *ngIf="e_localize.isActive.isVisible">{{e_localize.isActive.headerName}} <span
+                    *ngIf="e_localize.isActive.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.isActive.isVisible">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" [required]="e_localize.isActive"
+                        class="checkbox-slider colored-palegreen yesno" [disabled]="!e_localize.isActive"
+                        [(ngModel)]="CurrentOrdersObj.IsActive" [ngModelOptions]="{standalone: true}"><span
+                        class="text">&nbsp;</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

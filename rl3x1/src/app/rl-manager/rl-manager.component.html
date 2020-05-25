@@ -1,0 +1,31 @@
+    <!-- Loading Container -->
+    <div class="loading-container">
+        <div class="loader"></div>
+    </div>
+    <!--  /Loading Container -->
+    <!-- /Navbar -->
+    <app-navigation></app-navigation>
+    <!-- /Navbar -->
+    <!-- Main Container -->
+    <div class="main-container container-fluid">
+        <!-- Page Container -->
+        <div class="page-container">
+            <!-- Page Sidebar -->
+            <app-sidebar></app-sidebar>
+            <!-- /Page Sidebar -->            
+            <!-- Page Content -->
+            <div class="page-content">
+                <app-command commands=[Commands]></app-command>                
+                <!-- Page Body -->
+                <div class="page-body">  
+                    <div class="blocker"></div>                               
+                    <router-outlet></router-outlet>
+                </div>
+                <!-- /Page Body -->
+            </div>
+            <!-- /Page Content -->
+        </div>
+        <!-- /Page Container -->
+    </div>
+    <!-- Main Container -->
+

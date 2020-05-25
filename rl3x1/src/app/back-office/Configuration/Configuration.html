@@ -1,0 +1,235 @@
+﻿<div class="widget" *ngIf="ListView">
+  <div class="widget-body">
+    <div class="widget-header ">
+      <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+      <div class="input-group pull-left margin-left-20 col-md-3">
+        <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;"
+          [(ngModel)]="filterText" placeholder="Search...">
+        <span class="input-group-btn">
+          <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i
+              class="fa fa-search"></i>Search</button>
+        </span>
+      </div>
+      <div class="widget-buttons">
+        <button class="btn btn-sm btn-primary add_btn" type="button" (click)="onAddCategory()"
+          *ngIf="LocalAccess | contains:'Add'">
+          <i class="glyphicon glyphicon-plus-sign"></i>Add
+        </button>
+      </div>
+    </div>
+    <div class="card1 no-padding marginTop34">
+      <ag-grid-angular #agGrid class="agc-grid ag-theme-balham" [ngClass]="{'agc-grid-popup':(GridType=='popup') }"
+        (gridReady)="onGridReady($event)" [gridOptions]="gridOptions"
+        (selectionChanged)="GridType != 'popup' && onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+      </ag-grid-angular>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div class="" *ngIf="!ListView">
+  <form name="Configuration" #f="ngForm" class="css-form" novalidate>
+    <div class="widget">
+      <div class="widget-body">
+        <div class="widget-header ">
+          <span class="widget-caption" *ngIf="CurrentConfigurationObj.ConfigurationID == undefined"><b>Add
+              {{moduleTitle}}</b>
+          </span>
+          <span class="widget-caption" *ngIf="CurrentConfigurationObj.ConfigurationID > 0"><b><span
+                *ngIf="LocalAccess | contains:'Edit'">Edit</span> {{moduleTitle}}</b>
+          </span>
+          <div class="widget-buttons">
+            <button class="btn btn-sm waves-effect waves-light btn-danger mr-2" type="button" (click)="Cancel()">
+              <i class="fa fa-long-arrow-left"></i> Back
+            </button>
+            <button class="btn btn-sm waves-effect waves-light btn-success" type="submit"
+              *ngIf="LocalAccess | contains:'Edit'" (click)="Save(f.form)">
+              <i class="fa fa-floppy-o"></i> Save
+            </button>
+          </div>
+        </div>
+        <hr>
+        <div class="widget-body no-padding">
+          <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+            <div class="validationmsg">
+              <b> Please fill the asterisk (*) fields. </b>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+          <div class="row">
+            <div class="card1">
+              <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                  *ngIf="IsLoaded && e_localize.PartnerCode.isVisible">{{e_localize.PartnerCode.headerName}}<span
+                    *ngIf="e_localize.PartnerCode.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.PartnerCode.isVisible">
+                  <input type="text" name="partnerCode" class="form-control"
+                    [(ngModel)]="CurrentConfigurationObj.PartnerCode" [placeholder]="e_localize.PartnerCode.headerName"
+                    maxlength="10" #PartnerCode="ngModel" [required]="e_localize.PartnerCode.isRequired"
+                    [disabled]="true" />
+                  <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                  *ngIf="IsLoaded && e_localize.ContactNumber.isVisible ">{{e_localize.ContactNumber.headerName}}<span
+                    *ngIf="e_localize.ContactNumber.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                  *ngIf="IsLoaded && e_localize.ContactNumber.isVisible  ">
+                  <div class="input-group pull-left col-md-3" style="width: 100%;">
+                    <div >
+                      <input phone type="text" id="ContactNumber" name="ContactNumber" class="form-control"
+                        style="width:100%;float:left" phone-input maxlength="10" placeholder="Number with area code"
+                        [(ngModel)]="CurrentConfigurationObj.ContactNumber" #ContactNumber="ngModel"
+                        (focusout)="CheckPhoneVal()" [required]="e_localize.ContactNumber.isRequired"
+                        [disabled]="!e_localize.ContactNumber.isEnabled" />
+                    </div>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+
+                <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                *ngIf="IsLoaded && e_localize.PartnerName.isVisible  ">{{e_localize.PartnerName.headerName}}<span
+                  *ngIf="e_localize.PartnerName.isRequired" style="color:red;">*</span>:</label>
+              <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                *ngIf="IsLoaded && e_localize.PartnerName.isVisible  ">
+                <input type="text" name="PartnerName" class="form-control"
+                  [(ngModel)]="CurrentConfigurationObj.PartnerName" [placeholder]="e_localize.PartnerName.headerName"
+                  maxlength="50" #PartnerName="ngModel" [required]="e_localize.PartnerName.isRequired"
+                  [disabled]="!e_localize.PartnerName.isEnabled" />
+                <div class="clearfix"></div>
+              </div>
+
+                <div class="clearfix"></div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                  *ngIf="IsLoaded && e_localize.ContactName.isVisible  ">{{e_localize.ContactName.headerName}}<span
+                    *ngIf="e_localize.ContactName.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                  *ngIf="IsLoaded && e_localize.ContactName.isVisible  ">
+                  <input type="text" name="ContactName" class="form-control"
+                    [(ngModel)]="CurrentConfigurationObj.ContactName" [placeholder]="e_localize.ContactName.headerName"
+                    maxlength="50" #ContactName="ngModel" [required]="e_localize.ContactName.isRequired"
+                    [disabled]="!e_localize.ContactName.isEnabled" />
+                  <div class="clearfix"></div>
+                </div>
+                <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                  *ngIf="IsLoaded && e_localize.Email.isVisible  ">{{e_localize.Email.headerName}}<span
+                    *ngIf="e_localize.Email.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.Email.isVisible  ">
+                  <input type="email" name="Email" validateEmail class="form-control"
+                    [(ngModel)]="CurrentConfigurationObj.Email" [placeholder]="e_localize.Email.headerName"
+                    maxlength="50" #Email="ngModel" [required]="e_localize.Email.isRequired"
+                    [disabled]="!e_localize.Email.isEnabled" />
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="form-group">
+              <Address-Template #PartnerAddress [address]="CurrentAddress" [addressEditor]="e_localize" (notifyAddress)="AddressEvent($event)">
+              </Address-Template>
+              <div class="clearfix"></div>
+            </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                  *ngIf="IsLoaded && e_localize.host.isVisible ">{{e_localize.host.headerName}}<span
+                    *ngIf="e_localize.host.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.host.isVisible ">
+                  <input type="text" name="host" class="form-control" [(ngModel)]="CurrentConfigurationObj.host"
+                    [placeholder]="e_localize.host.headerName" maxlength="50" #host="ngModel"
+                    [required]="e_localize.host.isRequired" [disabled]="!e_localize.host.isEnabled" />
+                  <div class="clearfix"></div>
+                </div>
+
+                <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                  *ngIf="IsLoaded && e_localize.portnumber.isVisible ">{{e_localize.portnumber.headerName}}<span
+                    *ngIf="e_localize.portnumber.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.portnumber.isVisible ">
+                  <input type="portnumber" name="portnumber" class="form-control"
+                    [(ngModel)]="CurrentConfigurationObj.portnumber" [placeholder]="e_localize.portnumber.headerName"
+                    maxlength="50" #portnumber="ngModel" [required]="e_localize.portnumber.isRequired"
+                    [disabled]="!e_localize.portnumber.isEnabled" />
+                </div>
+                <div class="clearfix"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                  *ngIf="IsLoaded && e_localize.username.isVisible ">{{e_localize.username.headerName}}<span
+                    *ngIf="e_localize.username.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.username.isVisible ">
+                  <input type="text" name="username" class="form-control" [(ngModel)]="CurrentConfigurationObj.username"
+                    [placeholder]="e_localize.username.headerName" maxlength="50" #username="ngModel"
+                    [required]="e_localize.username.isRequired" [disabled]="!e_localize.username.isEnabled" />
+                  <div class="clearfix"></div>
+                </div>
+
+                <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                  *ngIf="IsLoaded && e_localize.pass.isVisible ">{{e_localize.pass.headerName}}<span
+                    *ngIf="e_localize.pass.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.pass.isVisible ">
+                  <input type="password" name="pass" class="form-control" [(ngModel)]="CurrentConfigurationObj.pass"
+                    [placeholder]="e_localize.pass.headerName" maxlength="50" #pass="ngModel"
+                    [required]="e_localize.pass.isRequired" [disabled]="!e_localize.pass.isEnabled" />
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                  *ngIf="IsLoaded && e_localize.MercahntKey.isVisible ">{{e_localize.MercahntKey.headerName}}<span
+                    *ngIf="e_localize.MercahntKey.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12" *ngIf="IsLoaded && e_localize.MercahntKey.isVisible ">
+                  <input type="text" name="MercahntKey" class="form-control"
+                    [(ngModel)]="CurrentConfigurationObj.MercahntKey" [placeholder]="e_localize.MercahntKey.headerName"
+                    maxlength="50" #MercahntKey="ngModel" [required]="e_localize.MercahntKey.isRequired"
+                    [disabled]="!e_localize.MercahntKey.isEnabled" />
+                  <div class="clearfix"></div>
+                </div>
+                <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                  *ngIf="IsLoaded && e_localize.MercahntPassword.isVisible ">{{e_localize.MercahntPassword.headerName}}<span
+                    *ngIf="e_localize.MercahntPassword.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12"
+                  *ngIf="IsLoaded && e_localize.MercahntPassword.isVisible ">
+                  <input type="Password" name="MercahntPassword" class="form-control"
+                    [(ngModel)]="CurrentConfigurationObj.MercahntPassword"
+                    [placeholder]="e_localize.MercahntPassword.headerName" maxlength="50" #MercahntPassword="ngModel"
+                    [required]="e_localize.MercahntPassword.isRequired"
+                    [disabled]="!e_localize.MercahntPassword.isEnabled" />
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded">
+                  SSL
+                </label>
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                  <label *ngIf="IsLoaded">
+                    <input type="checkbox" class="checkbox-slider colored-palegreen yesno" style="left:14px"
+                      [(ngModel)]="CurrentConfigurationObj.SSLValue" name="SSLValue" />
+                    <span class="text"></span>
+                  </label>
+                  <div class="clearfix"></div>
+                </div>
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded">
+                  Active
+                </label>
+                <div class="col-sm-3 col-md-3 col-lg-3">
+                  <label *ngIf="IsLoaded">
+                    <input type="checkbox" class="checkbox-slider colored-palegreen yesno" style="left:14px"
+                      [(ngModel)]="CurrentConfigurationObj.IsActive" name="IsActive" />
+                    <span class="text"></span>
+                  </label>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

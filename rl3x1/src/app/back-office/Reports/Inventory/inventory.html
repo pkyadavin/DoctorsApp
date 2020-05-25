@@ -1,0 +1,428 @@
+﻿ 
+
+        <div class="row no-margin">
+            <div>
+                <div class="widget" style="margin-bottom:5px!important;">
+                    <div class="widget-header ">
+                        <span class="widget-caption">{{moduleReportTitle}}</span>
+                        <div class="widget-buttons">
+                        </div>
+                    </div>
+                    <div class="widget-body no-padding">
+                        <div class="form" style="padding-top:10px;padding-bottom:5px;">
+                            <div class="form-group">
+                                <label class="control-label  col-sm-3 col-md-3 col-lg-3 lbl">Model:</label>
+                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" name="Model" [(ngModel)]="selectedModel.ModelName"
+                                            readonly="readonly" placeholder="Search Model">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default btn-sm" type="button" (click)="selectModel()"><i
+                                                    class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <label class="control-label  col-sm-3 col-md-3 col-lg-3 lbl">Node:</label>
+                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <select [(ngModel)]="selectedNode.NodeID" name="node" class="form-control">
+                                        <option [value]="0">All</option>
+                                        <option *ngFor="let node of Nodes" [value]="node.NodeID">
+                                            {{node.Node}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label  col-sm-3 col-md-3 col-lg-3 lbl">Item Number:</label>
+                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" name="ItemNumber" [(ngModel)]="selectedItem.ItemNumber"
+                                            readonly="readonly" placeholder="Search Item Number">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default btn-sm" type="button" (click)="selectItem()"><i
+                                                    class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <label class="control-label  col-sm-3 col-md-3 col-lg-3 lbl">Location:</label>
+                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                    <select [(ngModel)]="selectedLocation.LocationID" name="node" class="form-control">
+                                        <option [value]="0">All</option>
+                                        <option *ngFor="let loc of Locations" [value]="loc.LocationID">
+                                            {{loc.LocationCode}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-group col-md-12 text-right">                                
+                                <button class="btn btn-sm btn-primary margin-right-5" (click)="onClearFilter()"><i
+                                        class="fa fa-undo" aria-hidden="true"></i> Reset</button>
+                                <button class="btn btn-sm btn-primary" (click)="onSearchClick()"><i
+                                        class="glyphicon glyphicon-search"></i> Search</button>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <tabs #tabs>
+                                <tab tabTitle="Stock Inventory">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="widget">
+                                            <div class="widget-header">
+                                                <span class="widget-caption"></span>
+                                                <input type="text" name="searchText" (keypress)="onFilterChanged($event)" class="input-sm pull-left"
+                                                    style="margin-top:3px;" [(ngModel)]="Value" placeholder="Search Item/Partner/Model">
+                                                <i class="fa fa-download pull-left" aria-hidden="true" (click)="DownloadInventoryExelFormat()"
+                                                    style="cursor:pointer;margin-left:10px;margin-top:10px;"></i>
+                                                <div class="widget-buttons">
+                                                    <button class="btn btn-sm btn-primary" (click)="ShowDetails()"><i class="glyphicon glyphicon-open"></i> Show</button>
+                                                </div>
+                                                </div>
+                                            <div class="widget-body no-padding" style="overflow:hidden;height:280px;">
+                                                <ag-grid-angular #agGrid style="height:250px;width:100%" class="ag-theme-balham"
+                                                    [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()"
+                                                    (rowClicked)="onRowClicked($event)">
+                                                </ag-grid-angular>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="widget">
+                                            <div class="widget-header">
+                                                <span class="widget-caption"></span>
+                                                <input type="text" name="searchText" class="input-sm pull-left" (keypress)="onSerialFilterChanged($event)"
+                                                    style="margin-top:3px;" [(ngModel)]="selectedfilterValue" placeholder="Search Serial Number">
+                                            </div>
+                                            <div class="widget-body no-padding" style="overflow:hidden;height:280px;">
+                                                <ag-grid-angular #agGrid2 style="height:250px;width:100%" class="ag-theme-balham"
+                                                    [gridOptions]="selectgridOptions">
+                                                </ag-grid-angular>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </tab>
+                            </tabs>
+                        <div class="clearfix"></div>
+                    </div>
+<div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>                
+            </div>
+            <message #pop cssClass="modal-msg"></message>
+        </div>    
+
+<!-- <bs-modal #modalPartner cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Partners</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <PartnerGrid [partnerGridType]="popuptype" [partnerType]="'PTR001'" (notifyPartner)="PartnerEvent($event)"></PartnerGrid>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" data-dismiss="modalPartner" (click)="modalPartner.dismiss()">Close</button>
+    </bs-modal-footer>y
+</bs-modal> -->
+
+<bs-modal #modalItem cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close"  (click)="modalItem.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Item Master</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <ModelMasterGrid [itemmasterGridType]="popuptype" (notifyItem)="ItemEvent($event)"></ModelMasterGrid>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default"  (click)="modalItem.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #modalItemModel cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close"  (click)="modalItemModel.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Model Master</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <ModelGrid [itemmodelGridType]="popuptype" (notifyItemModel)="ItemModelEvent($event)"></ModelGrid>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default"   (click)="modalItemModel.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #modalShowInventory cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close"  (click)="modalShowInventory.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Inventory History</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <div class="col-lg-12 col-md-12 no-padding">
+            <div class="widget">
+                <div class="widget-header" style="padding-top:3px!important">
+                    <!--<span class="widget-caption pull-left font-40"><b>Inventory Report</b> </span>-->
+                    <div class="form-group">
+                        <span class="col-sm-2">From Date :</span>
+                        <div class="col-sm-2">
+                            <input ng2-datetime-picker date-only="true" readonly="readonly" #fromDateInv="ngModel" name="txtFromDate"
+                                class="form-control" [(ngModel)]="fromDate">
+                        </div>
+                        <span class="col-sm-2">To Date :</span>
+                        <div class="col-sm-2">
+                            <input ng2-datetime-picker date-only="true" readonly="readonly" #toDateInv="ngModel" name="txtToDate"
+                                class="form-control" [(ngModel)]="toDate">
+                        </div>
+                        <div class="col-sm-1">
+                            <button (click)="showInventoryDate()" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-search"></span></button>
+                        </div>
+                        <div class="col-sm-1">
+                            <i class="fa fa-download pull-left" aria-hidden="true" style="cursor:pointer;margin-left:10px;margin-top:10px;"></i>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group padding-5">
+
+                        <div class="col-lg-6 col-md-6">
+                            <b class="pull-left">Opening Balance : {{balance.OpeningBalance | number : '1.2-2'}}</b>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6">
+                            <b class="pull-right">Closing Balance : {{balance.ClosingBalance | number : '1.2-2'}}</b>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="widget-body no-padding" style="overflow:hidden;">
+                    <ag-grid-angular #agGrid3 style="height:250px;width:100%" class="ag-theme-balham" [gridOptions]="gridInventoryOptions">
+                    </ag-grid-angular>
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default"  (click)="modalShowInventory.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #modalShowInventoryDetail cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close"  (click)="modalShowInventoryDetail.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Inventory Detail</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <div class="widget">
+            <div class="col-md-12 form-group text-right">
+                <button class="btn btn-sm btn-primary" type="submit" (click)="onSubmit()">
+                    <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                </button>
+                <div class="clearfix"></div>
+            </div>
+           
+                <div class="col-md-12">
+                    <span *ngIf="this.FillRequired==1" style="color:red;"> <b> Please fill the asterisk (*) fields. </b></span>
+                    <!--<span *ngIf="this.AlertRequired==1" style="color:red;"> <b> Duplicate Serial Number </b></span>-->
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3" style="padding-top:8px;">
+                        Reconcile:
+                    </label>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" name="Reconcile" readonly #Reconcile="ngModel" class="form-control"
+                            [(ngModel)]="CurrentInventoryReconcileHdr.ReconcileNumber" placeholder="Auto Generated">
+                    </div>
+
+
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3">Reconcile Date:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <input ng2-datetime-picker date-only="true" readonly #ReconcileDate="ngModel" name="ReconcileDate"
+                            class="form-control" [(ngModel)]="CurrentInventoryReconcileHdr.ReconcileDate">
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3">Partner:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" name="Partner" class="form-control" readonly [(ngModel)]="CurrentInventoryReconcileHdr.Partner"
+                            placeholder="Partner" maxlength="50" #Partner="ngModel" />
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3">Model:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" name="Partner" class="form-control" readonly [(ngModel)]="CurrentInventoryReconcileHdr.Model"
+                            placeholder="Model" maxlength="50" #Partner="ngModel" />
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                </div>
+                <div class="form-group">
+
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3">Stock Qty:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <input type="number" name="Quantity" class="form-control" readonly [(ngModel)]="CurrentInventoryReconcileHdr.Quantity"
+                            placeholder="Quantity" maxlength="50" #Quantity="ngModel" />
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3">Item Number:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" name="Partner" class="form-control" readonly [(ngModel)]="CurrentInventoryReconcileHdr.ItemNumber"
+                            placeholder="Partner" maxlength="50" #Partner="ngModel" />
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+
+
+
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3">Type:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" name="Partner" class="form-control" readonly [(ngModel)]="CurrentInventoryReconcileHdr.SerializeData"
+                            placeholder="Partner" maxlength="50" #Partner="ngModel" />
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3">Description:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3">
+                        <input type="text" name="Partner" class="form-control" readonly [(ngModel)]="CurrentInventoryReconcileHdr.Description"
+                            placeholder="Partner" maxlength="50" #Partner="ngModel" />
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6 no-padding">
+                        <div class="form-group">
+                            <label class="control-label col-md-6">Reconcile Type:</label>
+                            <div class="col-md-6">
+                                <select id="ReconcileType" name="ReconcileTypeID" class="form-control" [(ngModel)]="CurrentInventoryReconcileHdr.ReconcileTypeID"
+                                    #ReconcileType="ngModel" (ngModelChange)="SelectedReconcileType($event)">
+
+                                    <option [value]="undefined">--Select Type--</option>
+                                    <option *ngFor="let typelist of typelookupList" [value]="typelist.TypeLookUpID">{{typelist.TypeName}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label class="control-label col-md-6" *ngIf="this.ActualQuantityRequired==1">Actual
+                                    Qty:<span style="color:red;">*</span></label>
+
+                                <div class="col-md-6" *ngIf="this.ActualQuantityRequired==1">
+                                    <input type="text" name="ActualQuantity" onkeypress="javascript:return numberonly(this,event,event);"
+                                        class="form-control" [(ngModel)]="CurrentInventoryReconcileHdr.ActualQuantity"
+                                        placeholder="ActualQuantity" maxlength="50" #ActualQuantity="ngModel" />
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="form-group" *ngIf="this.SerialNumberRequired==1">
+                                <label class="control-label col-md-6">Serial Number:<span style="color:red;">*</span></label>
+                                <div class="col-md-6">
+                                    <input type="text" name="SerialNumber" class="form-control" [(ngModel)]="CurrentInventoryReconcileHdr.SerialNumber"
+                                        placeholder="SerialNumber" maxlength="50" #SerialNumber="ngModel" />
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="col-md-6 no-padding">
+                        <label class="control-label col-md-6">Remarks:</label>
+                        <div class="col-md-6">
+                            <textarea type="textarea" name="Remarks" style="width:100%;height:88px;" [(ngModel)]="CurrentInventoryReconcileHdr.Remarks"
+                                placeholder="Remarks" maxlength="250" #Remarks="ngModel"></textarea>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+
+                    <div class="clearfix"></div>
+                </div>
+                <!--</div>
+
+                <div class="widget-header">-->
+
+                <div class="clearfix"></div>
+            
+
+            <button (click)="onAddInventory()" class="btn btn-info btn-sm pull-right margin-bottom-10" *ngIf="PopAddButton==1"
+                style="cursor:pointer;">Add</button>
+            <div class="clearfix"></div>
+            <div class="widget-body no-padding" style="overflow:hidden;" *ngIf=(this.isSerializedGridVisibility)>
+
+                <div class="table-responsive" style="max-height:300px;overflow:auto;">
+                    <table style="width:100%;max-height:200px;overflow:auto;" cellpadding="0" cellspacing="0" border="0"
+                        class="table-responsive table">
+                        <thead>
+                            <tr class="btn-primary">
+                                <td class="text-align-left"><b>Serial Number</b></td>
+                                <td class="text-align-left"><b>Quantity</b></td>
+                                <td class="text-align-left" style="cursor:pointer;">
+                                    <div class="checkbox" (click)="CheckUnCheckNodes()" style="margin:0px;">
+                                        <label>
+                                            <input name="checkall" style="margin:0px;" type="checkbox" [(ngModel)]="CheckAllNodes"
+                                                [ngModelOptions]="{standalone: true}">
+                                            <span class="text">&nbsp;</span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let d of NodesData">
+                                <!--uncommnet-->
+                                <td class="text-align-left">{{d.SerialNumber}}</td>
+                                <td class="text-align-left">{{d.Quantity}}</td>
+                                <td class="text-align-left" style="cursor:pointer;">
+                                    <div class="checkbox" (click)="AddRemoveNodes($index)" style="margin:0px;">
+                                        <label>
+                                            <input name="form-field-checkbox{{$index}}" style="margin:0px;" type="checkbox"
+                                                [(ngModel)]="d.IsChecked" [ngModelOptions]="{standalone: true}"
+                                                [ngClass]="{'colored-success':d.id>0,'colored-blue':d.id==0}">
+                                            <span class="text">&nbsp;</span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="clearfix"></div>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default"   (click)="modalShowInventoryDetail.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>

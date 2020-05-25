@@ -1,0 +1,1048 @@
+﻿<style>
+    .search-text-input {
+        border-top: thin solid #e5e5e5;
+        border-right: thin solid #e5e5e5;
+        border-bottom: 0;
+        border-left: thin solid #e5e5e5;
+        box-shadow: 0px 1px 1px 1px #e5e5e5;
+        float: left;
+        height: 17px;
+        margin: .8em 0 0 .5em;
+        outline: 0;
+        padding: .4em 0 .4em .6em;
+        width: 183px;
+    }
+    
+    .button-holder {
+        background-color: #f1f1f1;
+        border-top: thin solid #e5e5e5;
+        box-shadow: 1px 1px 1px 1px #e5e5e5;
+        cursor: pointer;
+        float: left;
+        height: 27px;
+        margin: 11px 0 0 0;
+        text-align: center;
+        width: 50px;
+    }
+    
+    .anchorClass {
+        cursor: pointer;
+        color: cadetblue;
+    }
+    
+    .normalClass {
+        cursor: default;
+        color: rgb(15, 19, 19);
+    }
+</style>
+<div class="case_creation">
+    <div class="row">
+        <div class="col-sm-3 col-md-3 col-lg-3"></div>
+        <div class="col-sm-5 col-md-5 col-lg-5">
+            <div class="input-group" style="top:-3px; width: 100%;">
+                <input class="form-control form-control-sm " id="serialNbrid" (keydown.enter)="SearchPO($event)" maxlength="50" placeholder="PO / WO No" style="border-radius: 25px!important;padding:8px 10px!important;height: 40px!important;border-color: #00bcd4!important;border-width: 2px;"
+                    type="text" [(ngModel)]="CurrentCaseCreationObj.PoWoNo">
+                <div class="input-group-append scanBox">
+                    <span class="input-group-text">
+                        <button (click)="searchPoWoNo()"><i
+                        class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-4"></div>
+        <!-- <b>Or</b> -->
+        <div class="clearfix"></div>
+    </div>
+    <!-- <div class="row" *ngIf="GuidedSearch">
+        <div class="widget">
+            <div class="widget-body">
+                <div class="row form-group">
+                    <label class="control-label col-sm-6 col-md-3 col-lg-3 col-xs-6"><b>Product Type *</b></label>
+                    <div class="col-sm-6 col-md-3 col-lg-3 col-xs-6">
+                        <div class="search-buttons">
+                            
+                        </div>
+                    </div>
+                    <label class="control-label col-sm-6 col-md-3 col-lg-3 col-xs-6"><b>Product Name *</b></label>
+                    <div class="col-sm-6 col-md-3 col-lg-3 col-xs-6">
+                        <div class="search-buttons">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="control-label col-sm-6 col-md-3 col-lg-3 col-xs-6"><b>Product Color</b></label>
+                    <div class="col-sm-6 col-md-3 col-lg-3 col-xs-6">
+                        <div class="search-buttons">
+                            
+                        </div>
+                    </div>
+                    <label class="control-label col-sm-6 col-md-3 col-lg-3 col-xs-6"><b>Product Size</b></label>
+                    <div class="col-sm-6 col-md-3 col-lg-3 col-xs-6">
+                        <div class="search-buttons">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="clearfix"></div>
+    <div class="clearfix"></div>
+    <div class="widget" style="margin-top: 15px!important;" *ngIf="ListView">
+        <div class="widget-body">
+            <div class="widget-header">
+                <!-- <span class="widget-caption"><b> {{'Case No : '+CurrentCaseCreationObj.CaseNo}}</b> </span> -->
+                <div class="widget-buttons">
+                    <div *ngIf="ProductInfo">
+                        <button id="btnCancel" class="btn btn-sm btn-danger" type="button" (click)="Cancel()">
+                            <i class="fa fa-times"></i>Cancel
+                        </button>
+                        <button id="btnShiping" class="btn btn-sm btn-success" type="button" (click)="GoToShiping('next')">
+                            Next <i class="fa fa-arrow-right">&nbsp;</i>
+                        </button>
+                    </div>
+                    <div *ngIf="personalInfo">
+                        <button id="btnProduct" class="btn btn-sm btn-danger" type="button" (click)="GoToProduct()">
+                            <i class="fa fa-arrow-left"></i>Back 
+                        </button>
+                        <button id="btnPreview" class="btn btn-sm btn-success" type="button" (click)="GoToPreview()">
+                            Next <i class="fa fa-arrow-right">&nbsp;</i>
+                        </button>
+                    </div>
+                    <div *ngIf="PreviewData">
+                        <button id="btnPreShiping" class="btn btn-sm btn-danger" type="button" (click)="GoToShiping('back')">
+                            <i class="fa fa-arrow-left"></i>Back
+                        </button>
+                        <button id="btnSave" class="btn btn-sm btn-success" type="button" (click)="SaveData()">
+                            <i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="widget" *ngIf="ProductInfo">
+    <div class="widget-body case_creation_table" style="height: 450px;">
+        <div style="overflow: auto; height: 400px;">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">Action</th>
+                        <th style="width: 8%;">Order Number</th>
+                        <th style="width: 20%;">Vendor Number</th>
+                        <th style="width: 8%;">Req Date</th>
+                        <th style="width: 20%;">Price Year</th>
+                        <!-- <th style="width: 8%;">season_code_id</th> -->
+                        <th style="width: 20%;">Product Number</th>
+                        <th style="width: 8%;">Category</th>
+                        <th style="width: 8%;">Grade</th>
+                        <th style="width: 8%;">Subcategory</th>
+                        <th style="width: 8%;">Sex</th>
+                        <!-- <th style="width: 8%;">hstariff_id</th> -->
+                        <th style="width: 8%;">Country</th>
+                        <!-- <th style="width: 8%;">prim_season_code</th> -->
+                        <th style="width: 8%;">Product Sku</th>
+                        <th style="width: 8%;">Product Qty</th>
+                        <th style="width: 8%;">Product Weight</th>
+                        <th style="width: 8%;">Size</th>
+                        <!-- <th style="width: 8%;">sort_order</th> -->
+                        <th style="width: 8%;">Color</th>
+                        <!-- <th style="width: 8%;">base_color</th> -->
+                        <!-- <th style="width: 8%;">hex_value</th> -->
+                        <th style="width: 120px">Root Cause</th>
+                        <th style="width: 120px;">Issue</th>
+                        <th style="width: 120px;">Location</th>
+                        <th style="width: 120px">Ref. No.</th>
+                        <th style="width: 8%;">Picture Upload</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let source of _intakeOrdersModel;let indexOfelement=index;">
+                        <td>
+                            <input type="checkbox" name="{{source.order_id}}_ChkItem" [(ngModel)]="source.IsSelected" [checked]="source.IsSelected" class="colored-success" (change)="toggleChange($event,source,indexOfelement)" style="opacity: 1 !important;left: 0px !important;">
+                        </td>
+                        <td>{{source.order_number}}</td>
+                        <td>{{source.vendor_number}}</td>
+                        <td>{{source.req_by_date| date }}</td>
+                        <td>{{source.price_year}}</td>
+                        <!-- <td>{{source.season_code_id}}</td> -->
+                        <td>{{source.product_number}}</td>
+                        <td>{{source.category_code_id}}</td>
+                        <td>{{source.grade_code_id}}</td>
+                        <td>{{source.subcategory_code_id}}</td>
+                        <td>{{source.sex_code}}</td>
+                        <!-- <td>{{source.hstariff_id}}</td> -->
+                        <td>{{source.country_of_origin_id}}</td>
+                        <!-- <td>{{source.prim_season_code}}</td> -->
+                        <td>{{source.product_sku}}</td>
+                        <td>{{source.product_qty}}</td>
+                        <td>{{source.product_weight}}</td>
+                        <td>{{source.size_code_id}}</td>
+                        <!-- <td>{{source.sort_order}}</td> -->
+                        <td>{{source.color_description}}</td>
+                        <!-- <td>{{source.base_color}}</td> -->
+                        <!-- <td>{{source.hex_value}}</td> -->
+                        <td>
+                            {{source.SelectedRootCause.name}}
+                            <span *ngIf="!source.IsSelected" id='spanRootCause0_{{indexOfelement}}' class="normalClass" style="font-size: 12px; font-weight: 700; padding: 5px;"> Root Cause</span>
+                            <span *ngIf="source.IsSelected" id='spanRootCause_{{indexOfelement}}' class="anchorClass" style="font-size: 12px; font-weight: 700; padding: 5px;" (click)='dialogSetting("RootCause",indexOfelement)' data-toggle="modal" data-target="#ModalIssue"> Root Cause</span>
+                            <!-- <ng-multiselect-dropdown #RootCause="ngModel" id="RootCause" name="RootCause" [placeholder]="'RootCause'" [data]="_RootCause" [(ngModel)]="_ProductInfoModel.ProIssue" [settings]="DdlSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown>  -->
+                        </td>
+                        <td>
+                            <!-- <ng-multiselect-dropdown #ProIssue="ngModel" id="ddlProIssue" name="ProIssue" [placeholder]="'Issue'" [data]="_Issue" [(ngModel)]="_ProductInfoModel.ProIssue" [settings]="DdlSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown> -->
+                            <!-- {{source.SelectedIssue.name}} -->
+                            <li *ngFor="let isue of source.SelectedIssue;">
+                                <ul>{{isue.name}}</ul>
+                            </li>
+                            <span *ngIf="!source.IsSelected" id='spanIssue0_{{indexOfelement}}' class="normalClass" style="font-size: 12px; font-weight: 700; padding: 5px;"> Issue</span>
+                            <span *ngIf="source.IsSelected" id='spanIssue_{{indexOfelement}}' class="anchorClass" style="font-size: 12px; font-weight: 700; padding: 5px;" (click)='dialogSetting("issue",indexOfelement)' data-toggle="modal" data-target="#ModalIssue"> Issue</span>
+                        </td>
+
+                        <td>
+                            <!-- {{source.SelectedLocation.name}} -->
+                            <li *ngFor="let isue of source.SelectedLocation;">
+                                <ul>{{isue.name}}</ul>
+                            </li>
+                            <span *ngIf="!source.IsSelected" id='spanLocation0_{{indexOfelement}}' class="normalClass" style="font-size: 12px; font-weight: 700; padding: 5px;"> Location</span>
+                            <span *ngIf="source.IsSelected" id='spanLocation_{{indexOfelement}}' class="anchorClass" style="font-size: 12px; font-weight: 700; padding: 5px;" (click)='dialogSetting("Location",indexOfelement)' data-toggle="modal" data-target="#ModalIssue"> Location</span>
+                            <!-- <ng-multiselect-dropdown #Location="ngModel" id="Location" name="Location" [placeholder]="'Location'" [data]="_Location" [(ngModel)]="_ProductInfoModel.ProIssue" [settings]="DdlSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown> -->
+                        </td>
+                        <td>
+                            <input *ngIf="!source.IsSelected" id='textReferece0_{{indexOfelement}}' [disabled]='true' type="text" style="width: 100px;" class="form-control" name="RefNo" placeholder="Reference No">
+                            <input *ngIf="source.IsSelected" id='textReferece_{{indexOfelement}}' type="text" style="width: 100px;" class="form-control" name="RefNo" #RefNo="ngModel" [(ngModel)]="source.ReferenceNo" [required]="false" placeholder="Reference No">
+                        </td>
+                        <td>
+                            <button *ngIf="!source.IsSelected" id='btnUpload0_{{indexOfelement}}' [disabled]='true' style="margin-right: 10px;" class="btn btn-success btn-sm">
+                                <i *ngIf="uploadLoader" class="glyphicon glyphicon-refresh spinning1"></i>
+                                <i class="fa fa-upload dropbtn"></i> Upload
+                            </button>
+                            <button *ngIf="source.IsSelected" id='btnUpload_{{indexOfelement}}' style="margin-right: 10px;" class="btn btn-success btn-sm" (click)="fileupload.click()">
+                                <i *ngIf="uploadLoader" class="glyphicon glyphicon-refresh spinning1"></i>
+                                <i class="fa fa-upload dropbtn"></i> Upload
+                            </button>
+                            <input type="file" #fileupload ngModel id="myExcelFile" name="myExcelFile" (change)="fileChange($event,source,isItemSelected.value)" [required]="(isItemSelected.value? isItemSelected.value : false)  && source.files?.length<1" multiple="true" style="display:none"
+                                accept=".jpg, .jpeg, .bmp" />
+                            <!-- <span class="badge bg-red" style="position: absolute;right: 10px;top: 38px;right: -15px;top: -5px;border-radius:25!important;"
+                                        *ngIf="source.files? && source.files?.length>0">{{source.files?.length}}
+                            </span> -->
+                            <div class="dropdown-content" *ngIf="source.files?.length>0">
+                                <div style="margin:0px!important;line-height:normal!important;border-bottom: 1px solid #676767!important;padding-top: 4px;padding-bottom: 4px;" *ngFor="let image of source.files">
+                                    <a style="display:inline-block;width:130px;word-wrap: break-word;white-space: nowrap;
+                                    overflow: hidden;text-overflow: ellipsis;" href="{{image.url}}" target="_blank">{{image.type}}</a>
+
+                                    <!-- <i class="fa fa-times red dropbtn" style="float: right;font-size: 16px;font-weight:normal;"
+                                    (click)="removeUploadedImage(image,inspectionLotObj,image.type)"></i> -->
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="" *ngIf="ListView">
+    <form name="caseCreation" #f="ngForm" class="css-form" novalidate>
+        <div class="widget">
+            <!-- <div class="widget-header ">
+                <span class="widget-caption"><b> {{'Case No : '+CurrentCaseCreationObj.CaseNo}}</b> </span>
+                <div class="widget-buttons">
+                    <div *ngIf="ProductInfo">
+                        <button class="btn btn-sm btn-danger" type="button" (click)="Cancel()">
+                            <i class="fa fa-times"></i>Cancel
+                        </button>
+                        <button class="btn btn-sm btn-success" type="button" (click)="GoToShiping()">
+                            Next<i class="fa fa-arrow-right">&nbsp;</i>
+                        </button>
+                    </div>
+                    <div *ngIf="personalInfo">
+                        <button class="btn btn-sm btn-danger" type="button" (click)="GoToProduct()">
+                            <i class="fa fa-arrow-left"></i>Back
+                        </button>
+                        <button class="btn btn-sm btn-success" type="button" (click)="GoToPreview()">
+                            Next<i class="fa fa-arrow-right">&nbsp;</i>
+                        </button>
+                    </div>
+                </div>
+            </div> -->
+            <!-- <div class="widget-body"> -->
+
+            <!-- <div id="productInfo" *ngIf="ProductInfo">
+                    <div class="widget-header ">
+                        <span class="widget-caption pull-left font-40"><b>PRODUCT INFO:</b> </span>
+                        <div class="widget-buttons">
+                            <button class="btn btn-sm btn-danger" type="button" (click)="Cancel()">
+                                <i class="fa fa-times"></i>Cancel
+                            </button>
+                            <button class="btn btn-sm btn-success" type="button" (click)="GoToShiping()">
+                                Next<i class="fa fa-arrow-right">&nbsp;</i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Product Model :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="ProModel" #ProModel="ngModel" [(ngModel)]="_ProductInfoModel.ProModel" [required]="false" placeholder="Product Model">
+                        </div>
+
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Product Po/Wo No :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="ProPoWo" #ProPoWo="ngModel" [(ngModel)]="_ProductInfoModel.ProPoWo" [required]="false" placeholder="Product Po/Wo">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Product Color 
+                            <span style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <ng-multiselect-dropdown #ProColor="ngModel" id="ddlColor" name="ProColor" [placeholder]="'Select Color'" [data]="_Color" [(ngModel)]="_ProductInfoModel.SelectedProColor" [settings]="DdlSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown>
+                        </div>
+
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Product Size 
+                            <span style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <ng-multiselect-dropdown #ProSize="ngModel" id="ddlProSize" name="ProSize" [placeholder]="'Select Size'" [data]="_Size" [(ngModel)]="_ProductInfoModel.SelectedProSize" [settings]="DdlSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Product Issue 
+                            <span style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3" >
+                            <ng-multiselect-dropdown #ProIssue="ngModel" id="ddlProIssue" name="ProIssue" [placeholder]="'Select Issue'" [data]="_Issue" [(ngModel)]="_ProductInfoModel.SelectedProIssue" [settings]="DdlSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown>
+                        </div>
+
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">File Upload </label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-sm-6 col-md-4 col-lg-4 col-xs-12 margin-bottom-5">
+                                <input type="file" #fileupload ngModel id="myExcelFile" name="myExcelFile" (change)="fileChange($event)" multiple="true" style="display:none" accept=".jpg, .jpeg, .bmp" />
+                                <button style="margin-right: 10px;" class="btn btn-success btn-sm" [disabled]="uploadLoader" (click)="fileupload.click()">
+                                <i *ngIf="uploadLoader" class="glyphicon glyphicon-refresh spinning1"></i>
+                                <i class="fa fa-upload dropbtn"></i> Upload
+                                </button>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div> -->
+
+            <div class="clearfix"></div>
+            <!--2row-->
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-lg-6" *ngIf="personalInfo">
+                    <div class="widget">
+                        <div class="widget-body">
+                            <div id="personalInfo">
+                                <div class="widget-body no-padding">
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12"><b>PERSONAL INFO:</b></label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            <div class="search-buttons">
+                                                <input type="text" id='search-text-input1' (keydown.enter)="SearchPerInfo($event)" class="form-control" name="PersonalInfoSearch" [(ngModel)]="PersonalInfoSearch" placeholder="Personal Account No">
+                                                <button class="fa fa-search btn btn-default" type="button" (click)="SearchPersonInfo('PersonalInfo')"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Service Language 
+                                            <span style="color:red;">*</span>:</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            <ng-multiselect-dropdown #ProLanguage="ngModel" id="ddlLanguage" name="ProLanguage" [placeholder]="'Select Language'" [data]="_Language" [(ngModel)]="_SelectedLanguage" [settings]="DdlSettings" (onSelect)="onLanguageSelect($event)" (onSelectAll)="onSelectAll($event)">
+                                            </ng-multiselect-dropdown>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">First Name :</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            <!-- <input type="text" class="form-control" name="PersonalFirstName" #PersonalFirstName="ngModel" [(ngModel)]="_SelectedPersonalInfoModel.PersonalFirstName" [required]="true" placeholder="Personal First Name"> -->
+                                            {{_SelectedPersonalInfoModel.PersonalFirstName}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Last Name </label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            <!-- <input type="text" class="form-control" name="PersonalLastName" #PersonalLastName="ngModel" [(ngModel)]="_SelectedPersonalInfoModel.PersonalLastName" [required]="true" placeholder="Personal Last Name"> -->
+                                            {{_SelectedPersonalInfoModel.PersonalLastName}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Email </label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            <!-- <input type="email" class="form-control" name="PersonalMail" #PersonalMail="ngModel" [(ngModel)]="_SelectedPersonalInfoModel.PersonalMail" [required]="true" placeholder="Personal Email"> -->
+                                            {{_SelectedPersonalInfoModel.PersonalMail}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Phone No </label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            <!-- <input type="number" maxlength="13" (keyup)="checkPhonelength()" class="form-control" name="PersonalPhoneNo" #PersonalPhoneNo="ngModel" [(ngModel)]="_SelectedPersonalInfoModel.PersonalPhoneNo" [required]="true" placeholder="Personal Phone No"> -->
+                                            <!-- <span style="color:red" [ngStyle]="{'display':invalidPhone}">
+                                               invalid Phone No
+                                            </span> -->
+                                            {{_SelectedPersonalInfoModel.PersonalPhoneNo}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Account No</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedPersonalInfoModel.AccountNo}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Account Name</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedPersonalInfoModel.AccountName}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Account Regional Office</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedPersonalInfoModel.RegionalOffice}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Address1</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedPersonalInfoModel.Address1}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Address2</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedPersonalInfoModel.Address2}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">City</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedPersonalInfoModel.CityName}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">State</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedPersonalInfoModel.StateName}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Country</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedPersonalInfoModel.CountryName}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">PostalCode</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedPersonalInfoModel.PostalCode}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6" *ngIf="returnShipingInfo">
+                    <div class="widget">
+                        <div class="widget-body">
+                            <div id="returnShipingInfo">
+                                <div class="widget-body no-padding">
+                                    <div class="row form-group ">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12"><b>RETURN SHIPPING INFO:</b></label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            <button (click)="SearchShippingInfo('ShippingInfo')" [disabled]="showShiping" class="btn btn-primary btn-sm pull-right">
+                                                Select Shipping Info
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group ">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">AccountNo</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.ShipToNo}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                    <div class="row form-group ">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">ShipToName</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.ShipToName}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                    <div class="row form-group ">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Regional Office</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.RegionalOffice}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                    <div class="row form-group ">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Shipping Address1 :</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.Address1}}
+                                            <!-- <input type="text" class="form-control" name="ShipAddress1" #ShipAddress1="ngModel" [(ngModel)]="_SelectedReturnShipingModel.ShipAddress1" [required]="true" placeholder="Ship Address1"> -->
+                                        </div>
+                                        <div class="clearfix"> </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                    <div class="row form-group ">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Shipping Address2 :</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.Address2}}
+                                            <!-- <input type="text" class="form-control" name="ShipAddress2" #ShipAddress2="ngModel" [(ngModel)]="_SelectedReturnShipingModel.ShipAddress2" [required]="false" placeholder="Ship Address2"> -->
+                                        </div>
+                                        <div class="clearfix"> </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Country :</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.CountryName}}
+                                            <!-- <ng-multiselect-dropdown #ShipCountry="ngModel" id="ddlShipCountry" name="ShipCountry" [placeholder]="'Select Country'" [data]="_Country" [(ngModel)]="_ReturnShipingModel.ShipCountry" [settings]="DdlSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                                                </ng-multiselect-dropdown> -->
+                                            <!-- <input type="text" class="form-control" name="ShipCountry" #ShipCountry="ngModel" [(ngModel)]="_ReturnShipingModel.ShipCountry" [required]="true" placeholder="Country"> -->
+                                        </div>
+                                        <div class="clearfix"> </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                    <div class="row form-group">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">State :</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.StateName}}
+                                            <!-- <ng-multiselect-dropdown #ShipState="ngModel" id="ddlShipState" name="ShipState" [placeholder]="'Select State'" [data]="_State" [(ngModel)]="_ReturnShipingModel.ShipState" [settings]="DdlSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                                                </ng-multiselect-dropdown> -->
+                                            <!-- <input type="text" class="form-control" name="ShipState" #ShipState="ngModel" [(ngModel)]="_ReturnShipingModel.ShipState" [required]="true" placeholder="State"> -->
+                                        </div>
+                                        <div class="clearfix"> </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                    <div class="row form-group ">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">City :</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.CityName}}
+                                            <!-- <ng-multiselect-dropdown #ShipCity="ngModel" id="ddlShipCity" name="ShipCity" [placeholder]="'Select City'" [data]="_City" [(ngModel)]="_ReturnShipingModel.ShipCity" [settings]="DdlSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                                                </ng-multiselect-dropdown> -->
+                                            <!-- <input type="text" class="form-control" name="ShipCity" #ShipCity="ngModel" [(ngModel)]="_ReturnShipingModel.ShipCity" [required]="true" placeholder="City"> -->
+                                        </div>
+                                        <div class="clearfix"> </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                    <div class="row form-group ">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Zip Code :</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.PostalCode}}
+                                            <!-- <input type="text" class="form-control" name="ShipZip" #ShipZip="ngModel" [(ngModel)]="_SelectedReturnShipingModel.ShipZip" [required]="true" placeholder="Zip Code"> -->
+                                        </div>
+                                        <div class="clearfix"> </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="PreviewData">
+                <div class="widget">
+                    <div class="widget-body" style="width: 100%;float: left;">
+                        <div class="widget-header widget-header1">
+                            <span class="widget-caption pull-left font-40"><b>Review and Submit</b> </span>
+                            <div class="widget-buttons">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="widget-body no-padding">
+                                <div class="row">
+                                    <label class="control-label "><b>Product Info</b></label>
+                                    <div class="widget-body no-padding" style="overflow: auto; height: 492px;">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 11%;">Order Number</th>
+                                                    <th style="width: 11%;">Vendor Vumber</th>
+                                                    <th style="width: 11%;">Req Date</th>
+                                                    <th style="width: 11%;">Product Number</th>
+                                                    <th style="width: 11%;">Category</th>
+                                                    <th style="width: 11%;">Grade</th>
+                                                    <th style="width: 11%;">Subcategory</th>
+                                                    <th style="width: 11%;">Product Sku</th>
+
+                                                    <th style="width: 120px">Root Cause</th>
+                                                    <th style="width: 120px;">Issue</th>
+                                                    <th style="width: 120px;">Location</th>
+                                                    <th style="width: 120px">Ref. No.</th>
+                                                    <th style="width: 8%;">Picture Upload</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let source of _SelectedIntakeOrdersModel;let indexOfelement=index;">
+                                                    <td>{{source.order_number}}</td>
+                                                    <td>{{source.vendor_number}}</td>
+                                                    <td>{{source.req_by_date| date }}</td>
+                                                    <td>{{source.product_number}}</td>
+                                                    <td>{{source.category_code_id}}</td>
+                                                    <td>{{source.grade_code_id}}</td>
+                                                    <td>{{source.subcategory_code_id}}</td>
+                                                    <td>{{source.product_sku}}</td>
+                                                    <td>{{source.SelectedRootCause.name}}</td>
+                                                    <td>
+                                                        <!-- {{source.SelectedIssue.name}} -->
+                                                        <li *ngFor="let isue of source.SelectedIssue;">
+                                                            <ul>{{isue.name}}</ul>
+                                                        </li>
+                                                    </td>
+
+                                                    <td>
+                                                        <!-- {{source.SelectedLocation.name}} -->
+                                                        <li *ngFor="let isue of source.SelectedLocation;">
+                                                            <ul>{{isue.name}}</ul>
+                                                        </li>
+                                                    </td>
+                                                    <td>{{source.ReferenceNo}}</td>
+                                                    <td>
+                                                        <div class="dropdown-content" *ngIf="source.files?.length>0">
+                                                            <div style="margin:0px!important;line-height:normal!important;border-bottom: 1px solid #676767!important;padding-top: 4px;padding-bottom: 4px;" *ngFor="let image of source.files">
+                                                                <a style="display:inline-block;width:130px;word-wrap: break-word;white-space: nowrap;overflow: hidden;
+                                                                text-overflow: ellipsis;" href="{{image.url}}" target="_blank">{{image.type}}</a>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="clearfix"> </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="widget-body no-padding">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>Personal Info</b>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Service Language</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                        {{this._SelectedLanguage[0].name}}
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Name</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                        {{_SelectedPersonalInfoModel.PersonalFirstName}} {{' '+_SelectedPersonalInfoModel.PersonalLastName}}
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Email </label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                        {{_SelectedPersonalInfoModel.PersonalMail}}
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Phone No </label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                        {{_SelectedPersonalInfoModel.PersonalPhoneNo}}
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Account No</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                        {{_SelectedPersonalInfoModel.AccountNo}}
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Account Name</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                        {{_SelectedPersonalInfoModel.AccountName}}
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Account Regional Office</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                        {{_SelectedPersonalInfoModel.RegionalOffice}}
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Address1</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                        {{_SelectedPersonalInfoModel.Address1}}
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Address2</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                        {{_SelectedPersonalInfoModel.Address2}}
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="row">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Country,State,City,Pin</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                        {{_SelectedPersonalInfoModel.CityName}}, {{_SelectedPersonalInfoModel.StateName}}, {{_SelectedPersonalInfoModel.CountryName}}, {{_SelectedPersonalInfoModel.PostalCode}}
+                                    </div>
+                                </div>
+                                <!-- <div class="clearfix"></div>
+                                        <div class="row">
+                                            <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">State</label>
+                                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="row">
+                                            <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Country</label>
+                                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                                
+                                            </div>
+                                        </div> -->
+                                <!-- <div class="clearfix"></div>
+                                        <div class="row">
+                                            <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">PostalCode</label>
+                                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                                {{_SelectedPersonalInfoModel.PostalCode}}
+                                            </div>
+                                        </div> -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <b>Shipping Info</b>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="form-group widget-body">
+                                    <div class="row">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">AccountNo</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.ShipToNo}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                    <div class="row">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">ShipToName</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.ShipToName}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                    <div class="row">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Regional Office</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.RegionalOffice}}
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                    <div class="row">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Shipping Address1 </label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.Address1}}
+                                        </div>
+                                        <div class="clearfix"> </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                    <div class="row">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Shipping Address2 :</label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.Address2}}
+                                        </div>
+                                        <div class="clearfix"> </div>
+                                    </div>
+                                    <div class="clearfix"> </div>
+                                    <!-- <div class="row">
+                                                <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Country 
+                                                    <span style="color:red;">*</span>:</label>
+                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                                    {{_SelectedReturnShipingModel.CountryName}}
+                                                </div>
+                                                <div class="clearfix"> </div>
+                                            </div>
+                                            <div class="clearfix"> </div>
+                                            <div class="row">
+                                                <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">State 
+                                                    <span style="color:red;">*</span>:</label>
+                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                                    {{_SelectedReturnShipingModel.StateName}}
+                                                </div>
+                                                <div class="clearfix"> </div>
+                                            </div>
+                                            <div class="clearfix"> </div> -->
+                                    <div class="row">
+                                        <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Country,State,City,Pin </label>
+                                        <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                            {{_SelectedReturnShipingModel.CityName}},{{_SelectedReturnShipingModel.StateName}},{{_SelectedReturnShipingModel.CountryName}},{{_SelectedReturnShipingModel.PostalCode}}
+                                        </div>
+                                        <div class="clearfix"> </div>
+                                    </div>
+                                    <!-- <div class="clearfix"> </div>
+                                            <div class="row">
+                                                <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">Zip Code 
+                                                    <span style="color:red;">*</span>:</label>
+                                                <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                                    {{_SelectedReturnShipingModel.PostalCode}}
+                                                </div>
+                                                <div class="clearfix"> </div>
+                                            </div> -->
+                                    <div class="clearfix"> </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+</div>
+
+
+<div id="ModalIssue" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-purple">
+                <button type="button" class="close" #closebutton data-dismiss="modal" style="color: #fff;opacity:1;">&times;</button>
+                <h4 class="m-b-0 text-white">{{_DialogSetting.code}} Selection</h4>
+            </div>
+            <div class="modal-body" style="height: 300px;">
+                <div class="row" *ngIf="_DialogSetting.code=='RootCause'">
+                    <div class="col-sm-3 col-md-2 col-lg-2 col-xs-2"></div>
+                    <div class="col-sm-6 col-md-7 col-lg-7 col-xs-7 ">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 ">
+                                <label class="control-label  ">Product Root Cause :</label>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 ">
+                                <ng-multiselect-dropdown #RootCause="ngModel" id="RootCause" name="RootCause" [placeholder]="'RootCause'" [data]="_RootCause" [(ngModel)]="_SelectedRootCause" [settings]="DdlSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-2 col-lg-2 col-xs-2"></div>
+                </div>
+                <div class="row" *ngIf="_DialogSetting.code=='issue'">
+                    <!-- <div class="col-sm-3 col-md-2 col-lg-2 col-xs-2"></div> -->
+                    <!-- <div class="col-sm-6 col-md-7 col-lg-7 col-xs-7 "> -->
+                    <!-- <div class="row">   -->
+                    <label class="control-label col-sm-6 col-md-3 col-lg-3 col-xs-3 ">Parent Issue :</label>
+                    <div class="col-sm-6 col-md-3 col-lg-3 col-xs-3">
+                        <ng-multiselect-dropdown #ProIssueParent="ngModel" id="ddlProIssueParent" name="ProIssueParent" [placeholder]="'Parent Issue'" [data]="_IssueParent" [(ngModel)]="_SelectedParentIssue" [settings]="DdlSettings" (onSelect)="onIssueSelect($event)" (onSelectAll)="onSelectAll($event)">
+                        </ng-multiselect-dropdown>
+                    </div>
+                    <label class="control-label col-sm-6 col-md-3 col-lg-3 col-xs-3 ">Issue :</label>
+                    <div class="col-sm-6 col-md-3 col-lg-3 col-xs-3">
+                        <ng-multiselect-dropdown #ProIssue="ngModel" id="ddlProIssue" name="ProIssue" [placeholder]="'Issue'" [data]="_Issue" [(ngModel)]="_SelectedIssue" [settings]="DdlMultiSelSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                        </ng-multiselect-dropdown>
+                    </div>
+                    <!-- </div> -->
+                    <!-- </div>                      -->
+                    <!-- <div class="col-sm-3 col-md-2 col-lg-2 col-xs-2"></div> -->
+                </div>
+                <div class="row" *ngIf="_DialogSetting.code=='Location'">
+                    <div class="col-sm-3 col-md-2 col-lg-2 col-xs-2"></div>
+                    <div class="col-sm-6 col-md-7 col-lg-7 col-xs-7 ">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 ">
+                                <label class="control-label  ">Product Location :</label>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 ">
+                                <ng-multiselect-dropdown #Location="ngModel" id="Location" name="Location" [placeholder]="'Location'" [data]="_Location" [(ngModel)]="_SelectedLocation" [settings]="DdlMultiSelSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                                </ng-multiselect-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-2 col-lg-2 col-xs-2"></div>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-sm-3 col-md-2 col-lg-2 col-xs-2">
+                    </div>
+                    <div class="col-sm-6 col-md-8 col-lg-8 col-xs-8 ">
+                        <div *ngIf="_DialogSetting.code=='issue'">
+                            <label class="control-label  ">Product Issue :</label>
+                            <ng-multiselect-dropdown #ProIssue="ngModel" id="ddlProIssue" name="ProIssue" [placeholder]="'Issue'" [data]="_Issue" [(ngModel)]="_SelectedIssue" [settings]="DdlSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown>
+                        </div>
+                        <div *ngIf="_DialogSetting.code=='RootCause'">
+                            <div class="row">                            
+                                <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 ">
+                                    <label class="control-label  ">Product Root Cause :</label>
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6 ">
+                                    <ng-multiselect-dropdown #RootCause="ngModel" id="RootCause" name="RootCause" [placeholder]="'RootCause'" [data]="_RootCause" [(ngModel)]="_SelectedRootCause" [settings]="DdlSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="_DialogSetting.code=='Location'">
+                            <label class="control-label  ">Product Location :</label>
+                            <ng-multiselect-dropdown #Location="ngModel" id="Location" name="Location" [placeholder]="'Location'" [data]="_Location" [(ngModel)]="_SelectedLocation" [settings]="DdlSettings" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+                            </ng-multiselect-dropdown>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-md-2 col-lg-2 col-xs-2">
+                    </div>
+                </div> -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm mr-2" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="PersonalShippingSelection" class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':DialogDisplay}">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-purple">
+                <button type="button" class="close" (click)="closeModalDialog()" style="color: #fff;opacity:1;">&times;</button>
+                <h4 class="m-b-0 text-white">{{_DialogSetting.code}} Selection</h4>
+            </div>
+            <div class="modal-body" style="height: 300px; overflow: auto;">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 ">
+                        <table class="table table-striped" *ngIf="_DialogSetting.code=='PersonalInfo'">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">AccountNo</th>
+                                    <th style="width: 10%;">AccountName</th>
+                                    <th style="width: 10%;">RegionalOffice</th>
+                                    <th style="width: 10%;">Address1</th>
+                                    <th style="width: 10%;">Address2</th>
+                                    <th style="width: 10%;">CityName</th>
+                                    <th style="width: 10%;">StateName</th>
+                                    <th style="width: 10%;">CountryName</th>
+                                    <th style="width: 10%;">PostalCode</th>
+                                    <th style="width: 10%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let source of _PersonalInfoModel;let indexOfelement=index;">
+                                    <td>{{source.AccountNo}}</td>
+                                    <td>{{source.AccountName}}</td>
+                                    <td>{{source.RegionalOffice }}</td>
+                                    <td>{{source.Address1}}</td>
+                                    <td>{{source.Address2}}</td>
+                                    <td>{{source.CityName}}</td>
+                                    <td>{{source.StateName}}</td>
+                                    <td>{{source.CountryName}}</td>
+                                    <td>{{source.PostalCode}}</td>
+                                    <td>
+                                        <button style="margin-right: 10px;" class="btn btn-success btn-sm" (click)="SelectPersonalShipingData(source)">
+                                            <i class="fa fa-check"></i> Select
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table table-striped" *ngIf="_DialogSetting.code=='ShippingInfo'">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">AccountNo</th>
+                                    <th style="width: 10%;">AccountName</th>
+                                    <th style="width: 10%;">RegionalOffice</th>
+                                    <th style="width: 10%;">Address1</th>
+                                    <th style="width: 10%;">Address2</th>
+                                    <th style="width: 10%;">CityName</th>
+                                    <th style="width: 10%;">StateName</th>
+                                    <th style="width: 10%;">CountryName</th>
+                                    <th style="width: 10%;">PostalCode</th>
+                                    <th style="width: 10%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let source of _ReturnShipingModel;let indexOfelement=index;">
+                                    <td>{{source.ShipToNo}}</td>
+                                    <td>{{source.ShipToName}}</td>
+                                    <td>{{source.RegionalOffice }}</td>
+                                    <td>{{source.Address1}}</td>
+                                    <td>{{source.Address2}}</td>
+                                    <td>{{source.CityName}}</td>
+                                    <td>{{source.StateName}}</td>
+                                    <td>{{source.CountryName}}</td>
+                                    <td>{{source.PostalCode}}</td>
+                                    <td>
+                                        <button style="margin-right: 10px;" class="btn btn-success btn-sm" (click)="SelectPersonalShipingData(source)">
+                                        <i class="fa fa-check"></i> Select
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-sm mr-2" (click)="closeModalDialog()"><i class="fa fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModalCaseNo" class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':DialogCaseNo}">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-purple">
+                <button type="button " class="close " (click)="closeCaseNoDialog()" style="color: #fff;opacity:1;">&times;</button>
+                <h4 class="m-b-0 text-white">Case No</h4>
+            </div>
+            <div class="modal-body " style="height: 50px; ">
+                <div class="row ">
+                    <div class="col-sm-3 col-md-2 col-lg-2 col-xs-2 ">
+                    </div>
+                    <div class="col-sm-6 col-md-8 col-lg-8 col-xs-8 ">
+                        {{this.SavedCaseNo}}
+                    </div>
+                    <div class="col-sm-3 col-md-2 col-lg-2 col-xs-2 ">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer ">
+                <button type="button " class="btn btn-danger btn-sm mr-2 " (click)="closeCaseNoDialog() "><i class="fa fa-times "></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,202 @@
+﻿<style>
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,0);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,0);
+        box-shadow: 0 0 4px rgba(0,0,0,0);
+    }
+
+        .nav-tabs > li {
+            margin: 0px 3px 0px 3px;
+        }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #777;
+                margin-right: -1px;
+                line-height: 24px;
+                position: relative;
+                z-index: 11;
+            }
+
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                color: #262626;
+                border: 0;
+                border-top: 2px solid #333;
+                border-bottom-color: transparent;
+                /*background-color: #fbfbfb;*/
+                z-index: 12;
+                line-height: 24px;
+                margin-top: -2px;
+                box-shadow: 0 -2px 3px 0 rgba(0,0,0,.15);
+            }
+
+            .nav-tabs > li a:hover {
+                color: #fff;
+            }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #fff;
+            }
+
+    .nav > li.disabled > a {
+        color: #fff;
+        background-color: gray;
+    }
+
+        .nav > li.disabled > a:hover {
+            color: #fff;
+            background-color: gray;
+        }
+</style>
+  
+<form #f="ngForm" novalidate>
+    <div class="widget">
+        <div class="widget-header ">
+            <span class="widget-caption pull-left font-40" *ngIf="rmaactioncodeId == 0"><b>Add {{moduleTitle}}</b> </span>
+            <span class="widget-caption pull-left font-40" *ngIf="rmaactioncodeId > 0"><b><span *ngIf="permission">View</span> {{moduleTitle}}</b> </span>
+            <div class="widget-buttons">
+                <button type="button" class="btn btn-sm btn-danger" (click)="CancelRMAActionCode()">
+                        <i class="fa fa-arrow-left"></i> Back 
+                </button>
+                <button class="btn btn-sm btn-primary" type="submit" *ngIf="permission" (click)="onSubmit(f.form)">
+                    <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                </button>
+            </div>
+        </div>
+        <div class="widget-body">
+            <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                <div class="validationmsg">
+                    <b> Please fill the asterisk (*) fields. </b>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-12 col-md-12 col-lg-12" style="color:red;">{{errorMessage}}</label>
+            </div>
+          
+            <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.RMAActionCode.isVisible">{{e_localize.RMAActionCode.headerName}}<span *ngIf="e_localize.RMAActionCode.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.RMAActionCode.isVisible">
+                    <input type="text" name="RMAActionCode" class="form-control" [(ngModel)]="CurrentRMAActionCode.RMAActionCode" placeholder="RMAActionCode" maxlength="50" #rmaactioncode="ngModel" [required]="e_localize.RMAActionCode.isRequired" [disabled]="!e_localize.RMAActionCode.isEnabled" />
+                    <div class="clearfix"></div>
+                </div>               
+         
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.RMAActionName.isVisible">{{e_localize.RMAActionName.headerName}}<span *ngIf="e_localize.RMAActionName.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.RMAActionCode.isVisible">
+                    <input type="text" name="RMAActionName" class="form-control" [(ngModel)]="CurrentRMAActionCode.RMAActionName" placeholder="RMAActionName" maxlength="50" #rmaactionname="ngModel" [required]="e_localize.RMAActionName.isRequired" [disabled]="!e_localize.RMAActionName.isEnabled" />
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.isActive.isVisible">{{e_localize.isActive.headerName}}<span *ngIf="e_localize.isActive.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.isActive.isVisible" style="left:-20px;">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="isActive" class="form-control"
+                                   [required]="e_localize.isActive.isRequired"
+                                   [disabled]="!e_localize.isActive.isEnabled"
+                                   [(ngModel)]="CurrentRMAActionCode.isActive"><span class="text">&nbsp;</span>
+                        </label>
+                    </div>
+                </div>
+            
+            <!--dropdown-1-->
+            
+                <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.RMAActionTypeID.isVisible">{{e_localize.RMAActionTypeID.headerName}}<span *ngIf="e_localize.RMAActionTypeID.isRequired" style="color:red;">*</span>:</label>
+                <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.RMAActionTypeID.isVisible">
+                    <select id="RMAActionType" name="RMAActionTypeID" class="form-control" [required]="e_localize.RMAActionTypeID.isRequired" [disabled]="!e_localize.RMAActionTypeID.isEnabled"
+                            [(ngModel)]="CurrentRMAActionCode.RMAActionTypeID" #RMAActionType="ngModel">
+                        <option [value]="undefined" [disabled]="e_localize.RMAActionTypeID.isRequired">--Select RMA--</option>
+                        <option *ngFor="let typelist of typelookupList" [value]="typelist.TypeLookUpID">{{typelist.TypeCode}} | {{typelist.TypeName}}</option>
+                    </select>
+                </div>
+                <div class="clearfix"></div>
+                
+            </div> 
+            <!--dropdown1 till here-->          
+            
+            <div class="clearfix"></div>
+           
+        </div>
+        <div class="clearfix"></div>
+        <br />
+        <tabs>
+            <tab tabTitle="RMA Action Codes">
+                <!--dropdown in tab2-->
+                <div class="form-group">
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.RMAActionTypeID.isVisible">{{e_localize.RMAActionTypeID.headerName}}:<span style="color: red;">*</span></label>
+                    <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && e_localize.RMAActionTypeID.isVisible">
+                        <select id="RMAActionType" name="RMAActionType" class="form-control" [required]="e_localize.RMAActionTypeID.isRequired" [disabled]="!e_localize.RMAActionTypeID.isEnabled"
+                                [(ngModel)]="CurrentRMAActionCode.RMAActionMapTypeID" #RMAActionType="ngModel" (ngModelChange)="getDataInAllRMA($event)">
+                            <option [value]="undefined" [disabled]="e_localize.RMAActionTypeID.isRequired">--Select RMA--</option>
+                            <option *ngFor="let typelist of typelookupList" [value]="typelist.TypeLookUpID">{{typelist.TypeCode}} | {{typelist.TypeName}}</option>
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--dropdown2 till here tab-->
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="form-group padding-top-10">
+                    <div class="col-sm-5 col-md-5 col-lg-5">
+                        <label class="control-label padding-bottom-10"><b>Current RMA Action Code</b></label>
+                        <ag-grid-angular #agGridcb style="height: 250px; width:100%" class="ag-theme-balham"
+                                     [gridOptions]="rmagridOptions" (selectionChanged)="onSelectedRMAChanged()">
+                        </ag-grid-angular>
+
+                    </div>
+                    <div class="col-sm-1 col-md-1 col-lg-1" style="padding-top:98px!important;">
+                        <button class="btn btn-sm btn-default btn-block" id="moveright" type="button" (click)="moveRMABack()"><i class="fa fa-angle-right"></i></button>
+                        <button class="btn btn-sm btn-default btn-block" id="moverightall" type="button" (click)="moveAllRMABack()"><i class="fa fa-angle-double-right"></i></button>
+                        <button class="btn btn-sm btn-default btn-block" id="move left" type="button" (click)="moveRMA()"><i class="fa fa-angle-left"></i></button>
+                        <button class="btn btn-sm btn-default btn-block" id="moveleftall" type="button" (click)="moveAllRMA()"><i class="fa fa-angle-double-left"></i></button>
+                    </div>
+                    <div class="col-sm-5 col-md-5 col-lg-5">
+                        <label class="control-label padding-bottom-10"><b>Available RMA Action Code</b></label>
+                        <ag-grid-angular #agGridcb style="height: 250px; width:100%" class="ag-theme-balham"
+                                     [gridOptions]="allrmagridOptions" (selectionChanged)="onSelectedallRMAChanged()">
+                        </ag-grid-angular>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </tab>
+            <tab tabTitle="SKU">
+                <div class="form-group">
+                    <div>
+                        <button id="btnAdd" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068 pull-right" (click)="SelectItem()"><i class="glyphicon glyphicon-plus-sign"></i>Add</button>
+                        <ag-grid-angular #agGridcb style="height: 250px; width:100%" class="ag-theme-balham"
+                                     [gridOptions]="skugridOptions">
+                        </ag-grid-angular>
+
+                    </div>
+
+
+                    <div class="clearfix"></div>
+                </div>
+            </tab>
+        </tabs>
+        <!--till here-->
+        <message #pop cssClass="modal-msg"></message>
+    </div>
+   
+    <div class="clearfix"></div>
+
+</form>
+
+<bs-modal #skuItemSelector cssClass="modal-xxl">
+    <sku-selector [Source]="itemSKUList" [RMAActionCodeID]="CurrentRMAActionCode.RMAActionCodeID" (itemListChange)="itemListChange($event)"></sku-selector>
+</bs-modal>
+
+

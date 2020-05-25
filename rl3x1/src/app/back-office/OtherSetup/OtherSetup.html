@@ -1,0 +1,186 @@
+﻿<style>
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,0);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,0);
+        box-shadow: 0 0 4px rgba(0,0,0,0);        
+    }
+    .nav-tabs > li {
+        margin: 0px 3px 0px 3px;
+    }
+    .nav-tabs > li > a, .nav-tabs > li > a:focus {
+        border-radius: 0 !important;
+        color: #777;
+        margin-right: -1px;
+        line-height: 24px;
+        position: relative;
+        z-index: 11;
+    }
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: #262626;
+        border: 0;
+        border-top: 2px solid #333;
+        border-bottom-color: transparent;
+        /*background-color: #fbfbfb;*/
+        z-index: 12;
+        line-height: 24px;
+        margin-top: -2px;
+        box-shadow: 0 -2px 3px 0 rgba(0,0,0,.15);
+    }
+    .nav-tabs > li a:hover {
+        color: #fff;                
+    }
+    .nav-tabs > li > a, .nav-tabs > li > a:focus {
+        border-radius: 0 !important;
+        color: #fff;               
+    }
+    .nav > li.disabled > a {
+        color: #fff;
+        background-color: gray;
+    }
+    .nav > li.disabled > a:hover {
+        color: #fff;
+        background-color: gray;
+    }
+</style>
+
+<div class="widget" *ngIf="!IsEditMode">
+    <div class="widget-body">
+        <div class="widget-header widget-header1">
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>            
+            <div class="widget-buttons">                
+                <button class="btn btn-sm btn-primary" type="button" (click)="ShowEditMode()" *ngIf="IsEditButtonShow">
+                    <i class="glyphicon glyphicon-edit"></i>View
+                </button>                
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="card1 no-padding marginTop34">
+            <ag-grid-angular #agGrid style="height:100%;width:100%" class="ag-theme-balham"
+                         [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="" *ngIf="IsEditMode">
+    <form name="OtherSetup" #f="ngForm" class="css-form" novalidate>
+        <div class="widget">
+            <div class="widget-body">
+            <div class="widget-header widget-header1">
+                <div class="input-group pull-left" style="text-align: left; font-size: medium;">
+                    Other Setup Details
+                </div>
+                <div class="widget-buttons">
+                    <button class="btn btn-sm btn-danger" type="button" (click)="Cancel()">
+                            <i class="fa fa-arrow-left"></i> Back 
+                    </button>
+                    <button class="btn btn-sm btn-primary" type="submit" (click)="Save(f.form)">
+                        <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                    </button>
+                </div>
+            </div>
+         <hr/>
+            <div class="row">
+                <div class="card1">
+            <div class="no-padding marginTop34">
+                <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                    <div class="col-md-12 validationmsg">
+                        <b> Please fill the asterisk (*) fields. </b>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <label class="control-label  col-sm-3 col-md-3 col-lg-3">Name<span style="color:red;">*</span></label>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <input type="text" class="form-control" name="Name" #tempName="ngModel" [(ngModel)]="CurrentSetup.Name" placeholder="Name" required>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <br />
+
+                        <div class="form-group">
+                            <label class="control-label  col-sm-3 col-md-3 col-lg-3">Value<span style="color:red;">*</span></label>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group" *ngIf="!IsShowImageUpload">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <ck-editor #tempbody="ngModel" [(ngModel)]="CurrentSetup.Value"
+                                          name="SetupValue"
+                                          debounce="500"  
+                                          language="en"  required>
+                                </ck-editor>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group" *ngIf="IsShowImageUpload">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <div class="col-sm-9 col-md-9 col-lg-9">
+                                            <input type="file" (change)="handleReturnDocs(returnArtifact, $event,controls);" multiple id="returnArtifact" name="returnArtifact" accept="image/*">
+                                        </div>
+                                    </td>
+                                    <td style="width:200px;">
+                                        <div style="width:90%;float:left;" (mouseover)="showImagePreview()" (mouseout)="hideImagePreview()"><a>View Image</a></div>
+                                        <img style="display:none;position:absolute;width:150px;height:150px;left:150px;z-index:999;" src="" id="previewImage" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <br />
+
+                        <div class="form-group">
+                            <label class="control-label  col-sm-3 col-md-3 col-lg-3">Remarks</label>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <input type="text" class="form-control" width="300" name="Remarks" #tempName="ngModel" [(ngModel)]="CurrentSetup.Remarks" placeholder="Remarks">
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <br />
+
+                        <div class="form-group">
+                            <label class="control-label  col-sm-3 col-md-3 col-lg-3">Active<span style="color:red;">*</span></label>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <div class="checkbox" style="margin-top:0px;margin-bottom:0px;">
+                                    <label style="position:relative;">
+                                        <input type="checkbox"
+                                               name="IsActive"
+                                               [(ngModel)]="CurrentSetup.IsActive"><span class="text" >&nbsp;</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <br />
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div></div></div>
+    </div>
+    </form>
+
+</div>
+<message #pop cssClass="modal-msg"></message>

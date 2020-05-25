@@ -1,0 +1,36 @@
+﻿<div class="widget" [hidden]="IsEditorVisible">
+    <div class="widget-body">
+       
+            <div class="widget-header widget-header1">
+                <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+                <div class="input-group pull-left margin-left-20 col-md-3">
+                    <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" placeholder="Search...">
+                    <span class="input-group-btn">
+                        <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                    </span>
+                </div>
+                <div class="widget-buttons">
+                    <button class="btn btn-sm btn-primary" type="button" (click)="onAddRMAActionCode()" *ngIf="LocalAccess | contains:'Add'">
+                        <i class="glyphicon glyphicon-plus-sign"></i>Add
+                    </button>
+                    <button class="btn btn-sm btn-primary" type="button" (click)="onEditRMAActionCode(CurrentRMAActionCode.RMAActionCodeID)" *ngIf="isEditRMAActionCode">
+                        <i class="glyphicon glyphicon-edit"></i>View
+                    </button>
+                </div>
+                <!--<div class="widget-buttons">
+                   
+                </div>-->
+            </div>
+
+            <div class="card1 no-padding marginTop34">
+                <ag-grid-angular #agGrid style="height:100%;width:100%" class="ag-theme-balham" (gridReady)="onGridReady($event)"
+                             [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+                </ag-grid-angular>
+            </div>
+            <div class="clearfix"></div>
+        
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<RMAActionCodeEditor *ngIf="IsEditorVisible" [selectedId]="selectedId" [permission]="LocalAccess | contains:'Edit'" (EditorVisibilityChange)="ChangeEditorVisibility($event)"></RMAActionCodeEditor>

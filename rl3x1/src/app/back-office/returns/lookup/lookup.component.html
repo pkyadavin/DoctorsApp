@@ -1,0 +1,523 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="widget">
+      <div class="widget-body rma_creationbx">
+        <h4>RMA Creation</h4>
+        <div class="clearfix"></div>
+        <hr />
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-6 col-md-offset-2 pr-0">
+              <!-- <input type="text" class="form-control" placeholder="Enter serial #"> -->
+              <input
+                type="text "
+                class="form-control "
+                placeholder="Enter serial #"
+                [(ngModel)]="filterText"
+                id="InitialSearch "
+                name="InitialSearch "
+                (keyup.enter)="SearchOrder()"
+              />
+            </div>
+            <div class="col-md-2">
+              <!-- <button class="btn btn-primary " style="height: 38px; " (click)="SearchOrder() "><i class="fa fa-search "></i> Search</button> -->
+              <button
+                class="btn btn-default btn-info btn_theme"
+                (click)="SearchOrder()"
+              >
+                <i class="fa fa-search" aria-hidden="true"></i> Check Warranty
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- RMA Creation Detail Page -->
+<div class="row" *ngIf="processableBOItems.length > 0">
+  <div class="col-md-12">
+    <div class="widget">
+      <div class="widget-body rma_creationdetail">
+        <div class="row">
+          <div class="col-md-8">
+            <!-- rahul{{processableBOItems |json}} -->
+            <p>
+              <label for=""
+                ><strong>Customer Name:&nbsp;</strong
+                >{{ processableBOItems[0].customer.name1 }}
+                {{ processableBOItems[0].customer.name2 }}
+                <span>(Standard)</span></label
+              >
+            </p>
+            <p>
+              <label for=""
+                ><strong>Requested Date:&nbsp;</strong>
+                <span>{{ today | date: "MMM d, y" }}</span></label
+              >
+            </p>
+          </div>
+          <div class="col-md-4">
+            <div class="iconbx">
+              <i aria-hidden="true" class="fa fa-truck"></i>
+            </div>
+            <div class="shipingdetail_box">
+              <h3>Customer Shipping Detail</h3>
+              <address>
+                {{ processableBOItems[0].customer.address.street1 }}
+                {{ processableBOItems[0].customer.address.street2 }}
+                {{ processableBOItems[0].customer.address.country
+                }}{{ processableBOItems[0].customer.address.city }} <br />{{
+                  processableBOItems[0].customer.address.building
+                }},
+                {{ processableBOItems[0].customer.address.postal_code }}
+              </address>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="processableBOItems.length > 0">
+  <div class="col-md-12">
+    <div class="widget">
+      <div class="widget-body rmadet_prod">
+        <div class="row" *ngIf="processableBOItems">
+          <div class="col-md-6" *ngIf="processableBOItems.length > 0">
+            <h4>
+              List of Product(s)
+              <small
+                >(Product Count:{{ processableBOItems.length }})</small
+              >
+            </h4>
+          </div>
+          <div class="col-md-6 text-right">
+            <button
+              class="btn btn-default btn-sm btn-success"
+              data-toggle="collapse"
+              href="#collapseExample"
+              role="button"
+              aria-expanded="false"
+              aria-controls="collapseExample"
+            >
+              <i class="fa fa-plus-circle" aria-hidden="true"></i> Add More
+            </button>
+            <div class="addmore collapse" id="collapseExample">
+              <div class="row">
+                <div class="col-md-7 pr-0">
+                  <input
+                    type="text "
+                    class="form-control "
+                    placeholder="Enter serial # "
+                    [(ngModel)]="filterText"
+                    id="InitialSearch "
+                    name="InitialSearch "
+                    (keyup.enter)="AdvanceSearch()"
+                  />
+                </div>
+                <div class="col-md-4">
+                  <button
+                    (click)="SearchOrder()"
+                    class="btn btn-default btn-info btn_theme"
+                  >
+                    <i class="fa fa-search" aria-hidden="true"></i> Check
+                    Warranty
+                  </button>
+                </div>
+                <div class="col-md-1 pl-0">
+                  <button
+                    class="btn btn-default btn-danger"
+                    id="closeCollapse"
+                    data-target="#collapseExample"
+                    data-toggle="collapse"
+                  >
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+
+        <div class="row">
+          <div class="col-md-12" *ngIf="processableBOItems">
+            <div
+              class="reason_box"
+              *ngFor="let item of processableBOItems; let i = index"
+            >
+              <div class="row">
+                <div class="col-md-2">
+                  <div class="img_box align-self-center">
+                    <span class="helper"></span>
+                    <img
+                      src="../../../../../../assets/img/jabra_product_img.png"
+                      alt=""
+                    />
+                  </div>
+                </div>
+                <div class="col-md-10 pl-0">
+                  <div class="outerinfobx">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="info_box">
+                          <label
+                            ><strong> {{ item.items[0].name }}</strong></label
+                          >
+                          <label for=""
+                            ><strong>Serial # :</strong>
+                            {{ item.serial_number }}</label
+                          >
+                          <label for=""
+                            ><strong>Product #:</strong>
+                            {{ item.items[0].product_number }}
+                          </label>
+                          <label
+                            for=""
+                            style="color:colorgreen"
+                            [ngClass]="
+                              item.warranty_status_id == 84
+                                ? 'colorred'
+                                : 'colorgreen'
+                            "
+                            ><i class="fa fa-shield"></i>&nbsp;{{
+                              item.warranty_status
+                            }}</label
+                          >
+                        </div>
+                      </div>
+                      <div class="col-md-8">
+                        <div class="input_box">
+                          <div class="form-group row">
+                            <label for="" class="col-md-12"
+                              ><strong>Return Reason</strong></label
+                            >
+
+                            <div class="col-md-8" *ngIf="reasons">
+                              <select
+                                id="itemReturnReason_{{ i }}"
+                                name="itemreturnReason_{{ i }}"
+                                [(ngModel)]="returnReason.rma_action_code"
+                                class="form-control rounded-0 selectHeight"
+                                (change)="
+                                  onReasonChange(
+                                    returnReason.value,
+                                    item.items[0],
+                                    i
+                                  )
+                                "
+                                #returnReason="ngModel"
+                                [required]="
+                                  item.rma_action_name == 84 ? true : false
+                                "
+                              >
+                                <option value="undefined"
+                                  >-------Select Return reason-------</option
+                                >
+                                <option
+                                  *ngFor="let returnReason of reasons"
+                                  [value]="returnReason.rma_action_code"
+                                >
+                                  {{ returnReason.rma_action_name }}</option
+                                >
+                              </select>
+                            </div>
+
+                            <div
+                              class="col-md-4 pl-0"
+                              *ngIf="item.warranty_status_id == 84"
+                            >
+                              <div class="btn btn-default btn-info btn_theme">
+                                <div (click)="triggerFile(item.serial_number)">
+                                  <i
+                                    class="fa fa-upload"
+                                    style="margin-right: 8px;"
+                                  ></i>
+                                  <!-- {{ getlangval("lbl_file_upload_text") }} -->
+                                  Upload POP
+                                  <div class="clearfix"></div>
+                                  <input
+                                    type="file"
+                                    id="file_{{ item.serial_number }}"
+                                    #fileupload
+                                    name="file_{{ item.serial_number }}"
+                                    accept=".gif, .jpg, .jpeg, .png, .doc, .docx, .xlsx, .xls, .ppt"
+                                    style="display:none"
+                                    ngModel
+                                    (change)="
+                                      handleFile(
+                                        $event,
+                                        item,
+                                        item.isSelected,
+                                        fileupload,
+                                        i
+                                      )
+                                    "
+                                  />
+                                </div>
+                              </div>
+                              <div>
+                                <!-- tttts{{item|json}} -->
+                                <div *ngFor="let image of item.items[0].files">
+                                  <!-- rrr{{image|json}} -->
+                                  <a
+                                    style="position: absolute;
+                                                                                          text-decoration: none;
+                                                                                          width: 95%;
+                                                                                          overflow: hidden;
+                                                                                          text-overflow: ellipsis;
+                                                                                          white-space: nowrap;
+                                                                                          font-size: 11px;"
+                                    href="{{ image.url }}"
+                                    >{{ image.name }}</a
+                                  >
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label for="" class="col-md-12"
+                              ><strong>Customer Reference Field</strong></label
+                            >
+                            <div class="col-md-12">
+                              <textarea
+                                id="txtComment"
+                                [(ngModel)]="item.items[0].remark"
+                                name="Comment"
+                                cols="30"
+                                rows="4"
+                                class="form-control"
+                                placeholder="Comment here"
+                              ></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section
+          class="boportal freight"
+          *ngIf="processableBOItems != undefined"
+        >
+          <div class="row">
+            <div class="col-md-8">
+              <ul class="nav nav-tabs">
+                <li class="active">
+                  <a data-toggle="tab" href="#inboundFreight"
+                    >Inbound Freight</a
+                  >
+                </li>
+                <li>
+                  <a data-toggle="tab" href="#outboundFreight"
+                    >Outbound Freight</a
+                  >
+                </li>
+              </ul>
+
+              <div class="tab-content">
+                <div id="inboundFreight" class="tab-pane active">
+                  <div
+                    class="freight_options"
+                    *ngFor="
+                      let item_in of selected_in_freight_value;
+                      let i = index
+                    "
+                  >
+                    <label
+                      class="radio"
+                      style="padding-left:0px;padding-right:8px;"
+                    >
+                      <input
+                        type="radio"
+                        name="in_freight{{i}}"
+                        class="colored-primary"
+                        style="display: none;"
+                        [value]="true"
+                        [(ngModel)]="item_in.isSelected"
+                        (change)="selectFreight(item_in)"
+                      />
+                      <span class="text">
+                        {{ item_in.feight_service }} -
+                        {{ item_in.feight_charge }}-{{ item_in.currency }}</span
+                      >
+                    </label>
+                  </div>
+                </div>
+                <div id="outboundFreight" class="tab-pane ">
+                  <div
+                    class="freight_options"
+                    *ngFor="
+                      let item_out of selected_out_freight_value;
+                      let i = index
+                    "
+                  >
+                    <label
+                      class="radio"
+                      style="padding-left:0px;padding-right:8px;"
+                    >
+                      <input
+                        type="radio"
+                        name="out_freight{{i}}"
+                        class="colored-primary"
+                        style="display: none;"
+                        [value]="true"
+                        [(ngModel)]="item_out.isSelected"
+                        (change)="selectFreightOut(item_out)"
+                      />
+                      <span class="text">
+                        {{ item_out.feight_service }} -
+                        {{ item_out.feight_charge }}-{{
+                          item_out.currency
+                        }}</span
+                      >
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div
+                class="email_notification_box"
+                *ngIf="processableBOItems.length > 0"
+              >
+                <h4>Additional Information</h4>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class=" form-group ">
+                      <label for=" ">Primary Recipient Email</label>
+                      <input
+                        type="text "
+                        class="form-control"
+                        value="{{
+                          processableBOItems[0].customer.primary_email
+                        }}"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row ">
+                  <div class="col-md-12">
+                    <div class="form-group ">
+                      <label for=" ">Secondary Recipient Email</label>
+                      <input
+                        type="text "
+                        class="form-control"
+                        placeholder="Secondary email id"
+                        [(ngModel)]="_addHeaderInfo.secondary_email"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row ">
+                  <div class="col-md-12 ">
+                    <label for=" ">Own Reference #</label>
+                    <input
+                      type="text "
+                      class="form-control"
+                      placeholder="Reference # "
+                      [(ngModel)]="_addHeaderInfo.add_own_reference_number"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="row">
+            <div class="col-md-12">
+              <div class="rmaButtons pull-right">
+                <!-- <button class="btn btn-default btn-success"><i class="fa fa-pencil-square"
+                                        aria-hidden="true"></i> Draft</button> -->
+                <button
+                  class="btn btn-default btn-info btn_theme"
+                  (click)="SaveRMA()"
+                >
+                  <i class="fa fa-send" aria-hidden="true"></i>Submit
+                </button>
+                <!-- <button class="btn btn-default btn-success" onclick="SaveRMA()">Submit <i class="fa fa-paper-plane-o"
+                                        aria-hidden="true"></i></button> -->
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="widget ">
+    <div class="widget-body ">
+        <div class="col-md-7 orderNumber ">
+            <div class="form-group text-center " style="font-size:18px; ">Enter Order number or a combination of EAN and Name/Email.</div>
+            <div class="form-group " style="margin-bottom: 10px!important; ">
+                <select name="brand " class="form-control form-control2 " ngModel [(ngModel)]="SelectedBrandID " #brand="ngModel ">
+          <option *ngFor='let brand of brands;' [value]="brand.PartnerCode ">
+            {{brand.PartnerName}}</option>
+        </select>
+            </div>
+            <div class="form-group " style="margin-bottom: 10px!important; ">
+                <input type="text " class="form-control form-control2 " placeholder="Order# " [(ngModel)]="filterText " id="InitialSearch " name="InitialSearch " (keyup.enter)="SearchOrder() " />
+            </div>
+            <div class="form-group " style="margin-bottom: 10px!important; ">
+                <input type="text " class="form-control form-control2 " placeholder="EAN " [(ngModel)]="AdvancefilterValue.ean " />
+                <div class="clearfix "></div>
+            </div>
+            <div class="form-group " style="margin-bottom: 10px!important; ">
+                <input type="text " class="form-control form-control2 " placeholder="Customer/Email " [(ngModel)]="AdvancefilterValue.email " />
+                <div class="clearfix "></div>
+            </div>
+            <div class="form-group text-right " style="margin-bottom: 10px!important; ">
+                <button class="btn btn-primary " style="height: 38px; " (click)="SearchOrder() "><i class="fa fa-search "></i> Search</button>
+                <div class="clearfix "></div>
+            </div>
+            <div class="clearfix "></div>
+            <div class="advance-search shadow padding-10 open-search ">
+
+                <div class="form-group ">
+                    <input type="text " placeholder="EAN " class="form-control " [(ngModel)]="AdvancefilterValue.ean " />
+                    <div class="clearfix "></div>
+                </div>
+                <div class="form-group ">
+                    <input type="text " placeholder="Customer " class="form-control " [(ngModel)]="AdvancefilterValue.customer " />
+                    <div class="clearfix "></div>
+                </div>
+                <div class="form-group ">
+                    <input type="text " placeholder="Email " class="form-control " [(ngModel)]="AdvancefilterValue.email " />
+                    <div class="clearfix "></div>
+                </div>
+
+                <div class="widget-buttons pull-right ">
+                    <button class="btn btn-sm btn-primary " (click)="AdvanceSearch() ">Search</button>
+                    <button class="btn btn-sm btn-default " (click)="toggleAdvanceSearch() ">Cancel</button>
+                </div>
+                <div class="clearfix "></div>
+            </div>
+            <div class="clearfix "></div>
+            <div class="clearfix "></div>
+        </div>
+        <div class="clearfix "></div>
+        <div class="col-lg-3 col-sm-6 col-xs-12 " *ngFor="let order of allOrders ">
+            <div class="popoverexample ">
+                <div class="popover bottom ">
+                    <div class="arrow "></div>
+                    <h4 class="popover-title bordered-palegreen ">
+                        <button class="btn btn-link " (click)="openRMA(order) ">{{order.order_number}}</button>
+                    </h4>
+
+                    <div class="popover-content ">
+                        <p>{{order.customer}}</p>
+                        <p>{{order.email}}</p>
+                        <p>{{order.order_date|date:'MM-dd-yyyy'}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

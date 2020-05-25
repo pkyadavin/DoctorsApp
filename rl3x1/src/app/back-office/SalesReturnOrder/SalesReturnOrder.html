@@ -1,0 +1,209 @@
+﻿<style>
+    .popupGridHead {
+        height: 30px;
+        padding-top: 8px;
+        padding-bottom: 3px;
+        padding-left: 7px;
+        font-size: 14px;
+        border: 1px solid black;
+    }
+
+    .popupGridRow {
+        height: 25px;
+        padding-left: 7px;
+        font-size: 13px;
+        border: 1px solid black;
+    }
+</style>
+<div class="widget" [hidden]="IsEditorVisible">
+    <div class="widget-header ">
+        <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+        <div class="input-group pull-left margin-left-20 col-md-3">
+            <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterValue" placeholder="Search...">
+            <span class="input-group-btn">
+                <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+            </span>
+            <!--<i aria-hidden="true" class="fa fa-download pull-right" (click)="ExportToExcel()" ng-if="1!=0" style="cursor:pointer;margin-left:10px;margin-top:10px;"></i>-->
+        </div>
+        <div class="widget-buttons" *ngIf="GridType==''">
+            
+            <!--<button id="btnAdd" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" (click)="OnEditSROrder(0)"><i class="glyphicon glyphicon-plus-sign"></i>Add</button>-->
+            <button id="btnAdd" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" *ngIf="LocalAccess | contains:'Add'" (click)="OnEditSROrder(0)"><i class="glyphicon glyphicon-plus-sign"></i>Add</button>
+            <!--<button id="btnAdd" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" *ngIf="ShowTrackShipment" (click)="TrackShipment()"><i class="glyphicon glyphicon-send"></i>Track Shipment</button>
+            <button id="btnAdd" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" *ngIf="ShowShippingLevel" (click)="ShippingLevels()" ><i class="glyphicon glyphicon-download"></i>Shipping Label</button>-->
+        </div>
+        <div class="widget-buttons" *ngIf="GridType=='popup'">
+            <button class="btn btn-sm btn-primary" type="button" (click)="AddSelected()">
+                <i class="glyphicon glyphicon-plus-sign"></i>Add Selected
+            </button>
+        </div>
+    </div>
+
+    <div class="widget-body" *ngIf="GridType=='popup'">
+        <ag-grid-angular #agGrid style="height:250px;width:100%" class="ag-theme-balham"
+                     [gridOptions]="gridOptionsOpenOrders" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+        </ag-grid-angular>
+     </div>
+
+    <div class="widget-body no-padding" *ngIf="GridType==''">
+        <tabs #tabs>
+            <tab tabTitle="Open" (select)="OnTabChanged('Open')" *ngIf="GridType==''"> 
+                <ag-grid-angular #agGrid class="agc-grid ag-theme-balham"
+                                [gridOptions]="gridOptionsOpenOrders" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+                </ag-grid-angular>
+
+            </tab>
+            <tab tabTitle="Closed" (select)="OnTabChanged('Closed')" *ngIf="GridType==''">
+
+                <ag-grid-angular #agGrid class="agc-grid ag-theme-balham"
+                                [gridOptions]="gridOptionsClosedOrders" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+                </ag-grid-angular>
+
+            </tab>
+            <tab tabTitle="Discrepant" (select)="OnTabChanged('Discrepant')" *ngIf="GridType==''">
+
+                <ag-grid-angular #agGrid class="agc-grid ag-theme-balham"
+                                [gridOptions]="gridOptionsDiscrepantOrders" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+                </ag-grid-angular>
+
+            </tab>
+        </tabs>
+    </div>
+      <div class="clearfix"></div>
+    </div>
+<SROrder-Editor *ngIf="IsEditorVisible" [IsCP]="false" [selectedId]="selectedId" [sroReq]="sroReq" [PermDetails]="LocalAccess" (EditorVisibilityChange)="ChangeEditorVisibility($event)"></SROrder-Editor>
+
+<bs-modal #TracingPopup cssClass="modal-lg" id="divTracingPopup">
+    <bs-modal-header>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" style="float:left;">Tracking Results</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Return Number:
+                </label>
+                <div class="col-lg-8">
+                    {{ReturnNumber}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    AWB Number:
+                </label>
+                <div class="col-lg-8">
+                    {{ShippingNumber}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Return Creation Date:
+                </label>
+                <div class="col-lg-8">
+                    {{ReturnDate}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Ship Date:
+                </label>
+                <div class="col-lg-8">
+                    {{ShipDate}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Delivery To:
+                </label>
+                <div class="col-lg-8">
+                    {{DeliveryTo}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Delivery Location:
+                </label>
+                <div class="col-lg-8">
+                    {{DeliveryLocation}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Delivery Date/Time:
+                </label>
+                <div class="col-lg-8">
+                    {{DeliveryDate}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-12" style="margin-bottom:5px;">
+                <label class="control-label col-lg-4 ng-binding">
+                    Return Status:
+                </label>
+                <div class="col-lg-8">
+                    {{ReturnStatus}}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="table-responsive marginTop10" style="padding-left:25px;">
+            <table style="border: 1px solid black;" width="100%;">
+                <tr>
+                    <th style="width:35%;" class="popupGridHead">
+                        Carrier Scan Activity
+                    </th>
+                    <th style="width:25%;" class="popupGridHead">
+                        Date/Time
+                    </th>
+                    <th style="width:40%;" class="popupGridHead">
+                        Comment
+                    </th>
+                </tr>
+                <tr *ngFor="let i of TrackCarrierDetails;">
+                    <td class="popupGridRow">
+                        {{i.Status}}
+                    </td>
+                    <td class="popupGridRow">
+                        {{i.ActivityDate}}
+                    </td>
+                    <td class="popupGridRow">
+                        {{i.Location}}
+                    </td>
+                </tr>                
+            </table>
+        </div>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="CloseTrackingPopup()">Close</button>
+    </bs-modal-footer>
+</bs-modal>

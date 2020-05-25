@@ -1,0 +1,99 @@
+﻿<div class="widget" [hidden]="IsEditorVisible">
+    <div class="widget-body">
+        <div id="divHeader" class="widget-header widget-header1">
+            <!-- <span class="widget-caption pull-left font-40" *ngIf="userGridType!='popup'"><b>{{moduleTitle}}</b> </span> -->
+            <div class="input-group pull-left col-md-3">
+                <input type="text" name="searchText" (keyup.enter)="onFilterChanged()" class="form-control input-sm" style="margin-top:3px;width:300px;" [(ngModel)]="filterText" placeholder="Search criteria includes all the visible fields..">
+                <span class="input-group-btn">
+                        <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                    </span>
+            </div>
+
+            <div class="widget-buttons">
+                <div *ngIf="userGridType != 'popup'">
+                    <button class="btn btn-sm btn-primary" type="button" (click)="onAddUser()" *ngIf="userGridType!='popup' && LocalAccess | contains:'Add'">
+                           <i class="glyphicon glyphicon-plus-sign"></i>Add
+                       </button>
+                    <!-- <button id="btnAdd" href="javascript:void(0)" class="btn btn-primary btn-sm text-align-center thumb Authorize AUTH_2068" (click)="selectFile(0)" *ngIf="Scope=='PTR001' || Scope=='PTR004'">
+                           <i class="fa fa-upload"></i>Upload users 
+                       </button>-->
+                    <!--<button id="btnAdd" href="javascript:void(0)" class="btn btn-primary btn-sm text-align-center thumb Authorize AUTH_2068" (click)="selectFile(1)">
+                            <i class="fa fa-upload"></i>Upload Account users
+    
+                        </button>-->
+                    <!-- <button class="btn btn-sm btn-primary" id="btnEdit" (click)="onEditUser(userid)" *ngIf="isRowClicked && LocalAccess | contains:'Add'">
+                           <i class="glyphicon glyphicon-edit"></i>View
+                       </button>
+                       <button class="btn btn-sm btn-danger" (click)="onDeleteUser()" *ngIf="LocalAccess | contains:'Delete'">
+                           <i class="glyphicon glyphicon-trash"></i>Delete
+                       </button> -->
+
+                    <button class="btn btn-sm btn-primary" id="btnEdit" (click)="onEditUser(userid)" *ngIf="LocalAccess | contains:'Edit' && LocalAccess | contains:'View Details'">
+                           <i class="glyphicon glyphicon-edit"></i>View Details
+                       </button>
+                </div>
+                <div *ngIf="userGridType == 'popup'">
+                    <button class="btn btn-sm btn-primary" type="button" (click)="AddSelected()">
+                           <i class="glyphicon glyphicon-plus-sign"></i>Add Selected
+                       </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="divgrid" class="card1 no-padding marginTop34">
+            <ag-grid-angular #agGrid style="height:100%;width:100%" class="ag-theme-balham" [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="clearfix"></div>
+<bs-modal #importPopup cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="importPopup.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" style="float:left;">Import file</h4>
+
+    </bs-modal-header>
+    <bs-modal-body>
+        <div class="form-group">
+            <div class="col-md-6">
+                <input #fileInput id="ExcelFileControl" (change)="onChangeFileInput($event)" type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" />
+            </div>
+            <div class="col-md-6">
+                <button id="btnAdd" class="btn-primary text-align-center thumb Authorize AUTH_2068" [disabled]="ImportInProcess" *ngIf="!ShowUploadbutton" (click)="addFile()">
+                    <i class="fa fa-upload"></i>
+                    Submit File
+                </button>
+            </div>
+            <div class="col-md-6">
+                <a id="btnAdd" class="btn-link text-align-center thumb Authorize AUTH_2068" *ngIf="ShowUploadbutton && Scope=='PTR004'" href="https://rl3devstorage.blob.core.windows.net/templates/RL3.0.1-Accounts%20User%20template.xlsx">
+                    <i class="fa fa-download"></i> Account users template
+                </a>
+                <a id="btnAdd" class="btn-link text-align-center thumb Authorize AUTH_2068" *ngIf="ShowUploadbutton && Scope=='PTR001'" href="https://rl3devstorage.blob.core.windows.net/templates/RL3.0.1-Facility%20User%20template.xlsx">
+                    <i class="fa fa-download"></i> Facility users template
+                </a>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+        <hr />
+        <div class="form-group" *ngIf="ImportStatus!=''">
+            <div class="col-lg-6" style="margin-bottom:5px;">
+                <label class="control-label"><b>Import Results</b></label>
+                <br />
+                <label class="control-label" style="display: block;font-size:smaller" *ngFor="let key of ImportResults; let i = index;">&#8226; {{key}} </label>
+            </div>
+            <div class="col-lg-6" style="margin-bottom:5px;">
+                <label class="control-label" *ngIf="ImportStatus=='Success'" style="color:forestgreen"><b>Status: {{ImportStatus}}</b></label>
+                <label class="control-label" *ngIf="ImportStatus!='Success'" style="color:maroon"><b>Status: {{ImportStatus}}</b></label>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="importPopup.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<UserEditor *ngIf="IsEditorVisible" [Scope]="Scope" [GridType]="userGridType" [access]="LocalAccess" [permission]="(LocalAccess | contains:'Edit')" [selectedId]="isSelectedID" (EditorVisibilityChange)="ChangeEditorVisibility($event)"></UserEditor>
+<message #pop cssClass="modal-msg"></message>

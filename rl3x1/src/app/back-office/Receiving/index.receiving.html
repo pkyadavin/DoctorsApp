@@ -1,0 +1,74 @@
+﻿<div class="widget" [hidden]="IsScanEditorVisible || IsPutAwayEditorVisible">
+    <div class="widget-header ">
+        <span class="widget-caption">
+            <b>
+                {{moduleTitle}}
+            </b>
+        </span>
+        <div class="col-md-3" *ngIf="HasPermission('Scan') && ActionCode =='TSK005'">
+            <input type="text" style="margin-top:3px;" name="searchText" class="form-control" (keyup.enter)="OnScan()" [(ngModel)]="ScanValue" placeholder="Scan Tracking Number" />                                        
+        </div>
+        <div class="col-md-3 ">
+        <div class="input-group">
+            <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;" [(ngModel)]="filterValue" placeholder="Search...">
+            <span class="input-group-btn">
+                <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+            </span>
+        </div>
+    </div>
+        <div class="widget-buttons">
+            <button type="button" *ngIf="ActionCode == 'TSK006'" class="btn btn-sm btn-primary text-align-center" (click)="OpenContainerPopup()">
+                    Release Container
+            </button>
+            <button class="btn btn-sm text-align-center btn-danger" (click)="onDeleteMRN()" *ngIf="isDeleteVisible && HasPermission('Delete')">
+                <i class="glyphicon glyphicon-trash"></i>Delete
+            </button>
+            <!-- <button id="btnDownLoad" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb" (click)="ExportToExcel()" *ngIf="HasPermission('Export')">
+                <i aria-hidden="true" class="fa fa-download " ng-if="1!=0" style="cursor:pointer;"></i>Export
+            </button>
+            <button id="btnDownLoad" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb" (click)="ExportToExcel()" *ngIf="HasPermission('Export')">
+                    <i aria-hidden="true" class="fa fa-download " ng-if="1!=0" style="cursor:pointer;"></i>Export
+            </button> -->
+        </div>
+    </div>
+    <div class="widget-body no-padding">
+        <tabs>
+            <tab tabTitle="Open" (select)="RebindOpen()">
+                <ag-grid-angular #agGrid class="agc-grid ag-theme-balham"
+                [gridOptions]="gridOpenOptions" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+                </ag-grid-angular>
+            </tab>
+            <tab tabTitle="Closed" (select)="RebindClose()">
+                <ag-grid-angular #agGrid class="agc-grid ag-theme-balham" (selectionChanged)="onClosedSelectionChanged()"
+                [gridOptions]="ClosedGridOptions" (rowClicked)="onRowClicked($event)">
+                </ag-grid-angular>
+            </tab>
+        </tabs>
+    </div>    
+    <div class="clearfix"></div>
+   
+</div>
+<MRNEditor *ngIf="IsEditorVisible" [type]="type" [selectedId]="selectedId" [indexLocalTask]="indexLocalTask" [permission]="HasPermission('Edit')" (EditorVisibilityChange)="ChangeEditorVisibility($event)"></MRNEditor>
+<!--<MRNScanEditor *ngIf="IsScanEditorVisible" [type]="type" [selectedId]="selectedId" [indexLocalTask]="indexLocalTask" [permission]="HasPermission('Edit')" (ScanVisibilityChange)="ChangeScanVisibility($event)"></MRNScanEditor>-->
+<ScanEditor *ngIf="IsScanEditorVisible" [ActionCode]="ActionCode" [AllowScan]="AllowScan" [MRNNumber]="MRNNumber" (ScanVisibilityChange)="ChangeScanVisibility($event)"></ScanEditor>
+<PutAwayEditor *ngIf="IsPutAwayEditorVisible"></PutAwayEditor>
+
+<bs-modal #modalContainer cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Release Container</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <div class="step-content" style="height:220px; overflow-y:scroll;">
+            <ag-grid-angular #agGrid class="agc-grid ag-theme-balham"
+                         [gridOptions]="ContainerGridOptions">
+            </ag-grid-angular>
+        </div>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="modalContainer.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="ReleaseContainer()">Release</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<message #pop cssClass="modal-msg"></message>

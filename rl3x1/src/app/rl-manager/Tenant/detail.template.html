@@ -1,0 +1,580 @@
+﻿
+<style>
+    .input-icon.inverted > [class*="fa-"], .input-icon.inverted > [class*="glyphicon-"] {
+        color: #fff;
+        background-color: #2DC3E8;
+    }
+
+    .form-control {
+        height: 34px !important;
+    }
+
+    .control-label {
+        padding-top: 6px !important;
+        font-weight: normal;
+    }
+
+    .form-group {
+        margin-bottom: 0px !important;
+    }
+
+    .btn-primary {
+        border-radius: 25px;
+        border: 1px solid #4789ad;
+        background-color: transparent !important;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 5px 18px !important;
+    }
+
+        .btn-primary:hover {
+            color: #337ab7 !important;
+        }
+
+    .requiredfield {
+        color: red;
+    }
+
+    .panel-title span {
+        font-size: 13px;
+    }
+
+    .fa-check-square-o {
+        color: #41C7E9;
+    }
+
+    .fa-square-o {
+        font-size: 22px !important;
+        color: #cccccc;
+    }
+
+    .fa-plus-square {
+        color: #41C7E9;
+    }
+
+    .fa-dot-circle-o {
+        color: #41C7E9;
+    }
+
+    .fa-circle-o {
+        color: #cccccc;
+    }
+
+    .fa-minus-square {
+        color: #E42C05;
+    }
+
+    .fa-minus-circle {
+        color: #41C7E9;
+        cursor: pointer;
+    }
+
+    .fa-plus-circle {
+        color: #41C7E9;
+        cursor: pointer;
+    }
+    .inputerrorpop {
+        background-color: #fff;
+        color: #ff0000;
+        text-align: left;
+        display: block;
+        overflow: hidden;
+        margin-bottom: 3.9853px;
+        position: relative !important;
+        border: solid 1px #ff0000;
+        z-index: 999;
+        font-size: 11px;
+        margin-bottom: -7px !important;
+        display: none;
+    }
+</style>
+<div id="registration-form">
+    <form #f="ngForm">
+        <div class="col-md-6">
+            <div class="panel panel-default panel-hovered panel-stacked mb20">
+                <div class="panel-heading">
+                    <span style="font-size:18px;">Profile Info</span>
+                    <div style="float:right;position:relative;padding-top:3px;">
+                        <i style="font-size:18px;color:#2DC3E8;" class="fa fa-info-circle tooltip-right" onmouseout="UnTip()" onmouseover="Tip('Tenant information.')"></i>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Domain Name:</label>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <div class="form-group">
+                                <span class="input-icon icon-right inverted">
+                                    <input type="text" name="domain" class="form-control" readonly id="domain" autocomplete="off" maxlength="15"
+                                           tabindex="1" style="width:70%;float:left;"
+                                           [(ngModel)]="CurrentTenantdata.domainname" [ngModelOptions]="{standalone: true}" />
+                                    <div style="padding:7px 5px 7px 0px;text-align:center;cursor:pointer;color:#333333;background-color:#6CD5EE;">
+                                        .reverselogix.co
+                                        <div style="float:right;margin-right:5px;">
+                                            <i id="Domaini" ></i>
+                                            
+                                        </div>
+                                    </div>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group" *ngIf="CurrentTenantdata.consumerdomain!=''">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Consumer Portal Domain Name:</label>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <div class="form-group">
+                                <span class="input-icon icon-right inverted">
+                                    <input type="text" name="cdomain" class="form-control" readonly id="Cdomain" autocomplete="off" maxlength="15"
+                                           tabindex="2" style="width:70%;float:left;"
+                                           (focusout)="CheckCDomaIfExists()" [(ngModel)]="CurrentTenantdata.consumerdomain" [ngModelOptions]="{standalone: true}" />
+                                    <div style="padding:7px 5px 7px 0px;text-align:center;cursor:pointer;color:#333333;background-color:#6CD5EE;">
+                                        .reverselogix.co
+                                        <div style="float:right;margin-right:5px;"><i id="CDomaini" ></i> 
+                                        </div>
+                                    </div>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Company’s Name:</label>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <div class="form-group">
+                                <span class="input-icon icon-right inverted">
+                                    <input name="companyname" type="text" autocomplete="off" id="companyname" (blur)="checkFieldIsRequired('companyname')" onfocus="onErrorFocus('companyname_error')"
+                                           tabindex="3" maxlength="200" [(ngModel)]="CurrentTenantdata.companyname" [ngModelOptions]="{standalone: true}" class="form-control" (change)="OnTenantDataChange()" />
+                                    <div class="jq-toast-single inputerrorpop" id="companyname_error">
+                                        <!--<i class="fa fa-info-circle"></i>-->
+                                        <span></span>
+                                    </div>
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                            <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
+                                    <label class="control-label">Prefix:</label>
+                                    <div class="clearfix"></div>
+                                    <div>
+                                        <div class="form-group">
+                                            <span class="input-icon icon-right inverted">
+                                                <select id="ddlPrefix" name="ddlPrefix" [(ngModel)]="CurrentTenantdata.prefix" (change)="OnTenantDataChange()"
+                                                        onfocus="onErrorFocus('prefix_error')" class="form-control">
+                                                    <!--<option [value]="" selected>--Select Currency--</option>-->
+                                                    <option value="Miss">Miss</option>
+                                                    <option value="Mr.">Mr.</option>
+                                                    <option value="Mrs.">Mrs.</option>
+                                                    <option value="Ms.">Ms.</option>
+                                                </select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
+                            <label class="control-label ">First Name:</label>
+                            <div class="clearfix"></div>
+                            <div>
+                                <div class="form-group">
+                                    <span class="input-icon icon-right inverted">
+                                        <input name="firstname_error" type="text" autocomplete="off" id="firstname"
+                                               onfocus="onErrorFocus('firstname_error')" maxlength="200" (blur)="checkFirstName()" [(ngModel)]="CurrentTenantdata.firstname" class="form-control" (change)="OnTenantDataChange()" />
+                                        <div class="jq-toast-single inputerrorpop" id="firstname_error">
+                                            <!--<i class="fa fa-info-circle"></i>-->
+                                            <span></span>
+                                        </div> 
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 col-lg-4 col-xs-12">
+                            <label class="control-label">Last Name:</label>
+                            <div class="clearfix"></div>
+                            <div>
+                                <div class="form-group">
+                                    <span class="input-icon icon-right inverted">
+                                        <input name="lastname" type="text" autocomplete="off" id="lastname" 
+                                               onfocus="onErrorFocus('lastname_error')" maxlength="200" (blur)="checkLastName()" [(ngModel)]="CurrentTenantdata.lastname" class="form-control" (change)="OnTenantDataChange()" />
+                                        <div class="jq-toast-single inputerrorpop" id="lastname_error">
+                                            <!--<i class="fa fa-info-circle"></i>-->
+                                            <span></span>
+                                        </div>                                       
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">User ID(Email):</label>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <div class="form-group">
+                                <span class="input-icon icon-right inverted">
+                                    <input name="email" type="email" autocomplete="off" id="email" maxlength="50" class="form-control" onfocus="onErrorFocus('email_error')" (change)="OnTenantDataChange()"
+                                           (blur)="checkemail()" tabindex="5" validateEmail [(ngModel)]="CurrentTenantdata.email" [ngModelOptions]="{standalone: true}" />                                    
+                                    <div class="jq-toast-single inputerrorpop" id="email_error">
+                                        <!--<i class="fa fa-info-circle"></i>-->
+                                        <span></span>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Address Line 1:</label>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <div class="form-group">
+                                <span class="input-icon icon-right inverted">
+                                    <input name="address1" type="text" autocomplete="off" maxlength="100" id="address1" (change)="OnTenantDataChange()"
+                                            class="form-control"  onfocus="onErrorFocus('address1_error')" (blur)="checkFieldIsRequired('address1')"
+                                           [(ngModel)]="CurrentTenantdata.address1" />
+                                    <div class="jq-toast-single inputerrorpop" id="address1_error">
+                                        <!--<i class="fa fa-info-circle"></i>-->
+                                        <span></span>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Address Line 2:</label>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <div class="form-group">
+                                <span class="input-icon icon-right inverted">
+                                    <input name="address2" type="text" autocomplete="off" maxlength="100" id="address2" (change)="OnTenantDataChange()"
+                                           class="form-control" [(ngModel)]="CurrentTenantdata.address2" />
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Home Country:</label>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <div class="form-group">
+                                <span class="input-icon icon-right inverted">
+                                    <select #tenantadmin="ngModel" [disabled]="tid > 0" 
+                                            [(ngModel)]="CurrentTenantdata.country"
+                                            tabindex="8"
+                                            name="TenantAdmin" class="form-control">
+                                        <option [value]="''">--Select Country--</option>
+                                        <option [value]="i.CountryName" *ngFor="let i of countries">{{i.CountryName}}</option>
+                                    </select>
+                                    <!--<i class="fa fa-info-circle tooltip-right" title="Your home country name."></i>-->
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">State:</label>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <div class="form-group">
+                                <span class="input-icon icon-right inverted">
+                                    <select name="ddlstate" type="text" id="ddlstate" [(ngModel)]="statedata.StateID" class="form-control" (change)="selectStateDDL($event)" >
+                                        <!--<option [value]="''"></option>-->
+                                        <option [value]="i.StateID" *ngFor="let i of states">{{i.StateName}}</option>
+                                    </select>                                    
+                                </span>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">City:</label>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <div class="form-group">
+                                <span class="input-icon icon-right inverted">
+                                    <input name="city" type="text" autocomplete="off" maxlength="50" id="city" (blur)="checkFieldIsRequired('city')" (change)="OnTenantDataChange()"
+                                           onfocus="onErrorFocus('city_error')" class="form-control"
+                                           [(ngModel)]="CurrentTenantdata.city" />
+                                    <div class="jq-toast-single inputerrorpop" id="city_error">
+                                        <!--<i class="fa fa-info-circle"></i>-->
+                                        <span></span>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Zip Code:</label>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <div class="form-group">
+                                <span class="input-icon icon-right inverted">
+                                    <input name="zipcode" type="text" autocomplete="off" maxlength="100" id="zipcode" (blur)="checkFieldIsRequired('zipcode')"
+                                           onfocus="onErrorFocus('zipcode_error')" class="form-control" (change)="OnTenantDataChange()"
+                                           [(ngModel)]="CurrentTenantdata.zipcode" />
+                                    <div class="jq-toast-single inputerrorpop" id="zipcode_error">
+                                        <!--<i class="fa fa-info-circle"></i>-->
+                                        <span></span>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Operating Currency:</label>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <div class="form-group">
+                                <span class="input-icon icon-right inverted">
+                                    <select #tenantadmin="ngModel" id="ddlCurrency" [disabled]="tid > 0"
+                                            [(ngModel)]="CurrentTenantdata.currency" tabindex="9"
+                                            onfocus="onErrorFocus('currency_error')" name="TenantAdminCountry" class="form-control">
+                                        <!--<option value="" selected>--Select Currency--</option>-->
+                                        <option [value]="i.CurrencyCode" *ngFor="let i of countries">{{i.CurrencyCode}}</option>
+                                    </select>                                    
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Mobile Number:</label>
+                        <div class="clearfix"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                            <div class="form-group">
+                                <div class="form-control" style="width:60px;float:left;padding: 6px 12px!important;" [innerHTML]="countrydata.TeleCode==null?'':'(+'+countrydata.TeleCode+')'"></div>
+                                <input name="phone" type="text" id="Phone" #Phone="ngModel" style="width:calc(100% - 60px);float:left;" autocomplete="off" class="form-control" (focusout)="PhoneValue()" [(ngModel)]="CurrentTenantdata.phone" [ngModelOptions]="{standalone: true}"
+                                    onfocus="onErrorFocus('mobile_error')" (blur)="checkFieldIsRequired('mobile')" tabindex="9" (change)="OnTenantDataChange()" />
+
+                                <div class="jq-toast-single inputerrorpop" id="mobile_error">
+                                    <!--<i class="fa fa-info-circle"></i>-->
+                                    <span></span>
+                                </div>
+
+                                <!--<i class="fa fa-info-circle tooltip-right" title="Provide your mobile number without international prefix or Country code."></i>-->
+                                <!--<div class="jq-toast-single inputerrorpop" id="mobile_error">
+                                    <i class="fa fa-info-circle"></i>
+                                    <span></span>
+                                </div>-->
+
+                                <!--<span class="input-icon icon-right inverted bg-info">
+                                    +{{countrydata.TeleCode}} <input name="phone" type="text" id="Phone" #Phone="ngModel" readonly autocomplete="off" class="form-control" (focusout)="PhoneValue()" [(ngModel)]="CurrentTenantdata.phone" [ngModelOptions]="{standalone: true}"
+                                           tabindex="9" />
+                                   
+                                </span>-->
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="blank10"></div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel panel-default panel-hovered panel-stacked mb20">
+                <div class="panel-heading">
+                    <span style="font-size:18px;">Subscription Type</span>
+                    <div style="float:right;position:relative;padding-top:3px;">
+                        <i style="font-size:18px;color:#2DC3E8;" class="fa fa-info-circle tooltip-right" onmouseout="UnTip()" onmouseover="Tip('Subscription selected by tenant.')" ></i>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group" *ngFor="let i of features ">
+                        <div class="panel panel-default ng-isolate-scope " >
+                            <div class="panel-heading" style="cursor:pointer;" > <!--(click)="selectModules(i)"-->
+                                <h4 class="panel-title">
+                                    <a>
+                                        <span class="ng-binding"><!--<img src="../../../Assets/img/{{i.Icon}}" />&nbsp;-->{{i.FeatureName}}</span>
+                                    </a>
+                                    <div style="float:right;padding-top:4px;">
+                                        <i  style="font-size:20px;" [ngClass]="i.IsSelected?'fa-check-square-o':'fa-square-o'" class="fa fa-check-square-o" aria-hidden="true"></i>
+                                    </div>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="CurrentTenantdata.claimtype == 'PRO'">
+                        <div class="form-group" *ngFor="let i of features">
+                            <div class="panel panel-default ng-isolate-scope ">
+                                <div class="panel-heading" style="cursor:pointer;">  <!--(click)="selectModules(i)"-->
+                                    <h4 class="panel-title">
+                                        <a>
+                                            <span class="ng-binding"><!--<img src="../../../Assets/img/{{i.Icon}}" />&nbsp;-->{{i.FeatureName}}</span>
+                                        </a>
+                                        <div style="float:right;padding-top:4px;">
+                                            <i style="font-size:20px;" [ngClass]="i.IsSelected?'fa-check-square-o':'fa-square-o'" class="fa fa-check-square-o" aria-hidden="true"></i>
+                                        </div>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <!--<div class="form-group">
+                <div class="col-sm-12 col-md-6 col-lg-6 col-xs-12">
+                    <label class="control-label ">Valid From:</label>
+                    <div class="clearfix"></div>
+                    <div>
+                        <div class="form-group">
+                            <span class="input-icon icon-right inverted">{{validfrom}}
+                                <input type="date" class="form-control" name="ValidFrom" [(ngModel)]="validfrom"  />                                
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 col-xs-12">
+                    <label class="control-label">Valid To:</label>
+                    <div class="clearfix"></div>
+                    <div>
+                        <div class="form-group">
+                            <span class="input-icon icon-right inverted">{{CurrentTenantdata.validto}}
+                                <input type="date" class="form-control" name="ValidTo" [(ngModel)]="CurrentTenantdata.validto" ng2-datetime-picker date-only="true" />                                                               
+                            </span>
+                        </div>
+                    </div>
+                </div>                
+                <div class="clearfix"></div>
+            </div>-->
+
+            <div class="mb20" *ngIf="OrderStatus =='TS002'">                
+                <div class="clearfix"></div>
+                <div class="panel panel-success ng-isolate-scope ">
+                    <div class="panel-heading" style="cursor:pointer;" (click)="ActivateUser()">
+                        <h4 class="panel-title">
+                            <span class="ng-binding"><strong>Activate User</strong></span>
+                            <div style="float:right;margin-right:14px;">
+                                <i style="font-size:20px;" [ngClass]="{'fa-square-o': !CurrentTenantdata.IsUserActivated, 'fa-check-square-o': CurrentTenantdata.IsUserActivated}" class="fa fa-check-square-o" aria-hidden="true"></i>
+                            </div>
+                        </h4>
+                    </div>
+                </div>
+
+                <br /><br />
+            </div>
+
+            <div class="mb20" *ngIf="CurrentTenantdata.claimtype == 'pro'">
+                <!--<div class="panel-heading">
+                    <span style="font-size:18px;">FTP Details</span>
+                </div>-->
+                <!--<div class="panel-heading">
+                    <label class="control-label  col-md-6 col-lg-6 col-xs-6">Is Payment Received :</label>                    
+                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-6" style="float:right;padding-top:4px;">                        
+                            <input type="checkbox" name="IsActive" class="checkbox" style="opacity:1 !important;left:14px" />
+                        </div>
+
+                    <div class="clearfix"></div>
+                </div>                              
+                <div class="clearfix"></div>-->
+
+                <!--<div class="panel panel-success ng-isolate-scope ">
+                    <div class="panel-heading" style="cursor:pointer;" (click)="SelectPaymentReceive()">
+                        <h4 class="panel-title">
+                            <span class="ng-binding"><strong>Activate User</strong></span>
+                            <div style="float:right;padding-top:4px;">
+                                <i style="font-size:20px;" [ngClass]="{'fa-square-o': !IsPaymentSelected, 'fa-check-square-o': IsPaymentSelected}" class="fa fa-check-square-o" aria-hidden="true"></i>
+                            </div>
+                        </h4>
+                    </div>
+                </div>
+
+                <br /><br />-->
+            </div>
+
+            <div class="panel panel-default panel-hovered panel-stacked mb20" *ngIf="OrderStatus !='TS003'">
+                <div class="panel-heading">
+                    <span style="font-size:18px;">FTP Details</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">FTP:</label>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                        <div class="form-group">
+                            <span class="input-icon icon-right inverted">
+                                <input name="FTP" type="text" autocomplete="off" maxlength="50" id="FTP" class="form-control" (change)="onFTPChange()"
+                                       [(ngModel)]="tenantFTP.FTP" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">User:</label>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                        <div class="form-group">
+                            <span class="input-icon icon-right inverted">
+                                <input name="FTPUser" type="text" autocomplete="off" maxlength="50" id="FTPUser" class="form-control" (change)="onFTPChange()"
+                                       [(ngModel)]="tenantFTP.FTPUser" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label  col-sm-12 col-md-12 col-lg-12 col-xs-12">Password:</label>
+                    <div class="clearfix"></div>
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                        <div class="form-group">
+                            <span class="input-icon icon-right inverted">
+                                <input name="FTPPassword" type="text" autocomplete="off" maxlength="50" id="FTPPassword" class="form-control" (change)="onFTPChange()"
+                                       [(ngModel)]="tenantFTP.FTPPassword" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                </div>
+
+                <div class="form-group" style="padding-top: 5px;">
+                    <label class="control-label  col-sm-6 col-md-6 col-lg-6 col-xs-12"> Share FTP Detail With Customer:</label>
+
+                    <div class="col-sm-2 col-md-3 col-lg-3 col-xs-12">
+                        <input type="checkbox" id="chkUpdate"  name="UpdateCustomer" class="checkbox" style="opacity:1 !important;left:14px;margin-top: 8px!important;" [(ngModel)]="tenantFTP.UpdateToCustomer" (change)="onFTPChange()" />
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="clearfix"></div>
+                <br /><br />
+            </div>
+        </div>
+        
+        <div class="clearfix"></div>
+    </form>
+</div>
+<div class="clearfix"></div>

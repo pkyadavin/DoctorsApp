@@ -1,0 +1,228 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="widget">
+      <!-- <form id="form48" name="form48" [formGroup]="registerForm_consumer" (ngSubmit)="onSubmit()"> -->
+      <div class="widget-body rma_creationbx">
+        <h4>Consumer Request Details</h4>
+        <div class="clearfix"></div>
+        <hr />
+        <div class="form-group row">
+          <label for="" class="col-md-2"
+            ><strong>Happy Fox Ticket #:</strong></label
+          >
+          <div class="col-md-4">
+            <input
+              [(ngModel)]="_postcutomer_returnRequest.happy_fox_id"
+              type="text"
+              (keyup)="happykeyup($event)"
+              class="form-control"
+              placeholder="Happy Fox Ticket"
+            />
+          </div>
+          <div class="col-md-2">
+            <button (click)="happyclick($event)" class="btn btn-primary" [disabled]="isdisabled">Validate </button>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-md-2"
+            ><strong>Email ID<span class="red">*</span>:</strong></label
+          >
+          <div class="col-md-4">
+            <input
+              [(ngModel)]="_postcutomer_returnRequest.delivery_info.email"
+              type="text"
+              class="form-control"
+              placeholder=""
+              value="primary-recipient@xyz.com"
+              required
+            />
+          </div>
+          <label for="" class="col-md-2"
+            ><strong>Country<span class="red">*</span>:</strong></label
+          >
+          <div class="col-md-4">
+            <select
+              
+              name=""
+              id=""
+              class="form-control"
+              disabled
+            >
+            <option value="">US</option>
+            <option *ngFor="let cntry of country[0]" [ngValue]="cntry">{{
+              cntry.CountryName
+            }}</option>
+            </select>
+          </div>
+        </div>
+        <div *ngIf="show == true">
+          <h4 class="mt-20">Customer Info</h4>
+          <div class="clearfix"></div>
+          <hr class="mt-0" />
+          <div class="form-group row">
+            <label for="" class="col-md-2"
+              ><strong>Customer Name:</strong></label
+            >
+            <div class="col-md-4">
+              <input
+                [(ngModel)]="
+                  _postcutomer_returnRequest.delivery_info.first_name
+                "
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="Morris C Robinson"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-md-2"
+              ><strong>Company Name:</strong></label
+            >
+            <div class="col-md-4">
+              <input
+                [(ngModel)]="
+                  _postcutomer_returnRequest.delivery_info.company_name
+                "
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="ABC Pvt Ltd"
+              />
+            </div>
+            <label for="" class="col-md-2"><strong>Building #:</strong></label>
+            <div class="col-md-4">
+              <input
+                [(ngModel)]="
+                  _postcutomer_returnRequest.delivery_address.building
+                "
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="4303"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-md-2"><strong>Street:</strong></label>
+            <div class="col-md-4">
+              <input
+                [(ngModel)]="
+                  _postcutomer_returnRequest.delivery_address.address_line1
+                "
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="Bottom Lane"
+              />
+            </div>
+            <label for="" class="col-md-2"><strong>State:</strong></label>
+            <div class="col-md-4">
+              <input
+                [(ngModel)]="_postcutomer_returnRequest.delivery_address.state"
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="New York"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-md-2"><strong>City:</strong></label>
+            <div class="col-md-4">
+              <input
+                [(ngModel)]="_postcutomer_returnRequest.delivery_address.city"
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="Buffallo"
+              />
+            </div>
+            <label for="" class="col-md-2"
+              ><strong>Postal/Zip Code:</strong></label
+            >
+            <div class="col-md-4">
+              <input
+                [(ngModel)]="
+                  _postcutomer_returnRequest.delivery_address.postal_code
+                "
+                type="text"
+                class="form-control"
+                placeholder=""
+                value="14214"
+              />
+            </div>
+          </div>
+          <h4 class="mt-20">Product Info</h4>
+          <div class="clearfix"></div>
+          <hr class="mt-0" />
+          <div class="form-group row">
+            <label for="" class="col-md-2"><strong>Product:</strong></label>
+            <div class="col-md-4">
+              <select
+                (change)="productchange($event.target.value)"
+                class="form-control"
+                [(ngModel)]="productvalue" required
+              >
+              <option [value]="undefined" disabled="true"
+                    >--Select Product--</option>
+                <option
+                  *ngFor="let products of product[0]"
+                  [ngValue]="products"
+                  >{{ products.key }}</option
+                >
+              </select>
+             
+            </div>
+            <label for="" class="col-md-2"><strong>Color:</strong></label>
+            <div class="col-md-4">
+              <select
+                #t
+                (change)="colourchange(t)"
+                class="form-control"
+                [(ngModel)]="selectedValue"
+              >
+              <option [value]="undefined" disabled="true"
+                    >--Select Color--</option>
+                <option *ngFor="let c of colour[0]" [ngValue]="c">{{
+                  c.key
+                }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-md-2"
+              ><strong
+                >RMA / Request Type <span class="red">*</span>:</strong
+              ></label
+            >
+            <div class="col-md-4">
+              <select
+                (change)="rmachange($event.target.value)"
+                class="form-control"
+                [(ngModel)]="rmavalue"
+              >
+              <option [value]="undefined" disabled="true"
+                    >--Select RMA--</option>
+                <option *ngFor="let rmas of rma[0]" [ngValue]="rmas">{{
+                  rmas.TypeName
+                }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-md-12">
+              <button
+                (click)="onsubmitt()"
+                class="btn btn-default btn-primary pull-right"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- </form> -->
+    </div>
+  </div>
+</div>

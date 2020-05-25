@@ -1,0 +1,430 @@
+﻿<script src="../../lib/widget.js"></script>
+<style>
+    .ngFooterPanel {
+        background-color: #eaeaea;
+        padding: 0;
+        border-top: 1px solid #d4d4d4;
+        position: relative;
+        height: 45px !important;
+    }
+
+    .ngViewport {
+        overflow: auto;
+        overflow-x: hidden;
+        min-height: 20px;
+        height: 455px !important;
+    }
+</style>
+<style>
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,0);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,0);
+        box-shadow: 0 0 4px rgba(0,0,0,0);
+    }
+
+        .nav-tabs > li {
+            margin: 0px 10px 0px 10px;
+        }
+
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                color: #262626;
+                border: 0;
+                border-top: 2px solid #333;
+                border-bottom-color: transparent;
+                z-index: 12;
+                line-height: 24px;
+                margin-top: -2px;
+                box-shadow: 0 -2px 3px 0 rgba(0,0,0,.15);
+            }
+
+            .nav-tabs > li a:hover {
+                color: #fff;
+            }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #fff;                
+                line-height: 24px;
+                position: relative;
+                z-index: 11;               
+            }
+#org_chart .google-visualization-orgchart-table {
+  border: 0;
+  text-align: center;
+  border-collapse:separate!important;
+}
+google-chart #org_chart table {
+    background-color:transparent;
+    border-collapse:separate!important;
+}
+</style>
+<div *ngIf="Settings" class="">
+          
+        <!--<tabs>
+            <tab tabTitle="Global Settings">-->
+               <div class="widget">
+                    <div class="widget-body no-padding">
+                        <div class="well with-header">
+                            <div class="header bordered-primary"><h5 style="margin-bottom:0px!important;">Instructions</h5></div>
+                            <div class="buttons-preview">
+                                <div class="ng-scope">
+                                    {{Settings.Instructions}}<br/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label class="control-label col-sm-12 col-md-12 col-lg-12" style="color:red;">{{errorMessage}}</label>
+                </div>
+                <div class="widget" style="margin-bottom:0px!important;background-color:white;">                    
+                        <div class="widget-header">
+                                <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+                               
+                                <div class="widget-buttons">
+                                        <button class="btn btn-sm btn-primary" type="submit" style="float:right;margin:5px 20px 0px 0px;" *ngIf="LocalAccess | contains:'Edit'" (click)="Save()">
+                                                <i class="glyphicon glyphicon-floppy-disk"></i> Save
+                                            </button>        
+                                </div>
+                            </div>
+                            <div class="widget-body">
+                            <tabs> 
+                        <div *ngIf="Settings.IsShowTab"> <!---->
+                            <tab tabTitle="{{d.TabName}}" *ngFor="let d of Settings.TabList;">
+                                <div class="">
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                        <div class="form-group col-sm-12 col-md-12 col-lg-12" *ngFor="let controls of d.TabControls;">
+                                            <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="controls.ModuleStatus">{{controls.ControlLabel}}</label>
+                                            <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="controls.ModuleStatus">
+                                                <div *ngIf="controls.ControlType=='dropdown'">
+                                                    <select [(ngModel)]="controls.ControlValueId" class="form-control" [disabled]="controls.ModuleConfigId==233">
+                                                        <option value="">--Select--</option>
+                                                        <option [value]="items.optionid" *ngFor="let items of controls.ControlOptions">{{items.optiontext}}</option>
+                                                    </select>
+                                                </div>
+                                                <div *ngIf="controls.ControlType=='textarea'">
+                                                    <textarea class="form-control" [(ngModel)]="controls.ControlValue"></textarea>
+                                                </div>
+                                                <div *ngIf="controls.ControlType=='textbox'">
+                                                    <input type="text" class="form-control" maxlength="200" [(ngModel)]="controls.ControlValue" />
+                                                </div>
+                                                <div *ngIf="controls.ControlType=='number'">
+                                                    <input type="number" class="form-control" maxlength="10" [(ngModel)]="controls.ControlValue" />
+                                                </div>
+                                                <div *ngIf="controls.ControlType=='radio'">
+                                                    <div *ngFor="let cvalue of controls.ControlOptions">
+                                                        <span style="float:left; margin-left:10px;">
+                                                            <label>
+                                                                <input type="radio" name="{{controls.ControlCode}}_RadAccount" [(ngModel)]="controls.ControlValueId" [checked]="cvalue.isselected" [value]="cvalue.optionid" class="colored-success">
+                                                                <span class="text"> {{cvalue.optiontext}}</span>
+                                                            </label>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="controls.ControlType=='checkbox'" style="max-height:100px; overflow:auto;">
+                                                    <div *ngFor="let ChildValue of controls.ControlOptions">
+                                                        <label>
+                                                            <input type="checkbox" name="{{controls.ControlCode}}_ChkAccount" [(ngModel)]="ChildValue.isselected" class="colored-success">
+                                                            <span class="text">{{ChildValue.optiontext}}</span>
+                                                        </label>
+                                                        <br />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="controls.ChildControls && controls.ModuleStatus">
+                                                <div *ngFor="let ccontrols of controls.ChildControls">
+                                                    <label class="control-label col-sm-3 col-md-3 col-lg-3">{{ccontrols.ControlLabel}}</label>
+                                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                                        <div *ngIf="ccontrols.ControlType=='dropdown'">
+                                                            <select [(ngModel)]="ccontrols.ControlValueId" class="form-control">
+                                                                <option value="">--Select--</option>
+                                                                <option [value]="items.optionid" *ngFor="let items of ccontrols.ControlOptions">{{items.optiontext}}</option>
+                                                            </select>
+                                                        </div>
+                                                        <div *ngIf="ccontrols.ControlType=='textarea'">
+                                                            <textarea class="form-control" [(ngModel)]="ccontrols.ControlValue"></textarea>
+                                                        </div>
+                                                        <div *ngIf="ccontrols.ControlType=='textbox'">
+                                                            <input type="text" class="form-control" maxlength="200" [(ngModel)]="ccontrols.ControlValue" />
+                                                        </div>
+                                                        <div *ngIf="ccontrols.ControlType=='number'">
+                                                            <input type="number" class="form-control" maxlength="10" [(ngModel)]="ccontrols.ControlValue" />
+                                                        </div>
+                                                        <div *ngIf="ccontrols.ControlType=='radio'">
+                                                            <div *ngFor="let cvalue of ccontrols.ControlOptions">
+                                                                <span style="float:left; margin-left:10px;">
+                                                                    <label>
+                                                                        <input type="radio" name="{{ccontrols.ControlCode}}_RadAccount" [(ngModel)]="ccontrols.ControlValueId" [checked]="cvalue.isselected" [value]="cvalue.optionid" class="colored-success">
+                                                                        <span class="text"> {{cvalue.optiontext}}</span>
+                                                                    </label>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="ccontrols.ControlType=='checkbox'" style="max-height:100px; overflow:auto;">
+                                                            <div *ngFor="let ChildValue of ccontrols.ControlOptions">
+                                                                <label>
+                                                                    <input type="checkbox" name="{{ccontrols.ControlCode}}_ChkAccount" [(ngModel)]="ChildValue.isselected" class="colored-success">
+                                                                    <span class="text">{{ChildValue.optiontext}}</span>
+                                                                </label>
+                                                                <br />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>                        
+                        </div>     
+                        <tab tabTitle="WorkFlow">
+                            <div class="">
+                                <div class="col-md-7">                                   
+                                      <Order-TaskFlow [TaskModuleID]="SetModuleID" (notifyOrderTaskFlow)="onSaveTaskFlowEvent($event)"></Order-TaskFlow> 
+                                </div>
+                                <!-- <div class="col-md-5 no-padding" style="width:40.5%!important;">
+                                    <div class="widget">
+                                        <div class="widget-header bg-primary">
+                                            <span class="widget-caption ng-binding">Workflow Preview</span>
+                                            <div class="widget-buttons">
+                                                <a href="javascript:void(0)" (click)="viewWorkFlow($event)" style="outline:none!important;"><i class="fa fa-expand"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="widget-body" style="overflow-x:auto!important;">
+                                            <google-chart id="gc1" *ngIf="isWorkFlowSaved" [TaskModuleID]="SetModuleID">Loading...</google-chart>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div> -->
+                                <div class="clearfix"></div>
+                            </div>
+                        </tab>
+                        <tab tabTitle="Advance" *ngIf="mType==1283">
+                            <div class="">
+                                <ReturnReason-Customer #ReturnReason selectedId="21" [typeId]="'PTR004'" permission="true"></ReturnReason-Customer>
+                            </div>
+                        </tab>
+                        <tab tabTitle="Carrier" *ngIf="mType==1283" (select)="LoadReason()">
+                            <div class="">
+                                <customer-region #CustomerRegion [CarrierListType]="CarrierListType" [PartnerID]="partnerId"></customer-region>
+                            </div>
+                        </tab>
+                    </tabs></div>
+                    <div class="clearfix"></div>
+                </div>
+            <!--</tab>-->
+
+            <!--<tab class="btn-primary" heading="Product Settings" ng-if="IsProductSettingsTabOn" active="PrimaryTabs==3" ng-click="ChangePrimaryTab(3,'12','21')">
+                <div class="col-md-12 col-sm-12 col-lg-12 row">
+                    <div class="col-md-4 col-sm-4 col-lg-4">
+                        <select class="form-control" ng-model="SelectedCategoryMasterID"
+                                ng-options=" pc as pc.optiontext for pc in GroupMasters track by pc.optiontext" ng-change="BindSubCategory(SelectedCategoryMasterID)">
+                            <option value="">--Select Category--</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-lg-4">
+                        <select class="form-control" ng-model="SelectedSubCategoryID"
+                                ng-options=" pc as pc.optiontext for pc in SubGroupMasters track by pc.optiontext" ng-change="BindSubCategoryModels(SelectedSubCategoryID)">
+                            <option value="">--Select Sub Category--</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-lg-4">
+                        <select class="form-control" ng-model="SelectedItemMasterID"
+                                ng-options=" pc as pc.optiontext for pc in ItemMasters track by pc.optiontext" ng-change="BindProductSettings(SelectedItemMasterID)">
+                            <option value="">--Select Model #--</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <center><h2 ng-if="DynamicProductsTabs.length>0">{{SelectedItemMasterID.optionname}}</h2></center>
+                    <center><h2 ng-if="DynamicProductsTabs.length==0">Form not configured</h2></center><br />
+
+
+                    <div class="form-group col-sm-12 col-md-12 col-lg-12" ng-show="DynamicProductsTabs[0].TabControls.length>0" ng-repeat="controls in DynamicProductsTabs[0].TabControls">
+                        <label class="control-label col-sm-3 col-md-3 col-lg-3">{{controls.ControlLabel}} </label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <select ng-model="controls.ControlValue" class="form-control" ng-change="CheckIsProductDataChanged()" ng-show="controls.ControlType=='dropdown'">
+                                <option value="">--Select--</option>
+                                <option ng-selected="items.optionid == controls.ControlValue" value="{{items.optionid}}" ng-repeat="items in controls.ControlOptions">{{items.optiontext}}</option>
+                            </select>
+                            <textarea class="form-control" ng-model="controls.ControlValue" ng-if="controls.ControlType=='textarea'" ng-change="CheckIsProductDataChanged();CheckIsSettingDataChanged(controls.ControlCode,controls.ChildControls)"></textarea>
+                            <input type="text" class="form-control" maxlength="200" ng-model="controls.ControlValue" ng-if="controls.ControlType=='textbox'" ng-change="CheckIsProductDataChanged();CheckIsSettingDataChanged(controls.ControlCode,controls.ChildControls)" />
+
+                            <input type="text" class="form-control" maxlength="10" onkeypress="javascript:return numberonly(this,event,event);" ng-model="controls.ControlValue" ng-if="controls.ControlType=='number'" ng-change="CheckIsProductDataChanged();CheckIsSettingDataChanged(controls.ControlCode,controls.ChildControls)" />
+                            <span ng-show="controls.ControlType=='radio'" ng-repeat="cvalue in controls.ControlOptions" style="float:left;margin-left:10px;">
+                                <label>
+                                    <input type="radio" name="{{controls.ControlCode}}_RadItem" ng-model="controls.ControlValue" ng-click="ChangeRadioButtonSelectedValue(cvalue,controls.ControlOptions);CheckIsProductDataChanged()" value="{{cvalue.optionid}}" class="colored-success">
+                                    <span class="text"> {{cvalue.optiontext}}</span>
+                                </label>
+                            </span>
+                            <div ng-show="controls.ControlType=='checkbox'" style="max-height:100px;overflow:auto;">
+                                <div ng-repeat="ChildValue in controls.ControlOptions">
+                                    <label>
+                                        <input type="checkbox" name="{{controls.ControlCode}}_ChkItem" ng-model="ChildValue.isselected" ng-checked="ChildValue.isselected" class="colored-success" ng-click="CheckIsProductDataChanged()">
+                                        <span class="text"> {{ChildValue.optiontext}}</span>
+                                    </label>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-show="controls.ChildControls.length>0" ng-repeat="ccontrols in controls.ChildControls">
+                            <label class="control-label col-sm-3 col-md-3 col-lg-3">{{ccontrols.ControlLabel}}</label>
+                            <div class="col-sm-3 col-md-3 col-lg-3">
+                                <select ng-model="ccontrols.ControlValue" class="form-control" ng-show="ccontrols.ControlType=='dropdown'" ng-change="CheckIsProductDataChanged()">
+                                    <option value="">--Select--</option>
+                                    <option ng-selected="items.optionid == ccontrols.ControlValue" value="{{items.optionid}}" ng-repeat="items in ccontrols.ControlOptions">{{items.optiontext}}</option>
+                                </select>
+                                <textarea class="form-control" ng-model="ccontrols.ControlValue" ng-if="ccontrols.ControlType=='textarea'" ng-change="CheckIsProductDataChanged();CheckIsSettingDataChanged(ccontrols.ControlCode,controls)"></textarea>
+                                <input type="text" class="form-control" maxlength="200" ng-model="ccontrols.ControlValue" ng-if="ccontrols.ControlType=='textbox'" ng-change="CheckIsProductDataChanged();CheckIsSettingDataChanged(ccontrols.ControlCode,controls)" />
+                                <input type="text" class="form-control" maxlength="10" ng-model="ccontrols.ControlValue" onkeypress="javascript:return numberonly(this,event,event);" ng-if="ccontrols.ControlType=='number'" ng-change="CheckIsProductDataChanged();CheckIsSettingDataChanged(ccontrols.ControlCode,controls)" />
+                                <span ng-show="ccontrols.ControlType=='radio'" ng-repeat="ChildValue in ccontrols.ControlOptions" style="float:left;margin-left:10px;">
+                                    <label>
+                                        <input type="radio" name="{{ccontrols.ControlCode}}_RadItem" ng-model="ccontrols.ControlValue" ng-click="ChangeRadioButtonSelectedValue(ChildValue,ccontrols.ControlOptions);CheckIsProductDataChanged()" value="{{ChildValue.optionid}}" class="colored-success">
+                                        <span class="text"> {{ChildValue.optiontext}}</span>
+                                    </label>
+                                </span>
+                                <div ng-show="ccontrols.ControlType=='checkbox'" style="max-height:100px;overflow:auto;">
+                                    <div ng-repeat="ChildValue in ccontrols.ControlOptions">
+                                        <label>
+                                            <input type="checkbox" name="{{ccontrols.ControlCode}}_ChkItem" ng-model="ChildValue.isselected" ng-checked="ChildValue.isselected" class="colored-success" ng-click="CheckIsProductDataChanged()">
+                                            <span class="text"> {{ChildValue.optiontext}}</span>
+                                        </label>
+                                        <br />
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+
+                <div class="clearfix"></div>
+            </tab>
+            <tab class="btn-primary" heading="Account Settings" ng-if="IsAccountSettingsTabOn" active="PrimaryTabs==2" ng-click="ChangePrimaryTab(2,'13','31')">
+                <div class="col-md-12 col-sm-12 col-lg-12">
+                    <div class="col-md-3 col-sm-3 col-lg-3" style="padding:0px;">
+                        <div class="widget-header" style="padding-left:0px;">
+                            <span class="input-sm pull-left" style="margin-top:3px;font-weight:bold;">
+                                Accounts
+                            </span>
+                            <span class="input-sm pull-right" style="margin-top:3px;font-weight:bold;">
+                                (# of settings)
+                            </span>
+                        </div>
+                        <div class="widget-body no-padding" style="overflow:auto;min-height:250px;max-height:250px;">
+                            <div style="border-bottom:solid 1px #e6dddd;padding:5px;line-height:24px;cursor:pointer;" ng-repeat="d in AccountsMasters" ng-click="SelectAccountConfigs($index)">
+                                <i class="fa fa-arrow-circle-o-right" ng-style="d.IsSelected?{color:'gray'}:{color:'#F9F8F8'}"></i> {{d.AccountName}}
+                                <div style="float:right;">({{d.NoOfSettings}})</div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-lg-9" style="padding:0px;">
+                        <div class="col-md-12 col-sm-12 col-lg-12">
+                            <div class="widget">
+                                <div class="widget-body no-padding">
+                                    <div class="well with-header">
+                                        <div class="header bordered-primary"><h5 style="margin-bottom:0px!important;">Instructions</h5></div>
+                                        <div class="buttons-preview">
+                                            <div class="ng-scope">
+                                                {{Instructions}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-lg-12">
+
+                            <div class="widget-body no-padding" style="min-height:250px;">
+                              
+                                <div class="row">
+                                    <br />
+                                    <div class="col-sm-12 col-md-12 col-lg-12">                                       
+                                        <center><h2 ng-show="DynamicAccountTabs.length==0">Form not configured</h2></center>
+                                        <div class="form-group col-sm-12 col-md-12 col-lg-12" ng-show="DynamicAccountTabs[0].TabControls.length>0" ng-repeat="controls in DynamicAccountTabs[0].TabControls">
+                                            <label class="control-label col-sm-3 col-md-3 col-lg-3">{{controls.ControlLabel}}</label>
+                                            <div class="col-sm-3 col-md-3 col-lg-3">
+                                                <select ng-model="controls.ControlValue" class="form-control" ng-change="CheckIsAccountDataChanged()" ng-show="controls.ControlType=='dropdown'">
+                                                    <option value="">--Select--</option>
+                                                    <option ng-selected="items.optionid == controls.ControlValue" value="{{items.optionid}}" ng-repeat="items in controls.ControlOptions">{{items.optiontext}}</option>
+                                                </select>
+                                                <textarea class="form-control" ng-model="controls.ControlValue" ng-if="controls.ControlType=='textarea'" ng-change="CheckIsAccountDataChanged();CheckIsSettingDataChanged(controls.ControlCode,controls.ChildControls)"></textarea>
+                                                <input type="text" class="form-control" maxlength="200" ng-model="controls.ControlValue" ng-if="controls.ControlType=='textbox'" ng-change="CheckIsAccountDataChanged();CheckIsSettingDataChanged(controls.ControlCode,controls.ChildControls)" />
+
+                                                <input type="text" class="form-control" maxlength="10" onkeypress="javascript:return numberonly(this,event,event);" ng-model="controls.ControlValue" ng-if="controls.ControlType=='number'" ng-change="CheckIsAccountDataChanged();CheckIsSettingDataChanged(controls.ControlCode,controls.ChildControls)" />
+                                                <span ng-show="controls.ControlType=='radio'" ng-repeat="cvalue in controls.ControlOptions" style="float:left;margin-left:10px;">
+                                                    <label>
+                                                        <input type="radio" name="{{controls.ControlCode}}_RadAccount" ng-model="controls.ControlValue" ng-click="ChangeRadioButtonSelectedValue(cvalue,controls.ControlOptions);CheckIsAccountDataChanged()" value="{{cvalue.optionid}}" class="colored-success">
+                                                        <span class="text"> {{cvalue.optiontext}}</span>
+                                                    </label>
+                                                </span>
+                                                <div ng-show="controls.ControlType=='checkbox'" style="max-height:100px;overflow:auto;">
+                                                    <div ng-repeat="ChildValue in controls.ControlOptions">
+                                                        <label>
+                                                            <input type="checkbox" name="{{controls.ControlCode}}_ChkAccount" ng-model="ChildValue.isselected" ng-checked="ChildValue.isselected" class="colored-success" ng-click="CheckIsAccountDataChanged()">
+                                                            <span class="text"> {{ChildValue.optiontext}}</span>
+                                                        </label>
+                                                        <br />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-show="controls.ChildControls.length>0" ng-repeat="ccontrols in controls.ChildControls">
+                                                <label class="control-label col-sm-3 col-md-3 col-lg-3">{{ccontrols.ControlLabel}}</label>
+                                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                                    <select ng-model="ccontrols.ControlValue" class="form-control" ng-show="ccontrols.ControlType=='dropdown'" ng-change="CheckIsAccountDataChanged()">
+                                                        <option value="">--Select--</option>
+                                                        <option ng-selected="items.optionid == ccontrols.ControlValue" value="{{items.optionid}}" ng-repeat="items in ccontrols.ControlOptions">{{items.optiontext}}</option>
+                                                    </select>
+                                                    <textarea class="form-control" ng-model="ccontrols.ControlValue" ng-if="ccontrols.ControlType=='textarea'" ng-change="CheckIsAccountDataChanged();CheckIsSettingDataChanged(ccontrols.ControlCode,controls)"></textarea>
+                                                    <input type="text" class="form-control" maxlength="200" ng-model="ccontrols.ControlValue" ng-if="ccontrols.ControlType=='textbox'" ng-change="CheckIsAccountDataChanged();CheckIsSettingDataChanged(ccontrols.ControlCode,controls)" />
+                                                    <input type="text" class="form-control" maxlength="10" ng-model="ccontrols.ControlValue" onkeypress="javascript:return numberonly(this,event,event);" ng-if="ccontrols.ControlType=='number'" ng-change="CheckIsAccountDataChanged();CheckIsSettingDataChanged(ccontrols.ControlCode,controls)" />
+                                                    <span ng-show="ccontrols.ControlType=='radio'" ng-repeat="ChildValue in ccontrols.ControlOptions" style="float:left;margin-left:10px;">
+                                                        <label>
+                                                            <input type="radio" name="{{ccontrols.ControlCode}}_RadAccount" ng-model="ccontrols.ControlValue" ng-click="ChangeRadioButtonSelectedValue(ChildValue,ccontrols.ControlOptions);CheckIsAccountDataChanged()" value="{{ChildValue.optionid}}" class="colored-success">
+                                                            <span class="text"> {{ChildValue.optiontext}}</span>
+                                                        </label>
+                                                    </span>
+                                                    <div ng-show="ccontrols.ControlType=='checkbox'" style="max-height:100px;overflow:auto;">
+                                                        <div ng-repeat="ChildValue in ccontrols.ControlOptions">
+                                                            <label>
+                                                                <input type="checkbox" name="{{ccontrols.ControlCode}}_ChkAccount" ng-model="ChildValue.isselected" ng-checked="ChildValue.isselected" class="colored-success" ng-click="CheckIsAccountDataChanged()">
+                                                                <span class="text"> {{ChildValue.optiontext}}</span>
+                                                            </label>
+                                                            <br />
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </tab>-->
+        <!--</tabs>-->
+
+</div>
+<message #pop cssClass="modal-msg"></message>

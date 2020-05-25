@@ -1,0 +1,337 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="widget">
+      <div class="widget-body rma_creationbx">
+        <h4>Consumer Request Details</h4>
+        <a
+          class="btn btn-warning pull-right"
+          (click)="redirectCP()"
+          target="_blank" style="margin-left: 10px;"
+          >CP Link</a
+        >
+        <button
+          *ngIf="
+            customer_return_details.status.code == 'Requested' &&
+            customer_return_details.is_updated_customer == false
+          "
+          class="btn btn-primary pull-right"
+        >
+          <i class="fa fa-repeat fa-fw" aria-hidden="true"></i>Resend Link
+        </button>
+        
+        <div class="clearfix"></div>
+        <hr />
+        <div class="form-group row">
+          <label for="" class="col-md-2"
+            ><strong>Happy Fox Ticket #:</strong></label
+          >
+          <div class="col-md-4">
+            <span class="highlight">{{
+              customer_return_details.happy_fox_id
+            }}</span>
+          </div>
+          <label for="" class="col-md-2"
+            ><strong>Request Reference #:</strong></label
+          >
+          <div class="col-md-4">
+            <span class="highlight">{{
+              customer_return_details.return_ref_number
+            }}</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-md-2"><strong>Email ID:</strong> </label>
+          <div class="col-md-4">
+            <span>{{ customer_return_details.delivery_info.email }}</span>
+          </div>
+          <label for="" class="col-md-2"><strong>Country:</strong></label>
+          <div class="col-md-4">
+            <span>{{ customer_return_details.delivery_address.country }}</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-md-2"
+            ><strong>Requested Date:</strong>
+          </label>
+          <div class="col-md-4">
+            <span>12/12/2019</span>
+          </div>
+        </div>
+        <h4 class="mt-20">Customer Info</h4>
+        <div class="clearfix"></div>
+        <hr class="mt-0" />
+        <div class="form-group row">
+          <label for="" class="col-md-2"><strong>Customer Name:</strong></label>
+          <div class="col-md-4">
+            <span>{{ customer_return_details.delivery_info.first_name }}</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-md-2"><strong>Company Name:</strong></label>
+          <div class="col-md-4">
+            <span>{{
+              customer_return_details.delivery_info.company_name
+            }}</span>
+          </div>
+          <label for="" class="col-md-2"><strong>Building #:</strong></label>
+          <div class="col-md-4">
+            <span>4444</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-md-2"><strong>Street:</strong></label>
+          <div class="col-md-4">
+            <span>{{
+              customer_return_details.delivery_address.address_line1
+            }}</span>
+          </div>
+          <label for="" class="col-md-2"><strong>State:</strong></label>
+          <div class="col-md-4">
+            <span>{{ customer_return_details.delivery_address.state }}</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="" class="col-md-2"><strong>City:</strong></label>
+          <div class="col-md-4">
+            <span>{{ customer_return_details.delivery_address.state }}</span>
+          </div>
+          <label for="" class="col-md-2"
+            ><strong>Postal/Zip Code:</strong></label
+          >
+          <div class="col-md-4">
+            <span>{{
+              customer_return_details.delivery_address.postal_code
+            }}</span>
+          </div>
+        </div>
+        <h4 class="mt-20">Product Info</h4>
+        <div class="clearfix"></div>
+        <hr class="mt-0" />
+        <div class="form-group row">
+          <label for="" class="col-md-2"><strong>Product:</strong></label>
+          <div class="col-md-4">
+            <span>{{ customer_return_details.items.product_detail.key }}</span>
+          </div>
+          <label for="" class="col-md-2"
+            ><strong>RMA / Request Type:</strong></label
+          >
+          <div class="col-md-4">
+            <span>{{
+              customer_return_details.items.rma_request_type_detail.key
+            }}</span>
+          </div>
+        </div>
+        <div
+          class="form-group row"
+          *ngIf="
+            (customer_return_details.status.code == 'Requested' &&
+              customer_return_details.is_updated_customer == true) ||
+            (customer_return_details.status.code == 'Approved' &&
+              customer_return_details.is_updated_customer == true)
+          "
+        >
+          <label for="" class="col-md-2"><strong>Return Reason:</strong></label>
+          <div class="col-md-4">
+            <span>{{
+              customer_return_details.items.return_reason.rma_action_name
+            }}</span>
+          </div>
+          <label for="" class="col-md-2"
+            ><strong>Proof of Purchase:</strong></label
+          >
+          <div class="col-md-4">
+            <span><a href="{{ filesreturnshow.url }}">View POP</a></span>
+          </div>
+        </div>
+        <!-- <div class="form-group row">
+                    <div class="col-md-12">
+                        <div class="bg-success alert alert-dismissible show" role="alert">
+                            <p>Link has been sent to the Customer email ID. The request link is only valid for the next 30 days <span class="pull-right close" data-dismiss="alert" aria-label="Close"><i class="fa fa-times-circle" aria-hidden="true"></i></span>                                </p>
+                        </div>
+                    </div>
+                </div> -->
+        <div
+          *ngIf="
+            (customer_return_details.status.code == 'Requested' &&
+              customer_return_details.is_updated_customer == true) ||
+            (customer_return_details.status.code == 'Approved' &&
+              customer_return_details.is_updated_customer == true)
+          "
+        >
+          <h4 class="mt-20">Additional Info</h4>
+          <div class="clearfix"></div>
+          <hr class="mt-0" />
+          <div class="form-group row">
+            <label for="" class="col-md-2"
+              ><strong>Primary Recipent Email:</strong></label
+            >
+            <div class="col-md-4">
+              <span>{{
+                customer_return_details.items.product_detail.key
+              }}</span>
+            </div>
+            <label for="" class="col-md-2"
+              ><strong>Secoundry Recipent Email:</strong></label
+            >
+            <div class="col-md-4">
+              <span>{{
+                customer_return_details.items.rma_request_type_detail.key
+              }}</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-md-2"
+              ><strong>Own refrence #:</strong></label
+            >
+            <div class="col-md-4">
+              <span>{{
+                customer_return_details.items.product_detail.key
+              }}</span>
+            </div>
+          </div>
+        </div>
+        <div
+          *ngIf="
+            customer_return_details.status.code == 'Requested' &&
+            customer_return_details.is_updated_customer == true
+          "
+        >
+          <h4 class=" mt-20">Approval Action</h4>
+          <div class="clearfix"></div>
+          <hr class="mt-0" />
+          <div class="form-group row">
+            <label for="" class="col-md-2"
+              ><strong>Select Reason:</strong></label
+            >
+            <div class="col-md-4">
+              <select
+                [(ngModel)]="
+                  returnReason.value === null ? undefined : returnReason.value
+                "
+                id="itemReturnReason"
+                name="itemreturnReason"
+                #returnReason="ngModel"
+                class="form-control"
+                (change)="onReasonChange(returnReason.value)"
+              >
+                <option value="undefined"
+                  >-------Select Return reason-------</option
+                >
+                <option
+                  *ngFor="let returnReason of RejectApproveReason"
+                  [value]="returnReason.TypeCode"
+                >
+                  {{ returnReason.TypeName }}</option
+                >
+              </select>
+            </div>
+            <label for="" class="col-md-2"
+              ><strong>IS EOL out of stock:</strong></label
+            >
+            <div class="col-md-4">
+              <select (change)="onEolchange($event.target.value)">
+                <option value="0">-------Select EOL -------</option>
+                <option value="1">true</option>
+                <option value="0">false</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div
+          *ngIf="
+            customer_return_details.status.code == 'Requested' &&
+            customer_return_details.is_updated_customer == true
+          "
+        >
+          <h4 class=" mt-20">Comment</h4>
+          <div class="clearfix"></div>
+          <hr class="mt-0" />
+          <div class="form-group row">
+            <label for="" class="col-md-2"
+              ><strong>Select Reason:</strong></label
+            >
+            <div class="col-md-4">
+              <textarea
+                [(ngModel)]="rejected_request_dt.authorized_comment"
+                id="w3mission"
+                rows="4"
+                cols="50"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div
+          *ngIf="
+            customer_return_details.status.code == 'Approved' &&
+            customer_return_details.is_updated_customer == true
+          "
+        >
+          <h4 class="mt-20">Approval Remarks</h4>
+          <div class="clearfix"></div>
+          <hr class="mt-0" />
+          <div class="form-group row">
+            <label for="" class="col-md-2"><strong>Reason:</strong></label>
+            <div class="col-md-4">
+              <span>{{
+                customer_return_details.items.product_detail.key
+              }}</span>
+            </div>
+            <label for="" class="col-md-2"
+              ><strong>Approved Date:</strong></label
+            >
+            <div class="col-md-4">
+              <span>{{
+                customer_return_details.items.rma_request_type_detail.key
+              }}</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-md-2"
+              ><strong>IS EOL out of stock:</strong></label
+            >
+            <div class="col-md-4">
+              <span>{{
+                customer_return_details.items.product_detail.key
+              }}</span>
+            </div>
+            <label for="" class="col-md-2"><strong>Approved By:</strong></label>
+            <div class="col-md-4">
+              <span>{{
+                customer_return_details.items.rma_request_type_detail.key
+              }}</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-md-2"><strong>Comment:</strong></label>
+            <div class="col-md-4">
+              <span>{{
+                customer_return_details.items.product_detail.key
+              }}</span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="form-group row"
+          *ngIf="
+            customer_return_details.status.code == 'Requested' &&
+            customer_return_details.is_updated_customer == true
+          "
+        >
+          <button
+            (click)="showRejectApproveReason('Approve')"
+            class=" pull-right"
+          >
+            Approved
+          </button>
+          <button
+            class="pull-right btn btn-default btn-sm btn-danger"
+            data-toggle="modal"
+            (click)="showRejectApproveReason('Reject')"
+          >
+            Reject
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

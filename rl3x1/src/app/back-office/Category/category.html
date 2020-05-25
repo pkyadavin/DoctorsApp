@@ -1,0 +1,39 @@
+﻿<div class="widget" [hidden]="IsEditorVisible">
+    <div id="divHeader">
+        <!-- <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span> -->
+        <!-- <span class="widget-caption pull-left"><b>Product Model</b> </span> -->
+        <div class="input-group pull-left margin-left-20 col-md-3">
+            <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterValue" placeholder="Search...">
+             <span class="input-group-btn">
+                 <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+            </span>
+        </div>
+        <div class="widget-buttons">
+            <button id="btnAdd" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" *ngIf="ShowPerMission('Add') && itemmodelGridType != 'popup'" (click)="OnEditModel(0)"><i class="glyphicon glyphicon-plus-sign"></i>Add </button> 
+            <button href="javascript:void(0)" id="btnEdit" class="btn btn-sm btn-primary ng-hide Authorize AUTH_3068" *ngIf="isEditVisible && itemmodelGridType != 'popup'" (click)="OnEditModel(CurrentModel.ModelID)"><i class="glyphicon glyphicon-edit"></i>View</button> 
+            <button href="javascript:void(0)" id="btnDelete" class="btn btn-sm btn-danger ng-hide Authorize AUTH_3068" *ngIf="ShowPerMission('Delete') && isEditVisible && itemmodelGridType != 'popup'" (click)="Delete(CurrentModel.ModelID)"><i class="glyphicon glyphicon-trash"></i>Delete</button> 
+            <!--<button id="btnAdd" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" *ngIf="itemmodelGridType == 'popuprefress'" (click)="OnParentWindowReBind()"><i class="glyphicon glyphicon-plus-sign"></i>Add To Parent</button>-->
+            <!--<button class="btn-link" type="button" (click)="Delete(CurrentModel.ModelID)" *ngIf="ShowPerMission('Delete') && isEditVisible && itemmodelGridType != 'popup'">               
+                <i class="glyphicon glyphicon-trash red" style="display:block;"></i>
+            </button>-->
+    
+        </div>
+    </div>
+    <div id="divForm" class="widget-body no-padding">
+        <div class="widget">
+            <div class="widget-body no-padding">
+               <ag-grid-angular #agGrid  style="height:400px;width:100%"   class="ag-theme-balham"
+                             [gridOptions]="gridOptions"  (selectionChanged)="itemmodelGridType != 'popup' && onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+                </ag-grid-angular>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<Model-editor *ngIf="IsEditorVisible" [GridType]="itemmodelGridType" [selectedId]="SelectedId" [permission]="ShowPerMission('Edit')" 
+              (close)="closepopup()"
+              (EditorVisibilityChange)="ChangeEditorVisibility($event)"></Model-editor>
+
+<message #pop cssClass="modal-msg"></message>

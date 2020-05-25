@@ -1,0 +1,77 @@
+<style>
+    .glyphicon.spinning1 {
+        animation: spin 1s infinite linear;
+        display: inline-block;
+    }
+</style>
+
+<div style="background-image: url(assets/img/Login-bg1.jpg);background-size: cover;width:100%;height: 100%;">
+</div>
+
+<div class="login-container animated fadeInDown">
+    <div class="loginbox">
+        <div class="form-material">
+            <div class="text-center" style="margin-bottom:20px;"><img style="width: 33%;" src="assets/img/arc-teryx-logo-black-transparent.png" /></div>
+            <!-- <div class="login-control">
+            <div class="loginbox-textbox">
+                <div class="form-group">
+                    <input type="email" id="txt_email" class="form-control" placeholder="User Name" [(ngModel)]="CurrentUser" ng-dl-enter-ke="Continue()" />
+                </div>
+            </div>
+            <div class="loginbox-submit">
+                <button type="button" class="btn btn-primary btn-block" (click)="Continue()">
+                        <i *ngIf="loginLoader" class="glyphicon glyphicon-refresh spinning1"></i>
+                    Continue</button>
+            </div>
+            <div style="padding-left: 20px;padding-right:20px;">
+                <hr>
+            </div>
+            <div class="loginbox-forgot">
+                <button class="btn btn-link" (click)="goPasswordRecover()">Forgot Password</button>
+            </div>
+        </div> -->
+            <div class="card-body">
+                <div class="login-control step">
+                    <div class="form-group m-b-20">
+                        <div style="font-size: 13px;"> Login to access your account </div>
+                    </div>
+                    <div class="form-group">
+                        <!-- <div class="emailbox"><label class="control-label">{{CurrentUser}}</label> <i class="fa fa-pencil pull-right"></i></div> -->
+                        <input type="email" id="txt_email" class="form-control" placeholder="User Name" [(ngModel)]="CurrentUser" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" id="txt_password" class="form-control" [(ngModel)]="password" placeholder="Password" />
+                    </div>
+
+                    <div class="loginbox-textbox">
+                        <div class="g-recaptcha" [data-sitekey]="sitekey" style="width: 100%!important;"></div>
+                    </div>
+
+                    <div class="loginbox-submit">
+                        <button type="submit" class="btn btn-primary btn-block" (click)="Login()">                      
+                            <i *ngIf="loginLoader" class="glyphicon glyphicon-refresh spinning1"></i>                    
+                        Login</button>
+                    </div>
+                    <hr>
+                    <div class="loginbox-forgot">
+                        <button class="btn-link" (click)="goPasswordRecover()">Forgot Password</button>
+                        <!-- <button class="btn btn-link" (click)="goPasswordreset()">Reset Password</button> -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- <div class="container-fuild container-footer">
+<div class="container brand-img">
+<img src="assets/img/salomon-f.jpg" /> 
+<img src="assets/img/wilson-f.jpg" />  
+<img src="assets/img/automic-f.jpg" /> 
+<img src="assets/img/arcteryx-f.jpg" />   
+<img src="assets/img/suunto-f.jpg" />  
+<div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+</div> -->

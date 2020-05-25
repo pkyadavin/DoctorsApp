@@ -1,0 +1,80 @@
+<!-- Old HTML Code -->
+<!-- [hidden]="!ListView" -->
+<div class="widget">
+  <div class="widget-body">
+    <div class="widget-header widget-header1">
+      <div class="input-group pull-left">
+        <input
+          type="text"
+          name="searchText"
+          class="input-sm pull-left"
+          (keyup.enter)="onFilterChanged()"
+          style="margin-top:3px;width: 250px"
+          [(ngModel)]="filterValue"
+          placeholder="Search criteria includes all the visible fields.."
+        />
+
+        <span class="input-group-btn pull-left">
+          <button
+            (click)="onFilterChanged()"
+            class="btn btn-secondary btn-sm"
+            style="margin-top:3px;"
+          >
+            <i class="fa fa-search"></i>Search
+          </button>
+        </span>
+        <i
+          class="fa fa-info-circle margin-top-10 margin-left-5"
+          style="font-size:16px;"
+          title="Multiple search keywords can be keyed-in as comma-separated list."
+        ></i>
+      </div>
+      <!-- <div class="widget-buttons">
+        <button
+          class="btn btn-sm btn-primary ng-hide Authorize AUTH_3068"
+          data-toggle="tooltip"
+          data-placement="top"
+          type="button"
+          (click)="Show('Edit')"
+          *ngIf="ntID > 0"
+        >
+          <i class="glyphicon glyphicon-edit"></i>View
+        </button>
+        <button
+          class="btn btn-sm btn-danger"
+          type="button"
+          data-toggle="tooltip"
+          data-placement="top"
+          (click)="Delete()"
+          *ngIf="false"
+        >
+          <i class="glyphicon glyphicon-trash"></i>Delete
+        </button>
+      </div> -->
+      <div class="clearfix"></div>
+    </div>
+    <div class="no-padding marginTop34 card1">
+      <!-- <tabs>
+        <tab
+          *ngFor="let option of Tabs; let i = index"
+          class="menu-option"
+          (select)="renderRMAqueue(option.code)"
+          [tabTitle]="option.name"
+        > -->
+      <ag-grid-angular
+        #agGrid
+        id="grid1"
+        style="height:100%;width:100%"
+        class="ag-theme-balham"
+        (gridReady)="onGridReady($event)"
+        [gridOptions]="gridOptions"
+        (selectionChanged)="onSelectionChanged()"
+        (rowClicked)="onRowClicked($event)"
+      >
+      </ag-grid-angular>
+      <!-- </tab>
+      </tabs> -->
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

@@ -1,0 +1,149 @@
+﻿<div class="widget">
+    <form #f="ngForm" novalidate>
+        <div class="widget-header">
+            <span class="widget-caption ng-binding"><b></b></span>
+        </div>
+        <div class="widget-body" *ngIf="!IsLoadPreviousLines">
+            <div class="form-group" *ngIf="IsSubmitted && !f.form.valid">
+                <div class="validationmsg">
+                    <b> Please fill the asterisk (*) fields. </b>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-lg-6">
+                <label class="control-label col-lg-6" style="padding-top:8px;">
+                    Reference Number:
+                </label>
+                <div class="col-lg-6">
+                   <label>{{Recieving.ReferenceNumber}}</label>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <!--<div class="col-lg-6">
+                <label class="control-label col-lg-6" style="padding-top:8px;">
+                    Reference Date:
+                </label>
+                <div class="col-lg-6">
+                    <label>{{Recieving.ReferenceDate}}</label>
+                </div>
+                <div class="clearfix"></div>
+            </div>-->
+            <div class="col-lg-6">
+                <label class="control-label col-lg-6" style="padding-top:8px;">Item Number</label>
+                <div class="col-lg-6">
+                    <input type="text" min-chars="1" autocomplete="off" ng2-auto-complete list-formatter="ItemNumber"   display-property-name="ItemNumber" [(ngModel)]="selecteditem"  [source]="mrnService.OnSearchItemNumber"    #itemnumber="ngModel" required name="Item Number" class="form-control" >
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-lg-6" *ngIf="selecteditem!== undefined && selecteditem.ReceiveCode=='ITR002'">
+                <label class="control-label col-lg-6" style="padding-top:8px;">
+                   Serial Number
+                </label>
+                <div class="col-lg-6">
+                    <input type="text" #SerialNumbermodal="ngModel" required name="SerialNumber" class="form-control" [(ngModel)]="SerialNumber">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-lg-6" *ngIf="selecteditem!== undefined && selecteditem.ReceiveCode=='ITR001'">
+                <label class="control-label col-lg-6" style="padding-top:8px;">
+                    Quantity
+                </label>
+                <div class="col-lg-6 ">
+                    <input type="number" #Quantitymodal="ngModel" required name="Quantity" class="form-control" [(ngModel)]="Quantity">
+                </div>
+                <div class="clearfix"></div>
+            </div>      
+            <div class="col-lg-6" *ngIf="ShowPerMission('RC006')">
+                <label class="control-label col-lg-6" style="padding-top:8px;">
+                    Package Number
+                </label>
+                <div class="col-lg-6">
+                    <input type="text" #PackageNumbermodal="ngModel"  name="PackageNumber" class="form-control" [(ngModel)]="PackageNumber">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <!--<div class="col-lg-6" *ngIf="ShowPerMission('RC007')">
+                <label class="control-label col-lg-6" style="padding-top:8px;">
+                    Status
+                </label>
+                <div class="col-lg-6">
+                    <select [(ngModel)]="StatusID" #Statusmodal="ngModel"  required name="StatusID" class="form-control">
+                        <option [value]="undefined">--Select Status--</option>
+                        <option *ngFor="let Status of StatusList" [value]="Status.TypeLookUpID">
+                            {{Status.TypeName}}
+                        </option>
+                    </select>
+                </div>
+                <div class="clearfix"></div>
+            </div>-->
+            <div class="col-lg-6" *ngIf="ShowPerMission('RC008')" >
+                <label class="control-label col-lg-6" style="padding-top:8px;">
+                    Remarks
+                </label>
+                <div class="col-lg-6">
+                    <input type="text" #Remarksmodal="ngModel"  name="Remarks" class="form-control" [(ngModel)]="Remarks">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-lg-6" *ngIf="ShowPerMission('RC009')">
+                <label class="control-label col-lg-6"  style="padding-top:8px;">
+                    Container Number
+                </label>
+                <div class="col-lg-6">
+                    <input type="text" #ContainerNumbermodal="ngModel"  name="ContainerNumber" class="form-control" [(ngModel)]="ContainerNumber">
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-lg-6" *ngIf="ShowPerMission('RC010')">
+                <label class="control-label col-lg-6" style="padding-top:8px;">
+                   Node
+                </label>
+                <div class="col-lg-6">
+                    <select [(ngModel)]="NodeID" #Statusmodal="ngModel" required name="Node" class="form-control">
+                        <option [value]="undefined">--Select Node--</option>
+                        <option *ngFor="let Node of NodeList" [value]="Node.NodeID">
+                            {{Node.Node}}
+                        </option>
+                    </select>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-lg-6" *ngIf="ShowPerMission('RC011')">
+                <label class="control-label col-lg-6" style="padding-top:8px;">
+                    Location
+                </label>
+                <select [(ngModel)]="LocationID" #Locationmodal="ngModel"   name="Location" class="form-control">
+                    <option [value]="undefined">--Select Location--</option>
+                    <option *ngFor="let Location of LocationList" [value]="Location.LocationID">
+                        {{Location.LocationCode}}
+                    </option>
+                </select>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group  col-sm-2 col-md-2 col-lg-2">
+                    <!--<button class="fa fa-plus-circle primary" style="font-size:30px;" ng-click="AddInfoItemsForm.$valid &&  AddNewItemInfo()"></button>-->
+                    <button class="btn btn-primary btn-sm" (click)="onAddItem(f.form)"><i class="glyphicon glyphicon-plus-sign"></i> Add</button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+          
+        </div>
+
+        <div>
+            <div *ngIf="IsLoadPreviousLines">
+                <ag-grid-angular #agGrid class="agc-grid ag-theme-balham"
+                       (rowClicked)="SelectItem($event)"      [gridOptions]="PreviousLinesGridOptions">
+                </ag-grid-angular>
+            </div>
+            <div class="clearfix"></div>
+
+            <ag-grid-angular #agGrid class="agc-grid ag-theme-balham"
+                         (rowClicked)="DeleteItem($event)" [gridOptions]="ReceivingGridOptions">
+            </ag-grid-angular>
+        </div>
+        <message #pop cssClass="modal-msg"></message>
+    </form>
+    <div class="clearfix"></div>
+</div>

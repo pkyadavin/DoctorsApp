@@ -1,0 +1,497 @@
+body {
+    font-family: GNElliotWeb!important;
+    color: #141c1d;
+    max-width: 1920px;
+    margin: 0 auto;
+}
+
+a {
+    color: #238ae6;
+}
+
+.navbar-brand {
+    float: left;
+    text-indent: -1000px;
+    width: 160px;
+    height: 55px;
+    background: transparent url(../../../../assets/customer_portal/images/Jabra-Logo.svg) no-repeat 50% top;
+}
+
+.banner {
+    padding-top: 85px;
+}
+
+.banner img {
+    width: 100%;
+}
+
+.navbar {
+    height: 85px;
+}
+
+.bg-light {
+    background-color: #ffffff!important;
+}
+
+.fixed-top {
+    max-width: 1920px;
+    margin: 0 auto;
+}
+
+.navbar select.form-control {
+    border: 1px solid #141c1d;
+    border-radius: 0;
+    height: 32px!important;
+    position: relative;
+    text-transform: uppercase;
+    color: #141c1d;
+    font-size: 14px;
+    font-weight: 400;
+    width: 200px;
+    background: url(../images/globe.png) no-repeat;
+    padding-left: 30px;
+    background-position: 5px 4px;
+}
+
+.navbar .nav-item {
+    padding-top: 10px;
+    ;
+}
+
+.navbar-light .navbar-nav .nav-link.dropdown-toggle {
+    margin-top: 0px;
+    padding-top: 0px;
+}
+
+.nav-link.dropdown-toggle span {
+    float: left;
+    margin-right: 15px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #141c1d;
+    font-size: 14px;
+    font-weight: 400;
+    border-bottom: 3px solid transparent;
+    padding: 5px 0px;
+    margin: 5px 20px;
+}
+
+.nav-item.active .nav-link {
+    font-weight: 600;
+    border-bottom: 3px solid #ffd100;
+}
+
+.banner_heading {
+    margin-top: -175px;
+    z-index: 9999999;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 32px;
+    color: #000000;
+}
+
+
+/********************Search CSS**************/
+
+.search_bar {
+    background: #e9e9e9;
+    margin-top: -1px;
+    padding: 5px 0px;
+}
+
+.search_bar p {
+    font-size: 12px;
+    color: #141c1d;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+.search_bar .input-group-text {
+    color: #141c1d;
+    background-color: #fff;
+    border: 1px solid #141c1d;
+    border-radius: 0;
+    font-size: 24px;
+}
+
+.search_bar .form-control {
+    border: 1px solid #141c1d;
+}
+
+.search_bar .btn-primary {
+    color: #fff;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 600;
+    background-color: #141c1d;
+    border: 1px solid #000000;
+    border-radius: 0px;
+}
+
+.search_bar label {
+    color: #141c1d;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.search_bar label a {
+    font-size: 11px;
+    display: inline-block;
+    width: 100%;
+    line-height: 16px;
+    float: left;
+    text-decoration: underline;
+}
+
+.search_bar .input-group {
+    margin-bottom: 5px;
+}
+
+
+/**********************Progress Step Bar CSS************************/
+
+.progress_bar {
+    list-style: none;
+    overflow: hidden;
+    font: 14px Helvetica;
+    font-weight: 600;
+    display: flex;
+    counter-reset: li;
+    padding: 0px;
+    margin: 0px;
+}
+
+.progress_bar__steps {
+    /* background: #d2d2d3; */
+    background: rgba(161, 159, 161, 1);
+    background: -moz-linear-gradient(left, rgba(161, 159, 161, 1) 0%, rgba(194, 194, 195, 1) 15%, rgba(210, 210, 211, 1) 22%, rgba(210, 210, 211, 1) 72%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(161, 159, 161, 1)), color-stop(15%, rgba(194, 194, 195, 1)), color-stop(22%, rgba(210, 210, 211, 1)), color-stop(72%, rgba(210, 210, 211, 1)));
+    background: -webkit-linear-gradient(left, rgba(161, 159, 161, 1) 0%, rgba(194, 194, 195, 1) 15%, rgba(210, 210, 211, 1) 22%, rgba(210, 210, 211, 1) 72%);
+    background: -o-linear-gradient(left, rgba(161, 159, 161, 1) 0%, rgba(194, 194, 195, 1) 15%, rgba(210, 210, 211, 1) 22%, rgba(210, 210, 211, 1) 72%);
+    background: -ms-linear-gradient(left, rgba(161, 159, 161, 1) 0%, rgba(194, 194, 195, 1) 15%, rgba(210, 210, 211, 1) 22%, rgba(210, 210, 211, 1) 72%);
+    background: linear-gradient(to right, rgba(161, 159, 161, 1) 0%, rgba(194, 194, 195, 1) 15%, rgba(210, 210, 211, 1) 22%, rgba(210, 210, 211, 1) 72%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#a19fa1', endColorstr='#d2d2d3', GradientType=1);
+    color: #656464;
+    width: 33%;
+    position: relative;
+    cursor: default;
+    list-style-image: none;
+    list-style-type: none;
+    padding: 15px 5px;
+    text-align: center;
+    font-size: 14px;
+    font-family: GNElliotWeb!important;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+@media screen and (min-width: 767.98px) {
+    .progress_bar__steps {
+        padding: 15px 0 15px 45px;
+        text-align: left;
+        margin: 0px;
+    }
+}
+
+@media screen and (min-width: 767.98px) {
+    .progress_bar__steps:first-child {
+        padding: 15px 0 15px 30px;
+    }
+}
+
+@media screen and (min-width: 767.98px) {
+    .progress_bar__steps:after {
+        border-bottom: 50px solid transparent;
+        border-top: 50px solid transparent;
+        content: " ";
+        display: block;
+        height: 0;
+        left: 100%;
+        margin-top: -50px;
+        position: absolute;
+        top: 50%;
+        width: 0;
+        border-left: 30px solid #d2d2d3;
+        z-index: 2;
+    }
+}
+
+@media screen and (min-width: 767.98px) {
+    .progress_bar__steps:before {
+        border-bottom: 50px solid transparent;
+        border-top: 50px solid transparent;
+        content: " ";
+        display: block;
+        height: 0;
+        left: 100%;
+        margin-top: -50px;
+        position: absolute;
+        top: 50%;
+        width: 0;
+        border-left: 30px solid #fff;
+        z-index: 1;
+        margin-left: 0px;
+    }
+}
+
+.progress_bar .current {
+    background: #636161;
+    color: #fff;
+}
+
+.progress_bar .current:after {
+    border-left: 30px solid #636161;
+}
+
+.progress_bar__steps.current:before {
+    margin-left: 2px;
+}
+
+@media screen and (min-width: 767.98px) {
+    .progress_bar__steps--numbers:before {
+        content: counter(li) " ";
+        counter-increment: li;
+        margin-right: 5px;
+        background: #a0a0a0;
+        border: 1px solid #fff;
+        border-radius: 50%;
+        display: inline-block;
+        height: 20px;
+        line-height: 18px;
+        text-align: center;
+        width: 20px;
+        color: #fff;
+    }
+}
+
+.current .progress_bar__steps--numbers:before {
+    background: #ffd100;
+    color: #000;
+    border-color: #d9b61a;
+}
+
+
+/**************Main Content Area*********/
+
+.main_content_area {
+    background: url(../images/Product_selector_v2.jpg) repeat;
+    min-height: 300px;
+}
+
+
+/*****************Footer CSS****************/
+
+footer {
+    background: #2d2d2d;
+    height: 60px;
+    color: #ffffff;
+    padding: 17px 0px;
+}
+
+footer ul {
+    padding: 0px;
+    margin: 0px;
+}
+
+footer ul li {
+    list-style: none;
+    display: inline-block;
+    padding: 0 10px;
+    border-right: 1px solid #ffffff;
+    line-height: 7px;
+}
+
+footer ul li:first-child {
+    padding-left: 0px;
+}
+
+footer ul li:last-child {
+    border-right: 0px solid #ffffff;
+}
+
+footer ul li a,
+footer p {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+footer p {
+    margin: 0px;
+}
+
+.main_content_area {
+    padding: 30px 0px;
+}
+
+.table.warranty_check_table {
+    border-collapse: separate;
+    border-spacing: 0 20px;
+}
+
+.warranty_check_table tr td.img_box {
+    width: 67px;
+    height: 50px;
+    background-color: #ffffff;
+    border: 2px solid #e9e9e9;
+    vertical-align: middle;
+}
+
+.warranty_check_table tr td.img_box img {
+    max-width: 67px;
+    max-height: 50px;
+}
+
+.warranty_check_table tr th {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.warranty_check_table tr td {
+    background-color: #e9e9e9;
+}
+
+.btn-primary {
+    background-color: #141c1d;
+    border: 2px solid #000000;
+    border-radius: 0px;
+    font-size: 20px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.btn-primary.replacementBtn {
+    text-transform: uppercase;
+}
+
+.colorgreen {
+    color: #508e0e;
+}
+
+.colorred {
+    color: #ff0000;
+}
+
+.linkcolor {
+    color: #238ae6;
+}
+
+.tooltip-inner {
+    background-color: #ffffff;
+    color: #000000;
+    text-align: left;
+}
+
+.tooltip.bs-tooltip-right .arrow:before {
+    border-right-color: #ffffff !important;
+}
+
+.tooltip.bs-tooltip-left .arrow:before {
+    border-left-color: #ffffff !important;
+}
+
+.tooltip.bs-tooltip-bottom .arrow:before {
+    border-bottom-color: #ffffff !important;
+}
+
+.tooltip.bs-tooltip-top .arrow:before {
+    border-top-color: #ffffff !important;
+}
+
+.upload-btn-wrapper+p.mb-0 {
+    font-size: 10px;
+    margin-top: -5px;
+}
+
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.upload-btn-wrapper .btn {
+    color: #fff;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 600;
+    background-color: #141c1d;
+    border: 1px solid #000000;
+    border-radius: 0px;
+}
+
+.upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}
+
+.search_bar .upload-btn-wrapper .btn {
+    margin-top: 22px;
+    height: 48px;
+}
+
+
+/**************************************************
+******************Media Queries********************
+**************************************************/
+
+@media screen and (max-width: 575.98px) {}
+
+@media screen and (max-width: 767.98px) {
+    .navbar {
+        height: auto;
+    }
+}
+
+@media screen and (max-width: 991.98px) {
+    .navbar-light .navbar-nav .nav-link {
+        font-size: 11px;
+        padding: 5px 0px;
+        margin: 5px 5px;
+    }
+    .navbar select.form-control {
+        width: 130px;
+    }
+    .navbar .nav-item .rounded-circle {
+        width: 30px;
+        height: 30px;
+    }
+    .nav-link.dropdown-toggle span {
+        line-height: 14px;
+        margin-top: 5px;
+    }
+    .navbar-light .navbar-nav .nav-link.dropdown-toggle {
+        padding-bottom: 0px;
+    }
+    .search_bar p {
+        font-size: 11px;
+    }
+    .search_bar label {
+        font-size: 13px;
+    }
+    .banner_heading {
+        margin-top: -100px;
+        font-size: 24px;
+    }
+    footer ul li {
+        padding: 0 5px;
+    }
+    footer ul li a,
+    footer p {
+        font-size: 9px;
+    }
+    footer p {
+        margin-top: 7px;
+    }
+}
+
+@media screen and (max-width: 1199.98px) {
+    .banner_heading {
+        margin-top: -130px;
+    }
+}

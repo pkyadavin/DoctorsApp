@@ -1,0 +1,10 @@
+@import '../t3.component.css';
+.flname {
+    position: absolute;
+    left: 0;
+    bottom: -25px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

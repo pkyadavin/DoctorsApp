@@ -1,0 +1,628 @@
+<div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="widget-buttons pull-right back_btn_box">
+        <button class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" type="button"
+          (click)="goBackToQueue()">
+          <i class="fa fa-arrow-left"></i> Back
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="widget">
+        <div class="widget-body rma_box" style="padding: 8px !important;">
+          <div class="thankyoumsg">
+            <div class="row">
+              <div class="col-md-3">
+                <p>
+                  <label for=""><strong>Ref# </strong></label>
+                </p>
+                <p>
+                  <Label>{{ returnOrder.return_ref_number }}</Label>
+                </p>
+              </div>
+              <div class="col-md-3">
+                <p>
+                  <label for=""><strong>RMA # </strong></label>
+                </p>
+                <p>
+                  <Label>RMA12345678899</Label>
+                </p>
+              </div>
+              <div class="col-md-3">
+                <p>
+                  <label for=""><strong>Request Date</strong></label>
+                </p>
+                <p>
+                  <Label>{{ returnOrder.created_date }}</Label>
+                </p>
+              </div>
+              <div class="col-md-3">
+                <div class="Status">
+                  <button class="btn btn-default btn-success pull-right btn-sm"
+                    [ngClass]="returnOrder.status.statusClass">
+                    {{ returnOrder.status.showinBO }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row fex_row">
+    <div class="col-md-6">
+      <div class="widget">
+        <div class="widget-body rma_box parrallel_box">
+          <h3>Delivery Details</h3>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-6">
+                  <p>
+                    <label for="" style="text-decoration: underline;"><strong>Contact Information</strong></label>
+                  </p>
+                  <p>
+                    <label for="">Customer name:</label><br /> {{ returnOrder.delivery_info.first_name }}
+                    {{ returnOrder.delivery_info.last_name }}
+                  </p>
+                  <p>
+                    <label for="">Company Info:</label><br /> {{ returnOrder.delivery_info.company_name }} -
+                    {{ returnOrder.delivery_info.company_registration }}
+                  </p>
+
+                  <p>
+                    <label for="">Email / Phone:</label><br /> {{ returnOrder.delivery_info.email }} /
+                    {{ returnOrder.delivery_info.direct_phone }}
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <p>
+                    <label for="" style="text-decoration: underline;"><strong>Address Information</strong></label>
+                  </p>
+                  <address>
+                    <p>
+                      {{ returnOrder.delivery_address.address_line1 }},
+                      {{ returnOrder.delivery_address.address_line2 }},<br />
+                      {{ returnOrder.delivery_address.city }}<br />
+                      {{ returnOrder.delivery_address.state }},
+                      {{ returnOrder.delivery_address.country_code }} <br />
+                      {{ returnOrder.delivery_address.postal_code }}
+                    </p>
+                  </address>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="widget">
+        <div class="widget-body rma_box parrallel_box" *ngIf="brandCode == 'dsc3'">
+          <h3>Other Details</h3>
+          <div class="row">
+            <div class="col-md-12">
+              <p>
+                <label for="">Proof of Purchase:</label><br />
+                <a href="returnOrder.files.url"  *ngIf="returnOrder.files.url != ''">View File</a>
+                <label *ngIf="returnOrder.files && returnOrder.files.url == ''">N/A</label>
+              </p>
+              <p>
+                <label for="">Model / Part #, Serial #, Date code:</label><br />
+                {{ returnOrder.remarks }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="widget-body rma_box parrallel_box" *ngIf="brandCode == 'dsc2'">
+          <h3>Company Details</h3>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-6">
+                  <p>
+                    <label for="" style="text-decoration: underline;"><strong>Contact Information</strong></label>
+                  </p>
+                  <p>
+                    <label for="">Customer name:</label><br />
+                    {{ returnOrder.billing_info.first_name }}
+                    {{ returnOrder.billing_info.last_name }}
+                  </p>
+                  <p>
+                    <label for="">Company Info:</label><br />
+                    {{ returnOrder.billing_info.company_name }} -
+                    {{ returnOrder.billing_info.company_registration }}
+                  </p>
+                  <p>
+                    <label for="">Email / Phone:</label><br />
+                    {{ returnOrder.billing_info.email }} /
+                    {{ returnOrder.billing_info.direct_phone }}
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <p>
+                    <label for="" style="text-decoration: underline;"><strong>Address Information</strong></label>
+                  </p>
+                  <address>
+                    <p>
+                      {{ returnOrder.billing_address.address_line1 }},
+                      {{ returnOrder.billing_address.address_line2 }},<br />
+                      {{ returnOrder.billing_address.city }}<br />
+                      {{ returnOrder.billing_address.state }},
+                      {{ returnOrder.billing_address.country_code }} <br />
+                      {{ returnOrder.billing_address.postal_code }}
+                    </p>
+                  </address>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="widget">
+        <div class="widget-body listofprod">
+          <div class="row">
+            <div class="col-md-2">
+              <h3>Product Details</h3>
+            </div>
+            <div class="col-md-4">
+              <div class="row" *ngIf="
+                  brandCode == 'dsc3' &&
+                  returnOrder.status.code == 'Requested' &&
+                  queueStatus == 'oow'
+                ">
+                <div class="col-md-4">
+                  <label class="radio" style="padding-left:0px;padding-right:8px; margin-top: 0px;">
+                    <input type="radio" class="colored-primary" style="display: none;" name="serial" value="serial"
+                      (click)="setradio('serial')" [checked]="true" [(ngModel)]="isserial" />
+                    <span class="text"> <strong>Serial#</strong> </span>
+                  </label>
+                </div>
+                <div class="col-md-8">
+                  <label class="radio" style="padding-left:0px;padding-right:8px;margin-top: 0px;">
+                    <input type="radio" class="colored-primary" style="display: none;" name="serial"
+                      (click)="setradio('item')" value="item" [(ngModel)]="isserial" />
+                    <span class="text">
+                      <strong>Item# & Purchase Date</strong>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row" *ngIf="
+                  brandCode == 'dsc3' &&
+                  returnOrder.status.code == 'Requested' &&
+                  queueStatus == 'oow'
+                ">
+                <div class="col-md-12">
+                  <div class="form-group row" *ngIf="isSelected('serial')">
+                    <div class="col-md-9">
+                      <input type="text" [(ngModel)]="serial_text" class="form-control" placeholder="Enter serial #" />
+                    </div>
+                    <div class="col-md-3 pl-0">
+                      <button (click)="onwarrantyCheck()" class="btn btn-default btn-primary" style="width: 100%;">
+                        Check Warranty
+                      </button>
+                    </div>
+                  </div>
+                  <div class="form-group row" *ngIf="isSelected('item')">
+                    <div class="col-md-4">
+                      <input type="text" [(ngModel)]="item_text" class="form-control" placeholder="Enter item #" />
+                    </div>
+                    <div class="col-md-1 text-center pr-0 pl-0" style="font-size: 12px;line-height: 32px;
+                    font-weight: bold;">
+                      AND
+                    </div>
+                    <div class="col-md-4">
+                      <input type="text" [(ngModel)]="purchasedate_text" class="form-control"
+                        placeholder="Enter purchase date" />
+                    </div>
+                    <div class="col-md-3 pl-0">
+                      <button (click)="onwarrantyCheck()" class="btn btn-default btn-primary" style="width: 100%;">
+                        Check Warranty
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6" *ngIf="
+                brandCode == 'dsc2' && returnOrder.status.code == 'Requested'
+              ">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group row">
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3">
+                      Account #:
+                    </label>
+                    <div class="col-md-6">
+                      <input type="text" class="form-control" placeholder="Enter Account Name or number" />
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4 text-right" *ngIf="
+                brandCode == 'dsc2' && returnOrder.status.code == 'Requested'
+              ">
+              <button class="btn btn-default btn-sm btn-danger" data-toggle="modal"
+                (click)="showRejectApproveReason('Reject')">
+                Reject
+              </button>
+              <button style="margin-left: 10px;" class="btn btn-default btn-sm btn-success"
+                (click)="showRejectApproveReason('Approve')">
+                Approve
+              </button>
+            </div>
+          </div>
+          <hr />
+
+          <!-- Tab Start Here -->
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#ReturnedProducts">Returned Products</a></li>
+            <!-- <li><a data-toggle="tab" href="#ReplacedProducts">Replaced Products</a></li> -->
+          </ul>
+
+          <div class="tab-content">
+            <div id="ReturnedProducts" class="tab-pane in active">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="table-responsive tbl">
+                    <table class="table" cellspacing="10" *ngIf="brandCode == 'dsc2'">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Product serial #</th>
+                          <th>Warranty Status</th>
+                          <th>SKU#</th>
+                          <th>Reason for return</th>
+                          <th>Date of Purchase</th>
+                          <th *ngIf="
+                              returnOrder.status.code == 'Requested' &&
+                              returnOrder.items !== undefined
+                            ">
+                            <label>
+                              <input type="checkbox" name="selectall" id="selectall" class="colored-success"
+                                (change)="chechkALL($event)" />
+                              <span class="text"><strong> Select All</strong></span>
+                            </label>
+                          </th>
+                          <th *ngIf="
+                              returnOrder.status.code == 'Rejected' ||
+                              returnOrder.status.code == 'Approved'
+                            ">
+                            Authorize Detail
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of returnOrder.items; let i = index">
+                          <td>
+                            {{ item.serial_number }}&nbsp;<button class="btn btn-default btn-primary btn-sm">
+                              <i class="fa fa-search-plus" aria-hidden="true" title="Check Warranty"></i>
+                            </button>
+                          </td>
+                          <td>
+                            <!-- <label *ngIf="i == 0" for="" class="colorgreen"><i
+                                class="fa fa-shield"></i>&nbsp;In-Warranty
+                              (06/05/2020)
+                            </label>
+                            <label for="" *ngIf="i == 1" class="colorred"><i
+                                class="fa fa-shield"></i>&nbsp;Out-Of-Warranty
+                              (02/01/2020)
+                            </label> -->
+                          </td>
+                          <td>{{ item.sku }}</td>
+                          <td>{{ item.return_reason.rma_action_name }}</td>
+                          <td>{{ item.date_of_purchase }}</td>
+                          <td *ngIf="
+                              item.status.code == 'Requested_Item' &&
+                              returnOrder.items !== undefined
+                            ">
+                            <label>
+                              <input type="checkbox" class="colored-success" [checked]="item.isSelected" (change)="
+                                  checkSelectedItems($event, item.serial_number)
+                                " />
+                              <span class="text"></span>
+                            </label>
+                          </td>
+                          <td *ngIf="
+                              item.status.code == 'Rejected_Item' ||
+                              item.status.code == 'Approved_Item'
+                            ">
+                            <div class="col-md-12" *ngIf="
+                                item.authorize_action.actiontaken == 1 &&
+                                item.status.code != 'Cancelled_Item'
+                              ">
+                              <h5>
+                                Action
+                                <span style="font-size: 11px;">taken by
+                                  <strong>{{
+                                    item.authorize_action.authorized_by_name
+                                  }}</strong>
+                                  dated on
+                                  <strong>{{
+                                    item.authorize_action.authorized_date
+                                  }}</strong></span>
+                              </h5>
+                              <p *ngIf="
+                                  item.authorize_action.actiontaken == '1' &&
+                                  item.authorize_action.isauthorized == true
+                                ">
+                                <strong>Date code:</strong><br />
+                                {{
+                                  item.authorize_action.authorized_approve_date_code
+                                }}
+                              </p>
+                              <p *ngIf="
+                                  item.authorize_action.actiontaken == '1' &&
+                                  item.authorize_action.isauthorized == false
+                                ">
+                                <strong>Reject Reason:</strong><br />
+                                {{ item.authorize_action.authorized_reason_name }}
+                              </p>
+                              <p>
+                                <strong>Comment:</strong><br />
+                                {{ item.authorize_action.authorized_comment }}
+                              </p>
+                            </div>
+                          </td>
+                        </tr>
+                        <!-- <tr id="demo{{ i }}" class="collapse in">
+                          <td colspan="8" class="hiddenRow">
+                            <div>
+                              <h5>Product OOW Details</h5>
+                              <br />
+                              <div class="form-group">
+                                <label class="control-label col-sm-3 col-md-3 col-lg-3">
+                                  Extended Warranty
+                                </label>
+                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                  <label style="float:left!important;margin-left:12px;">
+                                    <input type="checkbox" class="checkbox-slider colored-palegreen yesno"
+                                      style="left:14px" name="RequiredonCustomerPortal" />
+                                    <span class="text"></span>
+                                  </label>
+                                  <div class="clearfix"></div>
+                                </div>
+
+                                <label class="control-label col-sm-3 col-md-3 col-lg-3">
+                                  EOL
+                                </label>
+                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                  <label style="float:left!important;margin-left:12px;">
+                                    <input type="checkbox" class="checkbox-slider colored-palegreen yesno"
+                                      style="left:14px" name="RequiredonCustomerPortal" />
+                                    <span class="text"></span>
+                                  </label>
+                                  <div class="clearfix"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                              </div>
+                              <div class="form-group">
+                                <label class="control-label col-sm-3 col-md-3 col-lg-3">
+                                  End of Warranty Date
+                                </label>
+                                <div class="col-sm-3 col-md-3 col-lg-3">
+                                  <input name="txtendwarranty" class="form-control" placeholder="Select Date"
+                                    bsDatepicker placement="bottom" value="07/05/2020" />
+                                </div>
+                                <div class="clearfix"></div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr> -->
+                      </tbody>
+                    </table>
+                    <table class="table" cellspacing="10" *ngIf="brandCode == 'dsc3'">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Product serial #</th>
+                          <th>Item#</th>
+                          <th>Purchase Date</th>
+                          <th>Warranty</th>
+                          <th *ngIf="
+                              returnOrder.status.code == 'Requested' &&
+                              returnOrder.items !== undefined
+                            ">
+                            Action
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of returnOrder.items; let i = index">
+                          <td>{{ item.serial_number }}</td>
+                          <td>{{ item.sku }}</td>
+                          <td>{{ item.date_of_purchase }}</td>
+                          <td>
+                            {{ item.warranty_status }}
+                            <i class="fa fa-exclamation-triangle" *ngIf="item.warranty_status == 'OOW'"
+                              style="color: red;" aria-hidden="true" tooltip="OOW Product not consider for Return."
+                              [tooltipDisabled]="false" [tooltipAnimation]="true" tooltipPlacement="top"></i>
+                          </td>
+                          <td *ngIf="
+                              returnOrder.items !== undefined &&
+                              returnOrder.status.code == 'Requested'
+                            ">
+                            <button class="del_button" (click)="deletebpItem(i)" tooltip="Delete"
+                              [tooltipDisabled]="false" [tooltipAnimation]="true" tooltipPlacement="top">
+                              <i class="fa fa-trash"></i>
+                            </button>
+                          </td>
+                          <td *ngIf="
+                              item.status.code == 'Rejected_Item' ||
+                              item.status.code == 'Approved_Item'
+                            ">
+                            <div class="col-md-12" *ngIf="item.authorize_action.actiontaken == 1">
+                              <h5>
+                                Action
+                                <span style="font-size: 11px;">taken by
+                                  <strong>{{
+                                    item.authorize_action.authorized_by_name
+                                  }}</strong>
+                                  dated on
+                                  <strong>{{
+                                    item.authorize_action.authorized_date
+                                  }}</strong></span>
+                              </h5>
+                              <p *ngIf="
+                                  item.authorize_action.actiontaken == '1' &&
+                                  item.authorize_action.isauthorized == true
+                                ">
+                                <strong>Date code:</strong><br />
+                                {{
+                                  item.authorize_action.authorized_approve_date_code
+                                }}
+                              </p>
+                              <p *ngIf="
+                                  item.authorize_action.actiontaken == '1' &&
+                                  item.authorize_action.isauthorized == false
+                                ">
+                                <strong>Reject Reason:</strong><br />
+                                {{ item.authorize_action.authorized_reason_name }}
+                              </p>
+                              <p>
+                                <strong>Comment:</strong><br />
+                                {{ item.authorize_action.authorized_comment }}
+                              </p>
+                            </div>
+                          </td>
+                        </tr>
+                        <!-- <tr *ngIf="
+                        returnOrder.status.code == 'Requested' && returnOrder.items !== undefined
+                      ">
+                          <td colspan="6">&nbsp;</td>
+                        </tr> -->
+                        <tr *ngIf="
+                            returnOrder.status.code == 'Requested' &&
+                            returnOrder.items !== undefined
+                          ">
+                          <td colspan="6">
+                            <div class="col-md-12 text-right ">
+                              <button (click)="showRejectApproveReason('Reject')"
+                                class="btn btn-default btn-sm btn-danger" data-toggle="modal">
+                                Reject
+                              </button>
+                              <button (click)="showRejectApproveReason('Approve')" style="margin-left: 10px;"
+                                class="btn btn-default btn-sm btn-success">
+                                Approve
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div id="ReplacedProducts" class="tab-pane">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="table-responsive tbl">
+                    <table class="table" cellspacing="10" *ngIf="brandCode == 'dsc2'">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th>Product serial #</th>
+                          <th>SKU#</th>
+                          <th>Outbound RMA #</th>
+                          <th>Assignment Date</th>
+                          <th>Tracking ID</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>SR987654321</td>
+                          <td>SKU987654</td>
+                          <td>RMAOB987654321</td>
+                          <td>17/03/2020</td>
+                          <td><a href="">TS12345679887</a></td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <!-- Tab Ends Here -->
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Reject/approve Modal -->
+<div id="myModal" #ItemPopup id="divItemPopup" class="modal fade reject_popup" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+        <h4 class="modal-title" *ngIf="showModel == 'Approve'">
+          Approve Return Request
+        </h4>
+        <h4 class="modal-title" *ngIf="showModel == 'Reject'">
+          Reject Return Request
+        </h4>
+      </div>
+      <div class="modal-body">
+        <!-- rrr {{RejectApproveReason |json}} -->
+        <div class="form-group" *ngIf="RejectApproveReason && showModel == 'Reject'">
+          <label for=""><strong>Reject Reason:</strong></label>
+          <select [(ngModel)]="
+              returnReason.value === null ? undefined : returnReason.value
+            " id="itemReturnReason" name="itemreturnReason" #returnReason="ngModel" class="form-control"
+            (change)="onReasonChange(returnReason.value)">
+            <option value="undefined">-------Select Return reason-------</option>
+            <option *ngFor="let returnReason of RejectApproveReason" [value]="returnReason.TypeCode">
+              {{ returnReason.TypeName }}</option>
+          </select>
+        </div>
+        <div class="form-group" *ngIf="
+            RejectApproveReason && showModel == 'Approve' && brandCode == 'dsc2'
+          ">
+          <!-- <input ng2-datetime-picker date-only="true" name="txtFromDate" class="form-control"> -->
+          <label for=""><strong>Date Code:</strong></label>
+          <input name="txtFromDate" class="form-control" placeholder="Select Date" bsDatepicker placement="bottom"
+            [ngModel]="authorized_approve_date_code | date" (ngModelChange)="authorized_approve_date_code = $event" />
+        </div>
+        <div class="form-group">
+          <label for=""><strong>Comment:</strong></label>
+          <textarea name="" [(ngModel)]="comment" id="txtComment" cols="30" rows="10" class="form-control"
+            placeholder="Comment here..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-danger btn-sm" data-dismiss="modal">
+          Cancel
+        </button>
+        <button type="button" (click)="saveRejectreason()" class="btn btn-default btn-success btn-sm">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Model End here -->

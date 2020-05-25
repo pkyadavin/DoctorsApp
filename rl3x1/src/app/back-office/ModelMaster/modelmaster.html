@@ -1,0 +1,76 @@
+﻿<div class="widget" [hidden]="IsEditorVisible">
+    <div class="widget-body">
+        <div class="widget-header widget-header1">
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterValue" placeholder="Search...">
+                <span class="input-group-btn">
+                     <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                </span>
+            </div>
+            <div class="widget-buttons">
+                <!--<button id="btnAdd" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" *ngIf="ShowPerMission('Add') && itemmasterGridType != 'popup'" (click)="OnEditModelMaster(0)"><i class="glyphicon glyphicon-plus-sign"></i>Add</button>-->
+                <!--<button id="btnUpload" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068" *ngIf="ShowPerMission('Add') && itemmasterGridType != 'popup'" (click)="selectFile()">
+                    <i class="fa fa-file-excel-o" ></i>Upload</button>-->
+                <button href="javascript:void(0)" id="btnEdit" class="btn btn-sm btn-primary" *ngIf="isEditVisible && itemmasterGridType != 'popup'" (click)="OnEditModelMaster(CurrentModelMaster.ItemMasterID)"><i class="glyphicon glyphicon-edit"></i>View</button>
+                <!--<button href="javascript:void(0)" id="btnDelete" class="btn btn-sm btn-danger" *ngIf="isEditVisible && itemmasterGridType != 'popup'" (click)="OnDeleteModelMaster(CurrentModelMaster.ItemMasterID)"><i class="glyphicon glyphicon-trash"></i>Delete</button>-->
+
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="card1 no-padding marginTop34">
+            <ag-grid-angular #agGrid style="height:400px;width:100%" class="ag-theme-balham" [gridOptions]="gridOptions" (selectionChanged)="itemmasterGridType != 'popup' && onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<bs-modal #importPopup cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close" (click)="importPopup.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" style="float:left;">Import file</h4>
+
+    </bs-modal-header>
+    <bs-modal-body>
+        <div class="form-group">
+            <div class="col-md-6">
+                <input #fileInput id="ExcelFileControl" (change)="onChangeFileInput($event)" type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" />
+            </div>
+            <div class="col-md-6">
+                <button id="btnAdd" class="btn btn-primary text-align-center thumb Authorize AUTH_2068" [disabled]="ImportInProcess" *ngIf="!ShowUploadbutton" (click)="addFile()">
+                    <i class="fa fa-upload"></i>
+                    Submit File
+                </button>
+            </div>
+            <div class="col-md-6">
+                <a id="btnAdd" class="btn-link text-align-center thumb Authorize AUTH_2068" *ngIf="ShowUploadbutton" href="https://rl3devstorage.blob.core.windows.net/templates/RL3.0.1-Product%20Master%20Template.xlsx">
+                    <i class="fa fa-download"></i> Download template
+                </a>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+        <hr />
+        <div class="form-group" *ngIf="ImportStatus!=''">
+            <div class="col-lg-6" style="margin-bottom:5px;">
+                <label class="control-label"><b>Import Results</b></label>
+                <br />
+
+                <label class="control-label" style="display: block;font-size:smaller" *ngFor="let key of ImportResults; let i = index;">&#8226; {{key}} </label>
+            </div>
+            <div class="col-lg-6" style="margin-bottom:5px;">
+                <label class="control-label" *ngIf="ImportStatus=='Success'" style="color:forestgreen"><b>Status: {{ImportStatus}}</b></label>
+                <label class="control-label" *ngIf="ImportStatus!='Success'" style="color:maroon"><b>Status: {{ImportStatus}}</b></label>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="close()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+<ModelMaster-editor *ngIf="IsEditorVisible" [selectedId]="SelectedId" [permission]="ShowPerMission('Edit')" (EditorVisibilityChange)="ChangeEditorVisibility($event)"></ModelMaster-editor>
+
+<message #pop cssClass="modal-msg"></message>

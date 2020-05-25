@@ -1,0 +1,1244 @@
+﻿<style>
+    .no-display {
+        display: none;
+    }
+
+    .part-wizard-warper {
+        background: #98bf21;
+        width: 100%;
+    }
+
+    .part-action-wizard-warper {
+        background: #98bf21;
+        width: 100%;
+    }
+
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,0);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,0);
+        box-shadow: 0 0 4px rgba(0,0,0,0);
+    }
+
+        .nav-tabs > li {
+            margin: 0px 3px 0px 3px;
+        }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #777;
+                margin-right: -1px;
+                line-height: 24px;
+                position: relative;
+                z-index: 11;
+            }
+
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                color: #262626;
+                border: 0;
+                border-top: 2px solid #333;
+                border-bottom-color: transparent;
+                z-index: 12;
+                line-height: 24px;
+                margin-top: -2px;
+                box-shadow: 0 -2px 3px 0 rgba(0,0,0,.15);
+            }
+
+            .nav-tabs > li a:hover {
+                color: #fff;
+            }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #fff;
+            }
+
+    .nav > li.disabled > a {
+        color: #fff;
+        background-color: gray;
+    }
+
+        .nav > li.disabled > a:hover {
+            color: #fff;
+            background-color: gray;
+        }
+
+    .insetShadow {
+        border: solid 1px #555;
+        background-color: #eed;
+        box-shadow: inset 10px -20px 50px rgba(0,0,0,0.6);
+    }
+</style>
+<div class="widget-header">
+    <span class="widget-caption">
+        <b>{{moduleTitle}}</b>
+    </span>
+
+    <div class="widget-buttons">
+        <button class="btn btn-sm btn-danger" type="button" (click)="onExit()">
+                <i class="fa fa-arrow-left"></i> Back 
+        </button>
+
+        <div class="steps pull-right">
+            <button type="button" class="btn btn-sm btn-primary margin-left-5" (click)="ShowOrderLog()">
+                <i class="fa fa-history"></i>OrderLog
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+<div class="widget">
+    
+        <form #f2="ngForm" name="f2" novalidate>
+            <div class="widget-body">
+            <div class="form-group">
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                            Receiving Number
+                        </label>
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                            <input type="text" class="form-control" disabled="disabled"
+                                   [ngModelOptions]="{standalone: true}" [(ngModel)]="CurrentMRN.MRNNumber">
+                        </div>
+                        <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                            Tracking Number
+                        </label>
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                            <input type="text" class="form-control" disabled="disabled"
+                                   [ngModelOptions]="{standalone: true}" [(ngModel)]="CurrentMRN.RefrenceNumber">
+                        </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group">
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                        Partner
+                    </label>
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                        <input type="text" class="form-control" disabled="disabled"
+                               [ngModelOptions]="{standalone: true}" [(ngModel)]="CurrentMRN.ToPartnerName">
+                    </div>                        
+                    <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                        From<span style="color: red;">*</span>
+                    </label>
+                    <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="CurrentMRN.FromPartnerName" disabled="disabled">
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            <div class="form-group">  
+                        <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                            Receiving Location
+                        </label>
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                            <textarea style="width:100%;height: 62px!important;float:left;" class="form-control" wrap="soft" disabled="disabled"
+                                      [ngModelOptions]="{standalone: true}" [(ngModel)]="CurrentMRN.ToPartnerAddress"></textarea>
+                        </div>
+                        <label class="control-label col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                            From Address<span style="color: red;">*</span>
+                        </label>
+                        <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                            <textarea style="width:100%;height: 62px!important;float:left;" class="form-control" disabled="disabled"
+                                      [ngModelOptions]="{standalone: true}" [(ngModel)]="CurrentMRN.FromPartnerAddress"></textarea>
+                        </div>
+                        <div class="clearfix"></div>  
+            </div>
+            <div class="clearfix"></div>
+            
+            <div class="clearfix"></div>
+        
+
+        <div class="clearfix"></div>
+    </div>
+    <div class="widget-header" *ngIf="CurrentAction.Action != 'Receiveing' && HasPermission('Scan')">
+            <div class="col-md-3" style="padding-top:3px;margin:0px;">
+                <div *ngIf="AllowScan && CurrentAction.ActionCode == 'TSK006'">
+                    <input type="text" name="searchText" id="searchText" class="form-control" (keyup.enter)="OnScan()" [(ngModel)]="ScanValue" placeholder="Scan Serial Number/UPC" />
+                </div>
+
+                <div class="no-padding-right" *ngIf="ShowPerMission('RC015') && AllowScan">
+                    <div class="input-group" *ngIf="CurrentAction.ActionCode == 'TSK008' && CurrentContainer == ''">
+                        <form>
+                            <input type="text" name="ItemLocation" id="ItemLocation" class="form-control" (keyup.enter)="OnScanLocation()" [(ngModel)]="ItemLocation" placeholder="Scan Location" tabindex="0" />
+                        </form>
+                        <span class="input-group-btn">
+                            <button (click)="OpenLocationPopup()" class="btn btn-secondary btn-sm" tabindex="1">
+                                <i class="glyphicon glyphicon-search"></i> Browse
+                            </button>
+                        </span>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="widget-buttons">
+                <!--<button type="button" class="btn btn-sm btn-primary pull-right" (click)="OpenContainerPopup()" *ngIf="AllowScan && CurrentAction.ActionCode == 'TSK006'">
+                    Release Container
+                </button>-->
+                <button class="btn btn-sm btn-primary pull-right" type="button" (click)="ContainerExit()" *ngIf="CurrentAction.ActionCode == 'TSK008' && CurrentContainer != ''">
+                    <i class="fa fa-undo"></i>Return To List
+                </button>
+                <button type="button" class="btn btn-sm btn-primary pull-right" (click)="PutAwayItem()" *ngIf="AllowScan && CurrentAction.ActionCode == 'TSK008' && CurrentContainer == ''">
+                    Put-Away
+                </button>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="widget-body no-padding">
+            <div [hidden]="IsContainerVisible" style="height:330px;">
+                <ag-grid-angular #agGrid class="agc-grid ag-theme-balham"
+                             [gridOptions]="LineGridOptions">
+                </ag-grid-angular>
+            </div>
+            <div [hidden]="!IsContainerVisible" style="height:330px;">
+                <ag-grid-angular #agGrid class="agc-grid ag-theme-balham"
+                             [gridOptions]="ContainerPutAwayGridOptions">
+                </ag-grid-angular>
+            </div>
+        <div class="clearfix"></div>
+        </div>
+</form>
+    <div class="clearfix"></div>
+</div>
+
+<bs-modal #RuleModel cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close" data-dismiss="RuleModel" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{CurrentAction.Action}} Item</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <div class="padding-bottom-10 padding-top-10">
+
+            <!--<label class="control-label col-md-3" style="padding-top:8px;height:30px;margin-bottom:0px;" *ngIf="ShowPerMission('RC007')">
+                Item Conditions<span style="color: red;">*</span>
+            </label>
+            <div class="col-md-3" *ngIf="ShowPerMission('RC007')">
+                <div style="height:30px;">
+                    <select [(ngModel)]="CurrentItemStatusId" #Statusmodal="ngModel" required name="StatusID" id="StatusID" class="form-control" (change)="ShowDamagedType($event.target.value)">
+                        <option [value]="undefined">--Select--</option>
+                        <option *ngFor="let Status of ItemStatusList" [value]="Status.TypeLookUpID">
+                            {{Status.TypeName}}
+                        </option>
+                    </select>
+                </div>
+                <div style="height:30px;" *ngIf="IsShowDamagedTypeList">
+                    <select [(ngModel)]="CurrentItemDamagedType" #Statusmodal="ngModel" required name="DamagedType" id="DamagedType" class="form-control">
+                        <option [value]="undefined">--Select Damaged Type--</option>
+                        <option *ngFor="let Damaged of DamagedTypeList" [value]="Damaged.DamagedName">
+                            {{Damaged.DamagedName}}
+                        </option>
+                    </select>
+                </div>
+            </div>-->
+
+            <label class="control-label col-md-3" style="padding-top:8px;height:30px;margin-bottom:0px;" *ngIf="ShowPerMission('RC006') && CurrentAction.ActionCode == 'TSK006'">
+                Grade<span style="color: red;">*</span>
+            </label>
+            <div class="col-md-3" *ngIf="ShowPerMission('RC006') && CurrentAction.ActionCode == 'TSK006'" style="height:30px;">
+                <select [(ngModel)]="CurrentPackageNumber" #Grademodal="ngModel" required name="PackageNumber" id="PackageNumber" class="form-control">
+                    <option [value]="undefined">--Select--</option>
+                    <option *ngFor="let Grade of GradeList" [value]="Grade.RMAActionName">
+                        {{Grade.RMAActionName}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-md-6" *ngIf="ShowPerMission('RC009') && !IsDiscrepancyLoaded">
+                <label class="control-label col-md-6" style="padding-top:8px;height:30px;margin-bottom:0px;" >
+                    Container #<span style="color: red;">*</span>
+                </label>
+                <div class="col-md-6" style="height:30px;">
+                    <input type="text" #ContainerNumbermodal="ngModel" name="ContainerNumber" (blur)="CheckContainer()" required class="form-control" [(ngModel)]="CurrentContainerNumber">
+                </div>
+                 
+                <div class="col-md-6 pull-right">
+                    <button class="btn btn-success btn-sm " (click)="GenerateContainerNumber()">
+                        Generate New
+                    </button>
+                </div> 
+            </div>            
+
+            <label class="control-label col-md-3" style="padding-top:8px;height:30px;margin-bottom:0px;" *ngIf="ShowPerMission('RC010')">
+                Sub-Inventory Code<span style="color: red;">*</span>
+            </label>
+            <div class="col-md-3" *ngIf="ShowPerMission('RC010')" style="height:30px;">
+                <select [(ngModel)]="CurrentNodeId" #Inventorymodal="ngModel" required name="Node" id="Node" class="form-control">
+                    <option [value]="undefined">--Select--</option>
+                    <option *ngFor="let Node of NodeList" [value]="Node.NodeID">
+                        {{Node.Node}}
+                    </option>
+                </select>
+            </div>
+
+            <label class="control-label col-md-3" style="padding-top:8px;height:30px;margin-bottom:0px;" *ngIf="ShowPerMission('RC008')">
+                Remarks
+            </label>
+            <div class="col-md-3" *ngIf="ShowPerMission('RC008')" style="height:30px;">
+                <input type="text" #ContainerNumbermodal="ngModel" name="Remarks" class="form-control" [(ngModel)]="CurrentRemarks">
+            </div>
+
+            <label class="control-label col-md-3" style="padding-top:8px;height:30px;margin-bottom:0px;" *ngIf="ShowPerMission('RR00033')">
+                Add Discrepancy
+            </label>
+            <div class="col-md-3" *ngIf="ShowPerMission('RR00033')" style="height:30px;">
+                <label style="padding-top:8px;">
+                    <input name="isDiscrepancy" class="checkbox-slider colored-palegreen yesno" id="isDiscrepancy" type="checkbox" (change)="IsDiscrepancyLoadedChange()" [checked]="IsDiscrepancyLoaded">
+                    <span class="text"></span>
+                </label>
+            </div>
+
+            <label class="control-label col-md-3" style="padding-top:8px;height:30px;margin-bottom:0px;" *ngIf="IsDiscrepancyLoaded">
+                Discrepancy
+            </label>
+            <div class="col-md-3" *ngIf="IsDiscrepancyLoaded" style="height:30px;">
+                <select [(ngModel)]="DiscrepancyID" #Statusmodal="ngModel" name="StatusID" class="form-control">
+                    <option value="undefined">Select</option>
+                    <option *ngFor="let Status of DiscrepancyList" [value]="Status.TypeLookUpID">
+                        {{Status.TypeName}}
+                    </option>
+                </select>
+            </div>
+
+            <label class="control-label col-md-3" style="padding-top:8px;height:30px;margin-bottom:0px;" *ngIf="IsDiscrepancyLoaded">
+                Discrepancy Remark
+            </label>
+            <div class="col-md-3" *ngIf="IsDiscrepancyLoaded" style="height:70px;">
+                <textarea style="width:100%;height: 62px!important;float:left;" class="form-control" wrap="soft" [disabled]="DiscrepancyID==undefined || DiscrepancyID== null"
+                          [ngModelOptions]="{standalone: true}" [(ngModel)]="DiscrepancyRemark"></textarea>
+            </div>
+
+            <label class="control-label col-md-3" style="padding-top:8px;height:30px;margin-bottom:0px;" *ngIf="ShowPerMission('RR00035') && IsAccessoriesLoded">
+                Accessories<span style="color: red;">*</span>
+            </label>
+            <div class="col-md-3" *ngIf="ShowPerMission('RR00035') && IsAccessoriesLoded">
+                <select name="ModelAccessories" size="3" id="ModelAccessories" class="form-control" multiple>
+                    <option *ngFor="let Accessories of AccessoriesList" [value]="Accessories.AccessoryID">
+                        {{Accessories.ModelName}}
+                    </option>
+                </select>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <label class="control-label col-md-3" style="padding-top:8px;height:30px;margin-bottom:0px;" *ngIf="ShowPerMission('RC015')">
+            Location at Facility<span style="color: red;">*</span>
+        </label>
+        <div class="col-md-3" *ngIf="ShowPerMission('RC015')" style="height:30px;">
+            <select [(ngModel)]="CurrentLocationId" #Locationmodal="ngModel" required name="Location" id="Location" class="form-control" (change)="OnParentLocationChanged(Locationmodal.value)">
+                <!--<option [value]="undefined">--Select--</option>-->
+                <option *ngFor="let Location of LocationList" [value]="Location.LocationID">
+                    {{Location.LocationName}}
+                </option>
+            </select>
+        </div>
+
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" (click)="ClearMRN()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="SaveMRN()">Save</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #ItemPopup cssClass="modal-lg" id="divItemPopup">
+    <bs-modal-header>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" style="float:left;">Document Details - {{SelectedItemName}} ({{SelectedItemNumber}})</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <!--<div id="LodingDiv" style="width:100%;height:580px;margin-top:70px;">
+            <img src="../../../Assets/img/Loading.gif" class="center-block" />
+        </div>
+        <div id="ModelImageEditor" style="width:100%;height:580px;">
+            <iframe id="imageeditorframe" style="width:100%;height:580px;" frameborder="0" scrolling="yes"></iframe>
+        </div>-->
+
+        <div id="ModelDynemicControl">
+            <div *ngFor="let ControlGroup of RuleGroup">
+                <div *ngIf="ControlGroup.TypeLookUpID != '1818' && IsShowDefaultQueston">
+                    <!--<h4>
+                        {{ControlGroup.TypeName}}<br /><br />
+                    </h4>-->
+                    <div class="col-md-5">
+                        <div *ngFor="let controls of DynamicControls | has:'UserInput':'1'" class="form-group" style="margin-left:-15px;margin-right:-15px;">
+                            <label class="control-label col-md-12" *ngIf="controls.ControlType !='File' && controls.ControlType !='Position On Item' && controls.RuleGroupID == ControlGroup.TypeLookUpID"><b> {{controls.ControlLabel}}</b><span *ngIf="controls.IsRequired" style="color:red;">*</span></label>
+                            <div class="col-md-12">
+                                <select [required]="controls.IsRequired" *ngIf="controls.ControlType=='Select List' && controls.RuleGroupID == ControlGroup.TypeLookUpID" [(ngModel)]="controls.ControlValue"
+                                        name="controls.ControlLabel" class="form-control" disabled="disabled">
+                                    <option value="" selected="selected">--Select--</option>
+                                    <option *ngFor="let items of controls.DropDownValue" [value]="items.TypeLookUpID">
+                                        {{items.TypeName}}
+                                    </option>
+                                </select>
+                                <div *ngIf="controls.ControlType=='File' && controls.RuleGroupID == ControlGroup.TypeLookUpID">
+
+                                    <div class="com-md-4 pull-left" *ngFor="let img of PendingArtifactsList;let i=index;">
+
+                                        <div class="thumbnail text-center" style="margin:5px;height:154px!important;" *ngIf="img.IsImage">
+                                            <img style="width:100px;height:100px;left:150px;z-index:999;margin-bottom:6px;" src={{img.FileUrl}} />
+                                            <div class="clearfix"></div>
+                                            <b>{{img.DocType}}</b>
+                                        </div>
+                                        <div class="thumbnail text-center" style="margin:5px;height:154px!important;" *ngIf="img.IsVideo">
+                                            <video controls loop width="100" height="100">
+                                                <source src={{img.FileUrl}} />
+                                            </video>
+                                            <div class="clearfix"></div>
+                                            <b>{{img.DocType}}</b>
+                                        </div>
+                                        <div class="thumbnail text-center" style="margin:5px;height:154px!important;" *ngIf="img.IsDoc">
+                                            <a href={{img.FileUrl}} target="_blank">
+                                                <i class="fa fa-file-word-o" style="font-size:80px;color:red;"></i>
+                                            </a>
+                                            <div class="clearfix"></div>
+                                            <b>{{img.DocType}}</b>
+                                        </div>
+                                        <div class="thumbnail text-center" style="margin:5px;height:154px!important;" *ngIf="img.IsSheet">
+                                            <a href={{img.FileUrl}} target="_blank">
+                                                <i class="fa fa-file-excel-o" style="font-size:80px;color:red;"></i>
+                                            </a>
+                                            <div class="clearfix"></div>
+                                            <b>{{img.DocType}}</b>
+                                        </div>
+                                        <div class="thumbnail text-center" style="margin:5px;height:154px!important;" *ngIf="img.IsPdf">
+                                            <a href={{img.FileUrl}} target="_blank">
+                                                <i class="fa fa-file-pdf-o" style="font-size:80px;color:red;"></i>
+                                            </a>
+                                            <div class="clearfix"></div>
+                                            <b>{{img.DocType}}</b>
+                                        </div>
+                                        <div class="thumbnail text-center" style="margin:5px;height:154px!important;" *ngIf="img.IsOther">
+                                            <a href={{img.FileUrl}} target="_blank">
+                                                <i class="fa fa-file-o" style="font-size:80px;color:red"></i>
+                                            </a>
+                                            <div class="clearfix"></div>
+                                            <b>{{img.DocType}}</b>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <textarea [required]="controls.IsRequired" class="form-control" [(ngModel)]="controls.ControlValue" disabled="disabled"
+                                          *ngIf="controls.ControlType=='textarea' && controls.RuleGroupID == ControlGroup.TypeLookUpID"></textarea>
+
+                                <div *ngIf="controls.ControlType=='Text' && controls.RuleGroupID == ControlGroup.TypeLookUpID">
+                                    <input [required]="controls.IsRequired" [name]="controls.PartnerReturnReasonRuleMapID" type="text" class="form-control" maxlength="200" [(ngModel)]="controls.ControlValue" disabled="disabled" />
+                                </div>
+                                <input [required]="controls.IsRequired" type="text" class="form-control" maxlength="10"
+                                       onkeypress="javascript:return numberonly(this,event,event);"
+                                       [(ngModel)]="controls.ControlValue" placeholder="Number only" disabled="disabled"
+                                       *ngIf="controls.ControlType=='Number' && controls.RuleGroupID == ControlGroup.TypeLookUpID" />
+                                <div *ngIf="controls.ControlType=='Yes/No' && controls.RuleGroupID == ControlGroup.TypeLookUpID">
+                                    <span *ngFor="let cvalue of controls.DropDownValue"
+                                          style="float:left;">
+                                        <label class="radio" style="padding-left:0px;padding-right:8px;">
+                                            <input type="radio" name="{{controls.PartnerReturnReasonRuleMapID}}_RadItem" [(ngModel)]="controls.ControlValue" disabled="disabled" [value]="cvalue.optionid" class="colored-success">
+                                            <span class="text"> {{cvalue.optiontext}}</span>
+                                        </label>
+                                    </span>
+                                </div>
+                                <div *ngIf="controls.ControlType=='checkbox' && controls.RuleGroupID == ControlGroup.TypeLookUpID" style="max-height:100px;overflow:auto;">
+                                    <div *ngFor="let ChildValue of controls.ControlOptions">
+                                        <label>
+                                            <input type="checkbox" name="{{controls.ControlCode}}_ChkItem" [(ngModel)]="ChildValue.isselected"
+                                                   [checked]="ChildValue.isselected" class="colored-success" disabled="disabled">
+                                            <span class="text"> {{ChildValue.optiontext}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div *ngFor="let controls of DynamicControls | has:'UserInput':'1'">
+                            <div *ngIf="controls.ControlType=='Position On Item' && controls.RuleGroupID == ControlGroup.TypeLookUpID">
+                                <div class="row">
+                                    <div class="text-center"><label class="control-label"><b>Damage Location Widget</b></label></div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div id="myModalForDamageLocation">
+                                    <div>
+                                        <div class="front" style="width:400px; height:auto; position:relative; font-family:Verdana; cursor:pointer; margin: 0px auto;">
+                                            <table style="width:100%;z-index:999;" cellpadding="0" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td style="background-image:url(Assets/img/left.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('front', 'left', 'left');">
+                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-left:20px;">Left</div>
+                                                    </td>
+                                                    <td>
+                                                        <table style="width:100%;background-image:url(Assets/img/fronttext.png);background-size:100% 76px;background-repeat:no-repeat;background-position-y:center;" cellpadding="0" cellspacing="0" border="0">
+                                                            <tr>
+                                                                <td colspan="3" style="background-image:url(Assets/img/top.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                    (click)="ChangeView('front', 'top', 'up');">
+                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-top:30px;text-align:center;">Top</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F1" class="damagelocations" (click)="SelectUnSelectLocation('F1')" style="border-radius:50%;border:solid 1px #666;">1</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F2" class="damagelocations" (click)="SelectUnSelectLocation('F2')" style="border-radius:50%;border:solid 1px #666;">2</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F3" class="damagelocations" (click)="SelectUnSelectLocation('F3')" style="border-radius:50%;border:solid 1px #666;">3</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F4" class="damagelocations" (click)="SelectUnSelectLocation('F4')" style="border-radius:50%;border:solid 1px #666;">4</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F5" class="damagelocations" (click)="SelectUnSelectLocation('F5')" style="border-radius:50%;border:solid 1px #666;">5</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F6" class="damagelocations" (click)="SelectUnSelectLocation('F6')" style="border-radius:50%;border:solid 1px #666;">6</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F7" class="damagelocations" (click)="SelectUnSelectLocation('F7')" style="border-radius:50%;border:solid 1px #666;">7</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F8" class="damagelocations" (click)="SelectUnSelectLocation('F8')" style="border-radius:50%;border:solid 1px #666;">8</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F9" class="damagelocations" (click)="SelectUnSelectLocation('F9')" style="border-radius:50%;border:solid 1px #666;">9</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" style="background-image:url(Assets/img/bottom.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                    (click)="ChangeView('front', 'bottom', 'down');">
+                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-bottom:30px;text-align:center;">UNDERSIDE</div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style="background-image:url(Assets/img/right.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('front', 'right', 'right');">
+                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-right:20px;">Right</div>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="right" style="width:400px; height:auto; position:relative; font-family:Verdana; cursor:pointer; margin: 0px auto; display:none;">
+
+                                            <table style="width:100%" cellpadding="0" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td style="background-image:url(Assets/img/left.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('right', 'front', 'left');">
+                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-left:20px;">Front</div>
+                                                    </td>
+                                                    <td>
+                                                        <table style="width:100%;background-image:url(Assets/img/righttext.png);background-size:100% 76px;background-repeat:no-repeat;background-position-y:center;" cellpadding="0" cellspacing="0" border="0">
+                                                            <tr>
+                                                                <td colspan="3" style="background-image:url(Assets/img/top.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                    (click)="ChangeView('right', 'top', 'up');">
+                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-top:30px;text-align:center;">Top</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R1" class="damagelocations" (click)="SelectUnSelectLocation('R1')" style="border-radius:50%;border:solid 1px #666;">1</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R2" class="damagelocations" (click)="SelectUnSelectLocation('R2')" style="border-radius:50%;border:solid 1px #666;">2</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R3" class="damagelocations" (click)="SelectUnSelectLocation('R3')" style="border-radius:50%;border:solid 1px #666;">3</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R4" class="damagelocations" (click)="SelectUnSelectLocation('R4')" style="border-radius:50%;border:solid 1px #666;">4</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R5" class="damagelocations" (click)="SelectUnSelectLocation('R5')" style="border-radius:50%;border:solid 1px #666;">5</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R6" class="damagelocations" (click)="SelectUnSelectLocation('R6')" style="border-radius:50%;border:solid 1px #666;">6</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R7" class="damagelocations" (click)="SelectUnSelectLocation('R7')" style="border-radius:50%;border:solid 1px #666;">7</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R8" class="damagelocations" (click)="SelectUnSelectLocation('R8')" style="border-radius:50%;border:solid 1px #666;">8</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R9" class="damagelocations" (click)="SelectUnSelectLocation('R9')" style="border-radius:50%;border:solid 1px #666;">9</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" style="background-image:url(Assets/img/bottom.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                    (click)="ChangeView('right', 'bottom', 'down');">
+                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-bottom:30px;text-align:center;">UNDERSIDE</div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style="background-image:url(Assets/img/right.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('right', 'back', 'right');">
+                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-right:20px;">Back</div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="left" style="width:400px; height:auto; position:relative; font-family:Verdana; cursor:pointer; margin: 0px auto; display:none;">
+
+                                            <table style="width:100%" cellpadding="0" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td style="background-image:url(Assets/img/left.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('left', 'back', 'left');">
+                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-left:20px;">Back</div>
+                                                    </td>
+                                                    <td>
+                                                        <table style="width:100%;background-image:url(Assets/img/lefttext.png);background-size:100% 76px;background-repeat:no-repeat;background-position-y:center;" cellpadding="0" cellspacing="0" border="0">
+                                                            <tr>
+                                                                <td colspan="3" style="background-image:url(Assets/img/top.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                    (click)="ChangeView('left', 'top', 'up');">
+                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-top:30px;text-align:center;">Top</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L1" class="damagelocations" (click)="SelectUnSelectLocation('L1')" style="border-radius:50%;border:solid 1px #666;">1</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L2" class="damagelocations" (click)="SelectUnSelectLocation('L2')" style="border-radius:50%;border:solid 1px #666;">2</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L3" class="damagelocations" (click)="SelectUnSelectLocation('L3')" style="border-radius:50%;border:solid 1px #666;">3</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L4" class="damagelocations" (click)="SelectUnSelectLocation('L4')" style="border-radius:50%;border:solid 1px #666;">4</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L5" class="damagelocations" (click)="SelectUnSelectLocation('L5')" style="border-radius:50%;border:solid 1px #666;">5</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L6" class="damagelocations" (click)="SelectUnSelectLocation('L6')" style="border-radius:50%;border:solid 1px #666;">6</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L7" class="damagelocations" (click)="SelectUnSelectLocation('L7')" style="border-radius:50%;border:solid 1px #666;">7</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L8" class="damagelocations" (click)="SelectUnSelectLocation('L8')" style="border-radius:50%;border:solid 1px #666;">8</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L9" class="damagelocations" (click)="SelectUnSelectLocation('L9')" style="border-radius:50%;border:solid 1px #666;">9</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" style="background-image:url(Assets/img/bottom.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                    (click)="ChangeView('left', 'bottom', 'down');">
+                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-bottom:30px;text-align:center;">UNDERSIDE</div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style="background-image:url(Assets/img/right.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('left', 'front', 'right');">
+                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-right:20px;">Front</div>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="top" style="width:400px; height:auto; position:relative; font-family:Verdana; cursor:pointer;margin: 0px auto; display:none;">
+
+                                            <table style="width:100%" cellpadding="0" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td style="background-image:url(Assets/img/left.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('top', 'left', 'left');">
+                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-left:20px;">Left</div>
+                                                    </td>
+                                                    <td>
+                                                        <table style="width:100%;background-image:url(Assets/img/toptext.png);background-size:100% 76px;background-repeat:no-repeat;background-position-y:center;" cellpadding="0" cellspacing="0" border="0">
+                                                            <tr>
+                                                                <td colspan="3" style="background-image:url(Assets/img/top.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                    (click)="ChangeView('top', 'back', 'up');">
+                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-top:30px;text-align:center;">Back</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T1" class="damagelocations" (click)="SelectUnSelectLocation('T1')" style="border-radius:50%;border:solid 1px #666;">1</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T2" class="damagelocations" (click)="SelectUnSelectLocation('T2')" style="border-radius:50%;border:solid 1px #666;">2</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T3" class="damagelocations" (click)="SelectUnSelectLocation('T3')" style="border-radius:50%;border:solid 1px #666;">3</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T4" class="damagelocations" (click)="SelectUnSelectLocation('T4')" style="border-radius:50%;border:solid 1px #666;">4</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T5" class="damagelocations" (click)="SelectUnSelectLocation('T5')" style="border-radius:50%;border:solid 1px #666;">5</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T6" class="damagelocations" (click)="SelectUnSelectLocation('T6')" style="border-radius:50%;border:solid 1px #666;">6</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T7" class="damagelocations" (click)="SelectUnSelectLocation('T7')" style="border-radius:50%;border:solid 1px #666;">7</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T8" class="damagelocations" (click)="SelectUnSelectLocation('T8')" style="border-radius:50%;border:solid 1px #666;">8</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T9" class="damagelocations" (click)="SelectUnSelectLocation('T9')" style="border-radius:50%;border:solid 1px #666;">9</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" style="background-image:url(Assets/img/bottom.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                    (click)="ChangeView('top', 'front', 'down');">
+                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-bottom:30px;text-align:center;">Front</div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style="background-image:url(Assets/img/right.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('top', 'right', 'right');">
+                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-right:20px;">Right</div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="bottom" style="width:400px; height:auto; position:relative; font-family:Verdana; cursor:pointer; margin: 0px auto; display:none;">
+
+                                            <table style="width:100%" cellpadding="0" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td style="background-image:url(Assets/img/left.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('bottom', 'left', 'left');">
+                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-left:20px;">Left</div>
+                                                    </td>
+                                                    <td>
+                                                        <table style="width:100%;background-image:url(Assets/img/undersidetext.png);background-size:100% 76px;background-repeat:no-repeat;background-position-y:center;" cellpadding="0" cellspacing="0" border="0">
+                                                            <tr>
+                                                                <td colspan="3" style="background-image:url(Assets/img/top.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                    (click)="ChangeView('bottom', 'front', 'up');">
+                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-top:30px;text-align:center;">Front</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U1" class="damagelocations" (click)="SelectUnSelectLocation('U1')" style="border-radius:50%;border:solid 1px #666;">1</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U2" class="damagelocations" (click)="SelectUnSelectLocation('U2')" style="border-radius:50%;border:solid 1px #666;">2</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U3" class="damagelocations" (click)="SelectUnSelectLocation('U3')" style="border-radius:50%;border:solid 1px #666;">3</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U4" class="damagelocations" (click)="SelectUnSelectLocation('U4')" style="border-radius:50%;border:solid 1px #666;">4</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U5" class="damagelocations" (click)="SelectUnSelectLocation('U5')" style="border-radius:50%;border:solid 1px #666;">5</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U6" class="damagelocations" (click)="SelectUnSelectLocation('U6')" style="border-radius:50%;border:solid 1px #666;">6</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U7" class="damagelocations" (click)="SelectUnSelectLocation('U7')" style="border-radius:50%;border:solid 1px #666;">7</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U8" class="damagelocations" (click)="SelectUnSelectLocation('U8')" style="border-radius:50%;border:solid 1px #666;">8</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U9" class="damagelocations" (click)="SelectUnSelectLocation('U9')" style="border-radius:50%;border:solid 1px #666;">9</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" style="background-image:url(Assets/img/bottom.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                    (click)="ChangeView('bottom', 'back', 'down');">
+                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-bottom:30px;text-align:center;">Back</div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style="background-image:url(Assets/img/right.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('bottom', 'right', 'right');">
+                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-right:20px;">Right</div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="back" style="width:400px; height:auto; position:relative; font-family:Verdana; cursor:pointer; margin: 0px auto; display:none;">
+
+                                            <table style="width:100%" cellpadding="0" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td style="background-image:url(Assets/img/left.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('back', 'left', 'left');">
+                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-left:20px;">Left</div>
+                                                    </td>
+                                                    <td>
+                                                        <table style="width:100%;background-image:url(Assets/img/backtext.png);background-size:100% 76px;background-repeat:no-repeat;background-position-y:center;" cellpadding="0" cellspacing="0" border="0">
+                                                            <tr>
+                                                                <td colspan="3" style="background-image:url(Assets/img/top.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                    (click)="ChangeView('back', 'top', 'up');">
+                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-top:30px;text-align:center;">Top</div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B1" class="damagelocations" (click)="SelectUnSelectLocation('B1')" style="border-radius:50%;border:solid 1px #666;">1</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B2" class="damagelocations" (click)="SelectUnSelectLocation('B2')" style="border-radius:50%;border:solid 1px #666;">2</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B3" class="damagelocations" (click)="SelectUnSelectLocation('B3')" style="border-radius:50%;border:solid 1px #666;">3</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B4" class="damagelocations" (click)="SelectUnSelectLocation('B4')" style="border-radius:50%;border:solid 1px #666;">4</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B5" class="damagelocations" (click)="SelectUnSelectLocation('B5')" style="border-radius:50%;border:solid 1px #666;">5</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B6" class="damagelocations" (click)="SelectUnSelectLocation('B6')" style="border-radius:50%;border:solid 1px #666;">6</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B7" class="damagelocations" (click)="SelectUnSelectLocation('B7')" style="border-radius:50%;border:solid 1px #666;">7</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B8" class="damagelocations" (click)="SelectUnSelectLocation('B8')" style="border-radius:50%;border:solid 1px #666;">8</div></td>
+                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B9" class="damagelocations" (click)="SelectUnSelectLocation('B9')" style="border-radius:50%;border:solid 1px #666;">9</div></td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" style="background-image:url(Assets/img/bottom.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                    (click)="ChangeView('back', 'bottom', 'down');">
+                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-bottom:30px;text-align:center;">UNDERSIDE</div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td style="background-image:url(Assets/img/right.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('back', 'right', 'right');">
+                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-right:20px;">Right</div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="text-center" style="padding-top:5px;">
+                                        <div class="text-center" style="padding:5px 0px;">
+                                            <label class="control-label"> <b> {{SelectedGraphLocation}} </b> </label>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+                <div *ngIf="ControlGroup.TypeLookUpID == '1818' && IsShowQuestionnaireRule">
+                    <div class="row">
+                        <div class="bg-info" style="font-size:16px;font-weight:bold;text-align:left;padding:5px;margin-bottom:5px;margin-top:5px;">Pre-Authorization Questions</div>
+                        <div class="clearfix"></div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Questions</th>
+                                    <th>Action</th>
+                                </tr>
+                                <tr *ngFor="let i=index;let controls of DynamicControls | has:'UserInput':'1' | has:'RuleGroupID':'1818'">
+                                    <td>{{i+1}}</td>
+                                    <td><label class="control-label">{{controls.ControlLabel}}<span *ngIf="controls.IsRequired" style="color:red;">*</span></label></td>
+                                    <td>
+                                        <select [required]="controls.IsRequired" *ngIf="controls.ControlType=='Select List' && controls.RuleGroupID == ControlGroup.TypeLookUpID" [(ngModel)]="controls.ControlValue"
+                                                name="controls.ControlLabel" class="form-control" [disabled]>
+
+                                            <option value="" selected="selected">--Select--</option>
+                                            <option *ngFor="let items of controls.DropDownValue" [value]="items.TypeLookUpID">
+                                                {{items.TypeName}}
+                                            </option>
+
+                                        </select>
+
+                                        <label class="btn btn-default form-control" *ngIf="controls.ControlType=='File' && controls.RuleGroupID == ControlGroup.TypeLookUpID">
+                                            Browse Image ({{PendingArtifactsList.length}}) <input [required]="controls.IsRequired" type="file"
+                                                                                                  (change)="handleReturnDocs(returnArtifact, $event,controls);" multiple id="returnArtifact" name="returnArtifact"
+                                                                                                  style="display:none;">
+                                        </label>
+                                        <div *ngIf="controls.ControlType=='File' && controls.RuleGroupID == ControlGroup.TypeLookUpID">
+
+                                            <div *ngFor="let img of PendingArtifactsList;let i=index;" style="float:left;width:100%;cursor:pointer;border-bottom:solid 1px #666;">
+                                                <div style="width:90%;float:left;" (mouseover)="showImagePreview(img.FileUrl)" (mouseout)="hideImagePreview()"><a href="{{img.FileUrl}}" target="_blank">Image-{{i+1}}</a></div>
+                                                <div style="width:10%;float:left;"><i class="fa fa-remove" (click)="removeUploadedFiles(i)"></i></div>
+                                            </div>
+                                            <img style="display:none;position:absolute;width:150px;height:150px;left:150px;z-index:999;" src="" id="previewImage" />
+                                        </div>
+
+                                        <textarea [required]="controls.IsRequired" class="form-control" [(ngModel)]="controls.ControlValue"
+                                                  *ngIf="controls.ControlType=='textarea' && controls.RuleGroupID == ControlGroup.TypeLookUpID" disabled="disabled"></textarea>
+
+                                        <div *ngIf="controls.ControlType=='Text' && controls.RuleGroupID == ControlGroup.TypeLookUpID">
+                                            <input [required]="controls.IsRequired" [name]="controls.PartnerReturnReasonRuleMapID" type="text" class="form-control" maxlength="200" [(ngModel)]="controls.ControlValue" disabled="disabled" />
+                                        </div>
+
+                                        <input [required]="controls.IsRequired" type="text" class="form-control" maxlength="10"
+                                               onkeypress="javascript:return numberonly(this,event,event);"
+                                               [(ngModel)]="controls.ControlValue" placeholder="Number only"
+                                               *ngIf="controls.ControlType=='Number' && controls.RuleGroupID == ControlGroup.TypeLookUpID" disabled="disabled" />
+                                        <div *ngIf="controls.ControlType=='Yes/No' && controls.RuleGroupID == ControlGroup.TypeLookUpID">
+                                            <span *ngFor="let cvalue of controls.DropDownValue"
+                                                  style="float:left;margin-left:10px;">
+                                                <label class="radio">
+                                                    <input type="radio" name="{{controls.PartnerReturnReasonRuleMapID}}_RadItem" [(ngModel)]="controls.ControlValue" [value]="cvalue.optionid" class="colored-success" disabled="disabled">
+                                                    <span class="text"> {{cvalue.optiontext}}</span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                        <div *ngIf="controls.ControlType=='checkbox' && controls.RuleGroupID == ControlGroup.TypeLookUpID" style="max-height:100px;overflow:auto;">
+                                            <div *ngFor="let ChildValue of controls.ControlOptions">
+                                                <label>
+                                                    <input type="checkbox" name="{{controls.ControlCode}}_ChkItem" [(ngModel)]="ChildValue.isselected"
+                                                           [checked]="ChildValue.isselected" class="colored-success" disabled="disabled">
+                                                    <span class="text"> {{ChildValue.optiontext}}</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div *ngIf="controls.ControlType=='Position On Item' && controls.RuleGroupID == ControlGroup.TypeLookUpID">
+                                            <label class="control-label">Damage Location Widget</label>
+                                            <label class="control-label"> <b> {{SelectedGraphLocation}} </b> </label>
+                                            <div id="myModalForDamageLocation">
+                                                <div>
+                                                    <div>
+                                                        <div class="front" style="width:400px; height:auto; position:relative; font-family:Verdana; cursor:pointer; margin: 0px auto;">
+                                                            <table style="width:100%;z-index:999;" cellpadding="0" cellspacing="0" border="0">
+                                                                <tr>
+                                                                    <td style="background-image:url(Assets/img/left.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('front', 'left', 'left');">
+                                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-left:20px;">Left</div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <table style="width:100%;background-image:url(Assets/img/fronttext.png);background-size:100% 76px;background-repeat:no-repeat;background-position-y:center;" cellpadding="0" cellspacing="0" border="0">
+                                                                            <tr>
+                                                                                <td colspan="3" style="background-image:url(Assets/img/top.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                                    (click)="ChangeView('front', 'top', 'up');">
+                                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-top:30px;text-align:center;">Top</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F1" class="damagelocations" (click)="SelectUnSelectLocation('F1')" style="border-radius:50%;border:solid 1px #666;">1</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F2" class="damagelocations" (click)="SelectUnSelectLocation('F2')" style="border-radius:50%;border:solid 1px #666;">2</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F3" class="damagelocations" (click)="SelectUnSelectLocation('F3')" style="border-radius:50%;border:solid 1px #666;">3</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F4" class="damagelocations" (click)="SelectUnSelectLocation('F4')" style="border-radius:50%;border:solid 1px #666;">4</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F5" class="damagelocations" (click)="SelectUnSelectLocation('F5')" style="border-radius:50%;border:solid 1px #666;">5</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F6" class="damagelocations" (click)="SelectUnSelectLocation('F6')" style="border-radius:50%;border:solid 1px #666;">6</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F7" class="damagelocations" (click)="SelectUnSelectLocation('F7')" style="border-radius:50%;border:solid 1px #666;">7</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F8" class="damagelocations" (click)="SelectUnSelectLocation('F8')" style="border-radius:50%;border:solid 1px #666;">8</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="F9" class="damagelocations" (click)="SelectUnSelectLocation('F9')" style="border-radius:50%;border:solid 1px #666;">9</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="background-image:url(Assets/img/bottom.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                                    (click)="ChangeView('front', 'bottom', 'down');">
+                                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-bottom:30px;text-align:center;">UNDERSIDE</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="background-image:url(Assets/img/right.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('front', 'right', 'right');">
+                                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-right:20px;">Right</div>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                        <div class="right" style="width:400px; height:auto; position:relative; font-family:Verdana; cursor:pointer; margin: 0px auto; display:none;">
+
+                                                            <table style="width:100%" cellpadding="0" cellspacing="0" border="0">
+
+                                                                <tr>
+                                                                    <td style="background-image:url(Assets/img/left.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('right', 'front', 'left');">
+                                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-left:20px;">Front</div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <table style="width:100%;background-image:url(Assets/img/righttext.png);background-size:100% 76px;background-repeat:no-repeat;background-position-y:center;" cellpadding="0" cellspacing="0" border="0">
+                                                                            <tr>
+                                                                                <td colspan="3" style="background-image:url(Assets/img/top.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                                    (click)="ChangeView('right', 'top', 'up');">
+                                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-top:30px;text-align:center;">Top</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R1" class="damagelocations" (click)="SelectUnSelectLocation('R1')" style="border-radius:50%;border:solid 1px #666;">1</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R2" class="damagelocations" (click)="SelectUnSelectLocation('R2')" style="border-radius:50%;border:solid 1px #666;">2</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R3" class="damagelocations" (click)="SelectUnSelectLocation('R3')" style="border-radius:50%;border:solid 1px #666;">3</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R4" class="damagelocations" (click)="SelectUnSelectLocation('R4')" style="border-radius:50%;border:solid 1px #666;">4</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R5" class="damagelocations" (click)="SelectUnSelectLocation('R5')" style="border-radius:50%;border:solid 1px #666;">5</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R6" class="damagelocations" (click)="SelectUnSelectLocation('R6')" style="border-radius:50%;border:solid 1px #666;">6</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R7" class="damagelocations" (click)="SelectUnSelectLocation('R7')" style="border-radius:50%;border:solid 1px #666;">7</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R8" class="damagelocations" (click)="SelectUnSelectLocation('R8')" style="border-radius:50%;border:solid 1px #666;">8</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="R9" class="damagelocations" (click)="SelectUnSelectLocation('R9')" style="border-radius:50%;border:solid 1px #666;">9</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="background-image:url(Assets/img/bottom.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                                    (click)="ChangeView('right', 'bottom', 'down');">
+                                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-bottom:30px;text-align:center;">UNDERSIDE</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="background-image:url(Assets/img/right.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('right', 'back', 'right');">
+                                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-right:20px;">Back</div>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                        <div class="left" style="width:400px; height:auto; position:relative; font-family:Verdana; cursor:pointer; margin: 0px auto; display:none;">
+
+                                                            <table style="width:100%" cellpadding="0" cellspacing="0" border="0">
+
+                                                                <tr>
+                                                                    <td style="background-image:url(Assets/img/left.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('left', 'back', 'left');">
+                                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-left:20px;">Back</div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <table style="width:100%;background-image:url(Assets/img/lefttext.png);background-size:100% 76px;background-repeat:no-repeat;background-position-y:center;" cellpadding="0" cellspacing="0" border="0">
+                                                                            <tr>
+                                                                                <td colspan="3" style="background-image:url(Assets/img/top.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                                    (click)="ChangeView('left', 'top', 'up');">
+                                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-top:30px;text-align:center;">Top</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L1" class="damagelocations" (click)="SelectUnSelectLocation('L1')" style="border-radius:50%;border:solid 1px #666;">1</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L2" class="damagelocations" (click)="SelectUnSelectLocation('L2')" style="border-radius:50%;border:solid 1px #666;">2</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L3" class="damagelocations" (click)="SelectUnSelectLocation('L3')" style="border-radius:50%;border:solid 1px #666;">3</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L4" class="damagelocations" (click)="SelectUnSelectLocation('L4')" style="border-radius:50%;border:solid 1px #666;">4</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L5" class="damagelocations" (click)="SelectUnSelectLocation('L5')" style="border-radius:50%;border:solid 1px #666;">5</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L6" class="damagelocations" (click)="SelectUnSelectLocation('L6')" style="border-radius:50%;border:solid 1px #666;">6</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L7" class="damagelocations" (click)="SelectUnSelectLocation('L7')" style="border-radius:50%;border:solid 1px #666;">7</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L8" class="damagelocations" (click)="SelectUnSelectLocation('L8')" style="border-radius:50%;border:solid 1px #666;">8</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="L9" class="damagelocations" (click)="SelectUnSelectLocation('L9')" style="border-radius:50%;border:solid 1px #666;">9</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="background-image:url(Assets/img/bottom.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                                    (click)="ChangeView('left', 'bottom', 'down');">
+                                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-bottom:30px;text-align:center;">UNDERSIDE</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="background-image:url(Assets/img/right.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('left', 'front', 'right');">
+                                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-right:20px;">Front</div>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                        <div class="top" style="width:400px; height:auto; position:relative; font-family:Verdana; cursor:pointer;margin: 0px auto; display:none;">
+
+                                                            <table style="width:100%" cellpadding="0" cellspacing="0" border="0">
+
+                                                                <tr>
+                                                                    <td style="background-image:url(Assets/img/left.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('top', 'left', 'left');">
+                                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-left:20px;">Left</div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <table style="width:100%;background-image:url(Assets/img/toptext.png);background-size:100% 76px;background-repeat:no-repeat;background-position-y:center;" cellpadding="0" cellspacing="0" border="0">
+                                                                            <tr>
+                                                                                <td colspan="3" style="background-image:url(Assets/img/top.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                                    (click)="ChangeView('top', 'back', 'up');">
+                                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-top:30px;text-align:center;">Back</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T1" class="damagelocations" (click)="SelectUnSelectLocation('T1')" style="border-radius:50%;border:solid 1px #666;">1</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T2" class="damagelocations" (click)="SelectUnSelectLocation('T2')" style="border-radius:50%;border:solid 1px #666;">2</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T3" class="damagelocations" (click)="SelectUnSelectLocation('T3')" style="border-radius:50%;border:solid 1px #666;">3</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T4" class="damagelocations" (click)="SelectUnSelectLocation('T4')" style="border-radius:50%;border:solid 1px #666;">4</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T5" class="damagelocations" (click)="SelectUnSelectLocation('T5')" style="border-radius:50%;border:solid 1px #666;">5</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T6" class="damagelocations" (click)="SelectUnSelectLocation('T6')" style="border-radius:50%;border:solid 1px #666;">6</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T7" class="damagelocations" (click)="SelectUnSelectLocation('T7')" style="border-radius:50%;border:solid 1px #666;">7</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T8" class="damagelocations" (click)="SelectUnSelectLocation('T8')" style="border-radius:50%;border:solid 1px #666;">8</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="T9" class="damagelocations" (click)="SelectUnSelectLocation('T9')" style="border-radius:50%;border:solid 1px #666;">9</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="background-image:url(Assets/img/bottom.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                                    (click)="ChangeView('top', 'front', 'down');">
+                                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-bottom:30px;text-align:center;">Front</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="background-image:url(Assets/img/right.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('top', 'right', 'right');">
+                                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-right:20px;">Right</div>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                        <div class="bottom" style="width:400px; height:auto; position:relative; font-family:Verdana; cursor:pointer; margin: 0px auto; display:none;">
+
+                                                            <table style="width:100%" cellpadding="0" cellspacing="0" border="0">
+
+                                                                <tr>
+                                                                    <td style="background-image:url(Assets/img/left.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('bottom', 'left', 'left');">
+                                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-left:20px;">Left</div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <table style="width:100%;background-image:url(Assets/img/undersidetext.png);background-size:100% 76px;background-repeat:no-repeat;background-position-y:center;" cellpadding="0" cellspacing="0" border="0">
+                                                                            <tr>
+                                                                                <td colspan="3" style="background-image:url(Assets/img/top.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                                    (click)="ChangeView('bottom', 'front', 'up');">
+                                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-top:30px;text-align:center;">Front</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U1" class="damagelocations" (click)="SelectUnSelectLocation('U1')" style="border-radius:50%;border:solid 1px #666;">1</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U2" class="damagelocations" (click)="SelectUnSelectLocation('U2')" style="border-radius:50%;border:solid 1px #666;">2</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U3" class="damagelocations" (click)="SelectUnSelectLocation('U3')" style="border-radius:50%;border:solid 1px #666;">3</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U4" class="damagelocations" (click)="SelectUnSelectLocation('U4')" style="border-radius:50%;border:solid 1px #666;">4</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U5" class="damagelocations" (click)="SelectUnSelectLocation('U5')" style="border-radius:50%;border:solid 1px #666;">5</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U6" class="damagelocations" (click)="SelectUnSelectLocation('U6')" style="border-radius:50%;border:solid 1px #666;">6</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U7" class="damagelocations" (click)="SelectUnSelectLocation('U7')" style="border-radius:50%;border:solid 1px #666;">7</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U8" class="damagelocations" (click)="SelectUnSelectLocation('U8')" style="border-radius:50%;border:solid 1px #666;">8</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="U9" class="damagelocations" (click)="SelectUnSelectLocation('U9')" style="border-radius:50%;border:solid 1px #666;">9</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="background-image:url(Assets/img/bottom.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                                    (click)="ChangeView('bottom', 'back', 'down');">
+                                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-bottom:30px;text-align:center;">Back</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="background-image:url(Assets/img/right.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('bottom', 'right', 'right');">
+                                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-right:20px;">Right</div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+                                                        <div class="back" style="width:400px; height:auto; position:relative; font-family:Verdana; cursor:pointer; margin: 0px auto; display:none;">
+
+                                                            <table style="width:100%" cellpadding="0" cellspacing="0" border="0">
+
+                                                                <tr>
+                                                                    <td style="background-image:url(Assets/img/left.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('back', 'left', 'left');">
+                                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-left:20px;">Left</div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <table style="width:100%;background-image:url(Assets/img/backtext.png);background-size:100% 76px;background-repeat:no-repeat;background-position-y:center;" cellpadding="0" cellspacing="0" border="0">
+                                                                            <tr>
+                                                                                <td colspan="3" style="background-image:url(Assets/img/top.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                                    (click)="ChangeView('back', 'top', 'up');">
+                                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-top:30px;text-align:center;">Top</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B1" class="damagelocations" (click)="SelectUnSelectLocation('B1')" style="border-radius:50%;border:solid 1px #666;">1</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B2" class="damagelocations" (click)="SelectUnSelectLocation('B2')" style="border-radius:50%;border:solid 1px #666;">2</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B3" class="damagelocations" (click)="SelectUnSelectLocation('B3')" style="border-radius:50%;border:solid 1px #666;">3</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B4" class="damagelocations" (click)="SelectUnSelectLocation('B4')" style="border-radius:50%;border:solid 1px #666;">4</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B5" class="damagelocations" (click)="SelectUnSelectLocation('B5')" style="border-radius:50%;border:solid 1px #666;">5</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B6" class="damagelocations" (click)="SelectUnSelectLocation('B6')" style="border-radius:50%;border:solid 1px #666;">6</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B7" class="damagelocations" (click)="SelectUnSelectLocation('B7')" style="border-radius:50%;border:solid 1px #666;">7</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B8" class="damagelocations" (click)="SelectUnSelectLocation('B8')" style="border-radius:50%;border:solid 1px #666;">8</div></td>
+                                                                                <td style="width:88px;text-align:center;line-height:88px;"><div id="B9" class="damagelocations" (click)="SelectUnSelectLocation('B9')" style="border-radius:50%;border:solid 1px #666;">9</div></td>
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="3" style="background-image:url(Assets/img/bottom.png);background-repeat:no-repeat;background-size:100% 100%;background-position-y:center;"
+                                                                                    (click)="ChangeView('back', 'bottom', 'down');">
+                                                                                    <div style="transform: rotate(0deg);transform-origin: right top 30%;margin-bottom:30px;text-align:center;">UNDERSIDE</div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                    <td style="background-image:url(Assets/img/right.png);background-repeat:no-repeat;background-size:100% 60%;background-position-y:center;" (click)="ChangeView('back', 'right', 'right');">
+                                                                        <div style="transform: rotate(90deg);transform-origin: right top 30%;margin-right:20px;">Right</div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                            <div class="clearfix"></div>
+                                                        </div>
+
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <div id="ModelFooter">
+            <button type="button" class="btn btn-default" (click)="CloseItemPopup()">Close</button>
+        </div>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #modalRLocations cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close" data-dismiss="modalRLocations" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Select Location</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <label class="control-label col-md-3" style="padding-top:8px;height:30px;margin-bottom:15px;">
+            Location at Facility<span style="color: red;">*</span>
+        </label>
+        <div class="col-md-3" *ngIf="ShowPerMission('RC015')" style="height:30px;">
+            <select [(ngModel)]="CurrentLocationId" #Locationmodal="ngModel" required name="Location" id="Location" class="form-control" (change)="OnParentLocationChanged(Locationmodal.value)">
+                <!--<option [value]="undefined">--Select--</option>-->
+                <option *ngFor="let Location of LocationList" [value]="Location.LocationID">
+                    {{Location.LocationName}}
+                </option>
+            </select>
+        </div>
+        <div class="clearfix"></div>
+        <div style="overflow:scroll; height:350px;">
+            <table id="LocationStructure.PartnerLocationID" style="width:100%;" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td colspan="100" data-toggle="dropup" id="Col{{LocationStructure.PartnerLocationID}}" class="dropdown-toggle text-align-left cl-td" [ngStyle]="{'background-color':LocationStructure.ColorCode}">
+                        <div class="btn-group">
+                            <button (click)="OnLocationSelectedCallback(LocationStructure)" id="btn{{LocationStructure.PartnerLocationID}}" class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{LocationStructure.LocationCode}}
+                            </button>
+                            <span style="display:none;">{{LocationStructure.LocationCode}}</span>
+                            <div class="clearfix"></div>
+                        </div>
+                        <loc-dynamic [StructureData]="LocationStructure" (LocationSelectedEvent)="OnLocationSelectedCallback($event)"></loc-dynamic>
+                    </td>
+                </tr>
+            </table>
+            <div class="clearfix"></div>
+        </div>
+    </bs-modal-body>
+    <!--<modal-footer>
+        <button type="button" class="btn btn-default" (click)="LocationSelected()">OK</button>
+    </modal-footer>-->
+</bs-modal>
+
+<bs-modal #modalOrderLog cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close"  (click)="modalOrderLog.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Order Log</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <ag-grid-angular #agGrid class="agc-grid ag-theme-balham" style="height:300px;width:100%"
+                     [gridOptions]="gridOptionsOrderLog">
+        </ag-grid-angular>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default"   (click)="modalOrderLog.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<!--<modal #modalContainer cssClass="modal-lg">
+    <modal-header>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Release Container</h4>
+    </modal-header>
+    <modal-body>
+        <div class="step-content" style="height:220px; overflow-y:scroll;">
+            <ag-grid-ng2 #agGrid style="height:300px;width:100%" class="ag-fresh"
+                         [gridOptions]="ContainerGridOptions">
+            </ag-grid-ng2>
+        </div>        
+    </modal-body>
+    <modal-footer>
+        <button type="button" class="btn btn-default" (click)="modalContainer.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="ReleaseContainer()">Release</button>
+    </modal-footer>
+</modal>-->
+
+<message #pop cssClass="modal-msg"></message>

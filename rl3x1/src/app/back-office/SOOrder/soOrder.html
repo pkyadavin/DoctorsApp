@@ -1,0 +1,137 @@
+﻿<style>
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,0);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,0);
+        box-shadow: 0 0 4px rgba(0,0,0,0);
+    }
+
+        .nav-tabs > li {
+            margin: 0px 3px 0px 3px;
+        }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #777;
+                margin-right: -1px;
+                line-height: 24px;
+                position: relative;
+                z-index: 11;
+            }
+
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                color: #262626;
+                border: 0;
+                border-top: 2px solid #333;
+                border-bottom-color: transparent;
+                /*background-color: #fbfbfb;*/
+                z-index: 12;
+                line-height: 24px;
+                margin-top: -2px;
+                box-shadow: 0 -2px 3px 0 rgba(0,0,0,.15);
+            }
+
+            .nav-tabs > li a:hover {
+                color: #fff;
+            }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #fff;
+            }
+
+    .nav > li.disabled > a {
+        color: #fff;
+        background-color: gray;
+    }
+
+        .nav > li.disabled > a:hover {
+            color: #fff;
+            background-color: gray;
+        }
+</style>
+<div class="widget"  [hidden]="IsEditorVisible">
+        <div class="widget-header">
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="openSTOTxt" class="form-control input-sm" style="margin-top:3px;width:250px;"
+                    [(ngModel)]="filterValue" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button (click)="onOpenFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i
+                            class="fa fa-search"></i>Search</button>
+                </span>
+            </div>
+            <div class="widget-buttons">
+
+
+                <button href="javascript:void(0)" id="btnEdit" class="btn btn-sm btn-primary" *ngIf="isEditVisible"
+                    (click)="EditSTO(CurrentSO.SOHeaderID)">
+                    <i class="glyphicon glyphicon-edit"></i>View
+                </button>
+            </div>
+        </div>
+        <div class="widget-body no-padding">
+            <ag-grid-angular #agGrid style="height:100%;width:100%" class="ag-theme-balham" [gridOptions]="openSTOGridOptions"
+            (selectionChanged)="onSelectedOpenSTOChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+
+        </div>
+    </div>
+<bs-modal #importPopup cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" style="float:left;">Import file</h4>
+
+    </bs-modal-header>
+    <bs-modal-body>
+        <div class="form-group">
+            <div class="col-md-6">
+
+                <input #fileInput id="ExcelFileControl" (change)="onChangeFileInput($event)" type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" />
+            </div>
+            <div class="col-md-6">
+                <button id="btnAdd" class="btn-primary text-align-center thumb Authorize AUTH_2068" [disabled]="ImportInProcess"
+                    *ngIf="!ShowUploadbutton" (click)="addFile()">
+                    <i class="fa fa-upload"></i>
+                    Submit File
+                </button>
+            </div>
+                       <div class="clearfix"></div>
+        </div>
+        <hr />
+        <div *ngFor="let key of jsonArray; let i = index;">
+            <div class="form-group" *ngIf="ImportStatus!=''">
+                <div class="col-lg-6" style="margin-bottom:5px;">
+                    <label class="control-label"><b>Results for Sheet <<span style="color:brown">{{key[0].SheetName}}</span>></b></label>
+                    <br />
+
+                    <label class="control-label" style="display: block;font-size:smaller" *ngFor="let subkey of key[0].Errors; let i = index;">&#8226;
+                        {{subkey}} </label>
+                </div>
+                <div class="col-lg-6" style="margin-bottom:5px;">
+                    <label class="control-label" *ngIf="key[0].ImportStatus=='Success'" style="color:forestgreen"><b>Status:
+                            {{key[0].ImportStatus}}</b></label>
+                    <label class="control-label" *ngIf="key[0].ImportStatus!='Success'" style="color:red"><b>Status:
+                            {{key[0].ImportStatus}}</b></label>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <hr />
+        </div>
+
+        <div class="clearfix"></div>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="close()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+<SOOrder-editor *ngIf="IsEditorVisible" [selectedId]="selectedId" [permission]="LocalAccess | contains:'Edit'"
+    (EditorVisibilityChange)="ChangeEditorVisibility($event)"></SOOrder-editor>

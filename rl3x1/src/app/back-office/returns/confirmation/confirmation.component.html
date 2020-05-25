@@ -1,0 +1,150 @@
+<div >
+    <div class="row">
+        <div class="col-md-12">
+            <div class="widget">
+                <div class="widget-body rma_creationdetail detail_confirmation">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p class="success">Your return request for item(s) has been generated. Please refer to the
+                                RMA number for item(s) and shipping labels.</p>
+                            <label for="">Ref. # <strong>{{ returnOrder.return_number }}</strong> generated for
+                                <strong>{{ returnOrder.customer.name }}</strong> on dated
+                                <strong>{{ returnOrder.created_date | date: "MMM d, y" }}</strong>.</label>
+                            <label for=""><strong>Shipping Address:</strong>
+                                <address>
+                                    {{ returnOrder.customer.address.complete_address }}
+                                </address>
+                            </label>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <button class="btn btn-default btn-warning" (click)="navigatetootherqueues('glb')"><i
+                                    class="fa fa-list" aria-hidden="true"></i> Global RMA List</button>
+                            <button class="btn btn-default btn-success" (click)="navigatetootherqueues('ini')"><i
+                                    class="fa fa-plus-circle" aria-hidden="true"></i> Create New RMA</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="print-section">
+        <div class="col-md-12">
+            <div class="widget">
+                <div class="widget-body rma_creationdetail detail_prod_confirmation">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4>List of Product(s) <small>(Product Count: {{ returnOrder.items.length }})</small></h4>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tbl">
+                                <table class="table" id="productlist" cellspacing="10">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>#</th>
+                                            <th>Serial #</th>
+                                            <th>Product</th>
+                                            <th>Product #</th>
+                                            <th>Reason for Return</th>
+                                            <th *ngIf="is_item_warranty">POP</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="panel" *ngFor="let item of returnOrder.items; let i = index">
+                                        <tr class="active">
+                                            <td>
+                                                <i data-toggle="collapse" data-target="#demo{{ i }}" id="demo{{ i }}"
+                                                    data-parent="#productlist" class="fa fa-minus-square"
+                                                    aria-hidden="true"></i>
+                                            </td>
+                                            <td>
+                                                <!-- bp_logo_1 -->
+                                                <img *ngIf="brandCode == 'dsc2'"
+                                                    src="../../../../assets/img/jabra_pro_img1.png" alt="" />
+                                                <img *ngIf="brandCode == 'dsc3'"
+                                                    src="../../../../assets/img/bp_logo_1.png" alt="" />
+                                            </td>
+                                            <td>
+                                                <label for="" style="color:colorgreen" [ngClass]="
+                                        item.warranty_status_id == 84
+                                          ? 'colorred'
+                                          : 'colorgreen'
+                                      "><i class="fa fa-shield"></i>&nbsp; </label>{{ item.serial_number }}
+                                            </td>
+                                            <td>{{ item.name }}</td>
+                                            <td>{{ item.sku }}</td>
+                                            <td>{{ item.return_reason.rma_action_name }}</td>
+                                            <td>
+                                                <button class="btn btn-default btn-info btn-sm"
+                                                    *ngIf="item.warranty_status_id == 84">
+                                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                                    <a href="{{ item.files[0].url }}" style="color: white;">View POP</a>
+                                                </button>
+                                            </td>
+
+                                        </tr>
+
+                                        <tr id="demo{{ i }}" class="collapse in">
+                                            <td colspan="8" class="hiddenRow">
+                                                <div>
+                                                    <h5>Customer Reference Field</h5>
+                                                    <p>
+                                                        {{ item.remark }}
+                                                    </p>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- <p class="note"><strong>Note:-</strong> Please note the item(s) under <strong>Out-Of-Warranty</strong> are submitted for review and approval. You will be notified once this is approved.</p> -->
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row addinfo">
+                        <div class="col-md-3">
+                            <div class="shipdocs">
+                                <h5>Print Shipping Documents</h5>
+                                <button  target="_blank" title="Print"
+                                [useExistingCss]="true" printSectionId="print-section" ngxPrint class="btn btn-default btn-success"><i class="fa fa-print"
+                                        aria-hidden="true"></i> Print Label</button>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-2 pl-0 pr-0">
+                        <div class="rt_status">
+                            <h5>Return Status</h5>
+                            <button class="btn btn-default btn-warning"><i class="fa fa-map-marker" aria-hidden="true"></i> Track Return Status</button>
+                        </div>
+                    </div> -->
+                        <div class="col-md-7">
+                            <h5>Additional Information</h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="infobx">
+                                        <label for=""><strong>Primary Email</strong></label>
+                                        <p>{{ returnOrder.primary_email }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="infobx">
+                                        <label for=""><strong>Secondary Email</strong></label>
+                                        <p>{{ returnOrder.secondary_email }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="infobx noborder">
+                                        <label for=""><strong>Own Reference #</strong></label>
+                                        <p>{{ returnOrder.add_own_reference_number }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

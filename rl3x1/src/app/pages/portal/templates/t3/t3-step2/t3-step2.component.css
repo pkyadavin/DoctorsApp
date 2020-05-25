@@ -1,0 +1,11 @@
+@import '../t3.component.css';
+.imgbx img {
+    width: 95%;
+}
+
+.proofop {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

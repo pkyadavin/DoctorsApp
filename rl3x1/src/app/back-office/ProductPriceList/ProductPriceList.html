@@ -1,0 +1,319 @@
+﻿<style>
+    .table thead>tr>th {
+        border-bottom: 0;
+        font-size: 10px !important;
+        font-weight: 600;
+    }
+</style>
+<div class="widget" [hidden]="!ListView">
+    <div class="widget-body">
+        <div class="widget-header widget-header1">
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" placeholder="Search...">
+                <span class="input-group-btn">
+                <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i
+                        class="fa fa-search"></i>Search</button>
+            </span>
+            </div>
+            <div class="widget-buttons">
+                <span class="btn btn-sm btn-success" style="cursor: pointer;font-size: 12px; font-weight: 700;background-color: #53a93f!important;
+            border-color: #53a93f; padding: 5px;"><i class="fa fa-download"></i> <a   style="color: white" target="_self" href="../../assets/priceList.xlsx" download="priceList.xlsx">Download Template </a></span>
+
+
+                <span class="btn btn-sm btn-success" style="cursor: pointer;font-size: 12px; font-weight: 700;background-color: #53a93f!important;
+            border-color: #53a93f; padding: 5px;" (click)='clearData()' data-toggle="modal" data-target="#myModal"><i class="fa fa-upload"></i> Upload Excel</span>
+
+            </div>
+        </div>
+        <div class="card1 no-padding">
+            <ag-grid-angular #agGrid class="agc-grid ag-theme-balham" [ngClass]="{'agc-grid-popup':(GridType=='popup') }" (gridReady)="onGridReady($event)" [gridOptions]="gridOptions" (selectionChanged)="GridType != 'popup' && onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="clearfix"></div>
+
+<div class="" *ngIf="!ListView">
+    <form name="Product" #f="ngForm" class="css-form" novalidate>
+        <div class="widget">
+            <div class="widget-body">
+                <div class="widget-header widget-header1">
+
+                    <div class="widget-buttons">
+
+                        <button class="btn btn-sm waves-effect waves-light btn-danger mr-2" type="button" (click)="Cancel()">
+                            <i class="fa fa-long-arrow-left"></i> Back
+                        </button>
+                        <button class="btn btn-sm waves-effect waves-light btn-success" type="submit" *ngIf="LocalAccess | contains:'Edit'" (click)="Update(f.form)">
+                            <i class="fa fa-floppy-o"></i> Update
+                        </button>
+                    </div>
+                </div>
+                <hr>
+                <div class="widget-body no-padding">
+                  <div class="form-group" *ngIf="f.form.touched && !f.form.valid"  >
+                        <div class="validationmsg">
+                         <b> Please fill the asterisk (*) fields. </b>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Model Number
+                          <span *ngIf="e_localize.ProductNo.isRequired" style="color:red;">*</span>:</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" [required]="e_localize.ProductNo.isRequired"  name="ProductNo" #ProductNo="ngModel" [(ngModel)]="_ProductPriceListModel.ProductNo" readonly [required]="true" placeholder="Model Number">
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Code<span *ngIf="e_localize.PriceListCd.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" [required]="e_localize.PriceListCd.isRequired" name="PriceListCd" maxlength="10" #PriceListCd="ngModel" [(ngModel)]="_ProductPriceListModel.PriceListCd" placeholder="Code">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--2row-->
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Description
+                          <span *ngIf="e_localize.PriceListDescr.isRequired" style="color:red;">*</span>:</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" maxlength="80" class="form-control" [required]="e_localize.PriceListDescr.isRequired" name="PriceListDescr " #PriceListDescr="ngModel" [(ngModel)]="_ProductPriceListModel.PriceListDescr " [required]="true" placeholder="Description ">
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Currency Code <span *ngIf="e_localize.CrncyCd.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input maxlength="10" type="text" class="form-control" [required]="e_localize.CrncyCd.isRequired"  name="CrncyCd" #CrncyCd="ngModel" [(ngModel)]="_ProductPriceListModel.CrncyCd" placeholder="Currency Code">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--3rd row-->
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Macro Region Code
+                          <span *ngIf="e_localize.MacroRegionCd.isRequired" style="color:red;">*</span>:</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <!-- <input type="text" class="form-control" name="MacroRegionCd" #MacroRegionCd="ngModel" [(ngModel)]="_ProductPriceListModel.MacroRegionCd" [required]="true" placeholder="Macro Region Code"> -->
+                            <select #MacroRegionCd="ngModel" [(ngModel)]="_ProductPriceListModel.MacroRegionCd" [required]="e_localize.MacroRegionCd.isRequired"
+                            name="MacroRegionCd" class="form-control">
+                            <option [value]="i.RegionCode" *ngFor="let i of RegionList">{{i.RegionCode}} </option>
+                          </select>
+                          </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Price <span *ngIf="e_localize.Price.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input DigitOnly maxlength="20" type="text" class="form-control" [required]="e_localize.Price.isRequired"  name="Price" #Price="ngModel" [(ngModel)]="_ProductPriceListModel.Price" placeholder="Price">
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--4th row-->
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Retail Price
+                          <span *ngIf="e_localize.SuggRetail.isRequired" style="color:red;">*</span>:</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input DigitOnly maxlength="20" type="text"class="form-control" [required]="e_localize.SuggRetail.isRequired" name="SuggRetail" #SuggRetail="ngModel" [(ngModel)]="_ProductPriceListModel.SuggRetail" [required]="true" placeholder="Retail Price">
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Cost Price <span *ngIf="e_localize.CostPrice.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input DigitOnly maxlength="20" type="text" class="form-control" [required]="e_localize.CostPrice.isRequired" name="CostPrice" #CostPrice="ngModel" [(ngModel)]="_ProductPriceListModel.CostPrice" placeholder="Cost Price">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--5th row-->
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Product Description
+                          <span *ngIf="e_localize.ProductDescr.isRequired" style="color:red;">*</span> :</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input  maxlength="120" type="text" class="form-control" [required]="e_localize.ProductDescr.isRequired" name="ProductDescr" #ProductDescr="ngModel" [(ngModel)]="_ProductPriceListModel.ProductDescr" [required]="true" placeholder="Product Description">
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Primary Season Code<span *ngIf="e_localize.PrimSeasonCd.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <!-- <input type="text" class="form-control" name="PrimSeasonCd" #PrimSeasonCd="ngModel" [(ngModel)]="_ProductPriceListModel.PrimSeasonCd" placeholder="Primary Season Code"> -->
+                            <select #PrimSeasonCd="ngModel" [(ngModel)]="_ProductPriceListModel.PrimSeasonCd" [required]="e_localize.PrimSeasonCd.isRequired"
+                            name="PrimSeasonCd" class="form-control">
+                            <option [value]="i.SeasonCode" *ngFor="let i of SeasonList">{{i.SeasonCode}} </option>
+                          </select>
+                          </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--6th row-->
+                    <div class="form-group row" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Grade Code<span *ngIf="e_localize.GradeCd.isRequired" style="color:red;">*</span>
+                                          :</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <!-- <input type="text" class="form-control" name="GradeCd" #GradeCd="ngModel" [(ngModel)]="_ProductPriceListModel.GradeCd" [required]="true" placeholder="Grade Code"> -->
+                            <select #GradeCd="ngModel" [(ngModel)]="_ProductPriceListModel.GradeCd"
+                            [required]="e_localize.GradeCd.isRequired" name="GradeCd" class="form-control">
+                            <option [value]="i.GradeCd" *ngFor="let i of GradeList">{{i.GradeCd}} </option>
+                          </select>
+                        </div>
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Category Code<span *ngIf="e_localize.CatCd.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <!-- <input type="text" class="form-control" name="CatCd" #CatCd="ngModel" [(ngModel)]="_ProductPriceListModel.CatCd" placeholder="Category Code"> -->
+                            <select #CatCd="ngModel" [(ngModel)]="_ProductPriceListModel.CatCd" [required]="e_localize.CatCd.isRequired"
+                            name="CatCd" class="form-control">
+                            <option [value]="i.CatCd" *ngFor="let i of CategoryList">{{i.CatCd}} </option>
+                          </select>
+                          </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                </div>
+                <div class="widget-header widget-header1">
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+      <div class="modal-header bg-purple">
+        <button type="button" class="close" #closebutton data-dismiss="modal">&times;</button>
+        <h4 class="m-b-0 text-white">Upload Excel</h4>
+      </div>
+      <div class="modal-body" style="height: 350px;">
+        <div class="row">
+          <div class="col-sm-6 col-md-4 col-lg-4 col-xs-12 margin-bottom-5">
+            <input type="file" #fileupload ngModel id="myExcelFile" name="myExcelFile" (change)="fileChange($event)"
+              multiple="true" style="display:none" accept=".xlsx, .xls" />
+            <button style="margin-right: 10px;" class="btn btn-success btn-sm" [disabled]="uploadLoader"
+              (click)="fileupload.click()">
+              <i *ngIf="uploadLoader" class="glyphicon glyphicon-refresh spinning1"></i>
+              <i class="fa fa-upload dropbtn"></i> Browse
+            </button>
+
+          </div>
+        </div>
+        <div class="row" *ngIf="regXMLData || regXMLInValidData ">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#Valid">Valid</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#Invalid">Invalid</a>
+          </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content" >
+
+          <div class="tab-pane container active" id="Valid">
+            <div *ngIf="regXMLData" class="importedData" style="max-height: 350px;">
+              <table class="table table-bordered table-striped" style="width: 2000px;">
+                <thead>
+                  <tr>
+
+                    <th>ProductNo</th>
+                    <th>PriceListCd </th>
+                    <th>PriceListDescr </th>
+                    <th>CrncyCd </th>
+                    <th>MacroRegionCd </th>
+                    <th>Price </th>
+                    <th>SuggRetail </th>
+                    <th>CostPrice </th>
+                    <th>ProductDescr </th>
+                    <th>PrimSeasonCd </th>
+                    <th>GradeCd </th>
+                    <th>CatCd </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let source of regXMLData; let i = index">
+
+                    <td>{{source.ProductNo}}</td>
+                    <td>{{source.PriceListCd }}</td>
+                    <td>{{source.PriceListDescr }}</td>
+                    <td>{{source.CrncyCd }}</td>
+                    <td>{{source.MacroRegionCd }}</td>
+                    <td>{{source.Price }}</td>
+                    <td>{{source.SuggRetail }}</td>
+                    <td>{{source.CostPrice }}</td>
+                    <td>{{source.ProductDescr }}</td>
+                    <td>{{source.PrimSeasonCd }}</td>
+                    <td>{{source.GradeCd }}</td>
+                    <td>{{source.CatCd }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="tab-pane container fade" id="Invalid">
+
+
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12 margin-bottom-5">
+                <div *ngIf="IsLoaded">
+
+                  <div *ngIf="regXMLInValidData" class="importedData" style="max-height: 350px;">
+                    <table class="table table-bordered table-striped" style="width: 2000px;">
+                      <thead>
+                        <tr>
+                          <th>Invalid Reason</th>
+                          <th>ProductNo</th>
+                          <th>PriceListCd </th>
+                          <th>PriceListDescr </th>
+                          <th>CrncyCd </th>
+                          <th>MacroRegionCd </th>
+                          <th>Price </th>
+                          <th>SuggRetail </th>
+                          <th>CostPrice </th>
+                          <th>ProductDescr </th>
+                          <th>PrimSeasonCd </th>
+                          <th>GradeCd </th>
+                          <th>CatCd </th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let source of regXMLInValidData; let i = index">
+                          <td>{{source.InValidReason}}</td>
+                          <td>{{source.ProductNo}}</td>
+                          <td>{{source.PriceListCd }}</td>
+                          <td>{{source.PriceListDescr }}</td>
+                          <td>{{source.CrncyCd }}</td>
+                          <td>{{source.MacroRegionCd }}</td>
+                          <td>{{source.Price }}</td>
+                          <td>{{source.SuggRetail }}</td>
+                          <td>{{source.CostPrice }}</td>
+                          <td>{{source.ProductDescr }}</td>
+                          <td>{{source.PrimSeasonCd }}</td>
+                          <td>{{source.GradeCd }}</td>
+                          <td>{{source.CatCd }}</td>
+
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+
+                </div>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm btn-primary" id="closeModal" type="submit" (click)="Save('save')">
+          <i class="glyphicon glyphicon-floppy-disk"></i> Continue
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

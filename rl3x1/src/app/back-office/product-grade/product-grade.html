@@ -1,0 +1,108 @@
+﻿<div class="widget" [hidden]="!ListView">
+    <div class="widget-body">
+        <div class="widget-header ">
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" placeholder="Search...">
+                <span class="input-group-btn">
+                <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i
+                        class="fa fa-search"></i>Search</button>
+            </span>
+            </div>
+            <div class="widget-buttons">
+                <button class="btn btn-sm btn-primary add_btn" type="button" (click)="onAddCategory()" *ngIf="LocalAccess | contains:'Add'">
+              <i class="glyphicon glyphicon-plus-sign"></i>Add
+            </button>
+            </div>
+        </div>
+        <div class="card1 no-padding marginTop34">
+            <ag-grid-angular #agGrid class="agc-grid ag-theme-balham" [ngClass]="{'agc-grid-popup':(GridType=='popup') }" (gridReady)="onGridReady($event)" [gridOptions]="gridOptions" (selectionChanged)="GridType != 'popup' && onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="clearfix"></div>
+
+
+
+<div class="" *ngIf="!ListView">
+    <form name="Country" #f="ngForm" class="css-form" novalidate>
+        <div class="widget">
+            <div class="widget-body">
+                <div class="widget-header ">
+                    <span class="widget-caption" *ngIf="CurrentGradeObj.GradeId == undefined"><b>Add {{moduleTitle}}</b>
+                    </span>
+                    <span class="widget-caption" *ngIf="CurrentGradeObj.GradeId > 0"><b><span
+                                *ngIf="LocalAccess | contains:'Edit'">Edit</span> {{moduleTitle}}</b>
+                    </span>
+                    <div class="widget-buttons">
+                        <button class="btn btn-sm waves-effect waves-light btn-danger mr-2" type="button" (click)="Cancel('back')">
+                            <i class="fa fa-long-arrow-left"></i> Back
+                        </button>
+                        <button class="btn btn-sm waves-effect waves-light btn-success" type="submit" *ngIf="LocalAccess | contains:'Edit'" (click)="Save(f.form)">
+                            <i class="fa fa-floppy-o"></i> Save
+                        </button>
+                    </div>
+                </div>
+                <hr>
+                <div class="widget-body no-padding">
+                    <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                        <div class="validationmsg">
+                            <b> Please fill the asterisk (*) fields. </b>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+
+
+
+                    <div class="form-group" *ngIf="IsLoaded">
+
+                        <div *ngIf="IsLoaded">
+
+                            <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.GradeCd.isVisible">{{e_localize.GradeCd.headerName}} <span
+                                    *ngIf="e_localize.GradeCd.isRequired" style="color:red;">*</span>:</label>
+
+                            <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.GradeCd.isVisible">
+                                <input type="text" class="form-control" name="GradeCd" #GradeCd="ngModel" [(ngModel)]="CurrentGradeObj.GradeCd" [required]="e_localize.GradeCd.isRequired" [disabled]="!e_localize.GradeCd.isEnabled" placeholder="Grade Code">
+
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--2row-->
+                    <div class="form-group" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Description.isVisible">{{e_localize.Description.headerName}} <span
+                                *ngIf="e_localize.Description.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Description.isVisible">
+                            <input type="text" class="form-control" name="Description" #Description="ngModel" [(ngModel)]="CurrentGradeObj.Description" [required]="e_localize.Description.isRequired" [disabled]="!e_localize.Description.isEnabled" placeholder="Description">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <div *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.IsActive.isVisible">{{e_localize.IsActive.headerName}} <span
+                                *ngIf="e_localize.IsActive.isRequired" style="color:red;">*</span>:</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.IsActive.isVisible">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" [required]="e_localize.IsActive"
+                                        class="checkbox-slider colored-palegreen yesno"
+                                        [disabled]="!e_localize.IsActive" [(ngModel)]="CurrentGradeObj.IsActive"
+                                        [ngModelOptions]="{standalone: true}"><span class="text">&nbsp;</span>
+                                </label>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

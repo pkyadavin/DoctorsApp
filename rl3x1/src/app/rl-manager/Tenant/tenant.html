@@ -1,0 +1,130 @@
+﻿<div *ngIf="IsListView">
+    <div class="widget">
+        <div class="widget-header ">
+            <span class="widget-caption pull-left font-40"><b> Tenants </b> </span>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="searchText" class="input-sm pull-left margin-left-20" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" [(value)]="filterText" (keyup.enter)="onFilterChanged()" placeholder="Search...">
+                <span class="input-group-btn pull-left">
+                    <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                </span>
+            </div>
+            <div class="widget-buttons">
+                <!--<a id="btnAdd" href="javascript:void(0)" class="btn-link text-align-center thumb" (click)="AddNewTenant()"><i class="glyphicon glyphicon-plus-sign"></i></a>-->
+                <button href="javascript:void(0)" id="btnEdit" class="btn btn-sm btn-primary ng-hide" *ngIf="CurrentTenant.ID>0" (click)="EditTenant()"><i class="glyphicon glyphicon-edit"></i>View</button>
+                <!--<a href="javascript:void(0)" id="btnDelete" class="btn-link ng-hide" *ngIf="CurrentTenant.ID>0" (click)="DeleteTenant()"><i class="glyphicon glyphicon-trash red" style="display:block;font-size: 25px;"></i></a>-->
+            </div>
+        </div>
+        <!--grid-->
+        <div class="widget-body no-padding">
+            <div class="clearfix"></div>
+            <tabs #tabs>
+                <tab tabTitle="Pending" (select)="OnTabChanged('TS006')">                        
+                    <ag-grid-angular #agGrid style="height:500px;width:100%" class="ag-theme-balham" (gridReady)="onGridReady($event)"
+                                 [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()">
+                    </ag-grid-angular>
+                </tab>
+                <tab tabTitle="Approved" (select)="OnTabChanged('TS002')">
+                    <ag-grid-angular #agGridApproved style="height:500px;width:100%" class="ag-theme-balham" (gridReady)="onGridApprovedReady($event)"
+                                 [gridOptions]="gridOptionsApproved" (selectionChanged)="onSelectionChanged()">
+                    </ag-grid-angular>
+                </tab>
+                <tab tabTitle="Rejected" (select)="OnTabChanged('TS003')">
+                    <ag-grid-angular #agGridRejected style="height:500px;width:100%" class="ag-theme-balham" (gridReady)="onGridRejectedReady($event)"
+                                 [gridOptions]="gridOptionsDenied" (selectionChanged)="onSelectionChanged()">
+                    </ag-grid-angular>
+                </tab>
+                <tab tabTitle="Archived" (select)="OnTabChanged('TS004')">
+                    <ag-grid-angular #agGridArchived style="height:500px;width:100%" class="ag-theme-balham" (gridReady)="onGridArchivedReady($event)"
+                                 [gridOptions]="gridOptionsArchived" (selectionChanged)="onSelectionChanged()">
+                    </ag-grid-angular>
+                </tab>
+                <tab tabTitle="Deleted" (select)="OnTabChanged('TS005')">
+                    <ag-grid-angular #agGridDeleted style="height:500px;width:100%" class="ag-theme-balham" (gridReady)="onGridDeletedReady($event)"
+                                 [gridOptions]="gridOptionsDeleted" (selectionChanged)="onSelectionChanged()">
+                    </ag-grid-angular>
+                </tab>
+            </tabs>
+            <!--<ag-grid-ng2 #agGrid style="height:450px;width:100%" class="ag-fresh"
+                         [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()">
+            </ag-grid-ng2>-->
+        </div>
+    </div>
+</div>
+
+
+
+
+<div *ngIf="!IsListView">
+    <div class="widget">
+        <div class="widget-header">
+            <span class="widget-caption"><b>View Tenant</b> </span>
+            <div class="widget-buttons">
+                <button class="btn btn-sm btn-danger" type="button" (click)="OnCancel()">
+                    <i class="glyphicon glyphicon-floppy-remove"></i>Exit
+                </button>
+                <button class="btn  btn-sm btn-success" type="submit" (click)="UpdateFTP()" *ngIf="OrderStatus=='TS002'">
+                    <i class="glyphicon glyphicon-link"></i>Save
+                </button>
+                <button class="btn  btn-sm btn-success" type="submit" (click)="ConfigureTenant()" *ngIf="OrderStatus=='TS002' && !CurrentTenant.IsActivated">
+                    <i class="glyphicon glyphicon-link"></i>Configure
+                </button>
+                <button class="btn  btn-sm btn-danger" type="submit" (click)="OnRejectOpen()" *ngIf="OrderStatus=='TS006'">
+                    <i class="glyphicon glyphicon-thumbs-down"></i>Reject
+                </button>
+                <button class="btn  btn-sm btn-success" type="submit" (click)="OnSubmit()" *ngIf="OrderStatus=='TS006' || OrderStatus=='TS003' || OrderStatus=='TS004'">
+                    <i class="glyphicon glyphicon-thumbs-up"></i> Approve
+                </button>
+            </div>
+        </div>
+        <div class="widget-body ">
+            <tenant-view [OrderStatus]="OrderStatus" [(tenantFTP)]="tenantFTP" (tenantDataChange)="tenantDataChange($event)" [tid]="CurrentTenant.TenantID"></tenant-view>
+        </div>
+    </div>
+</div>
+
+<bs-modal #modalReject cssClass="modal-xl">
+    <bs-modal-header>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Reject Remarks</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <form #formReject="ngForm" name="formReject" novalidate>
+            <!--<div class="form-group">
+                <div class="col-md-9">
+                    <label class="control-label col-md-6" style="padding-top:8px;">
+                        Reject Reason<span style="color:red;">*</span>
+                    </label>
+                    <div class="col-md-6">
+                        <select [(ngModel)]="CurrentSROApprovalDetail.RejectReasonID" #dType9="ngModel" [required]="IsReject" name="dType9" class="form-control">
+                            <option [value]="undefined">--Select--</option>
+                            <option *ngFor="let dType of RejectReasonsList;" [value]="dType.RMAActionCodeID">
+                                {{dType.RMAActionName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>-->
+            <div class="form-group">
+                <div class="col-md-12">
+                    <!--<label class="control-label col-md-3 no-padding-left" style="padding-top:8px;">
+                        Reject Remarks
+                    </label>-->
+                    <div class="col-lg-12">
+                        <textarea name="RejRemarks" style="height: 62px!important;float:left;" #RejRemarks="ngModel" class="form-control" [(ngModel)]="CurrentTenant.Comment"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </form>
+        <div class="clearfix"></div>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default" data-dismiss="modalReject" (click)="modalReject.dismiss()">Cancel</button>
+        <button type="button" class="btn btn-default" (click)="OnReject(formReject.form)">Done</button>
+    </bs-modal-footer>
+</bs-modal>
+<ngx-ui-loader fgsType="rectangle-bounce"></ngx-ui-loader>
+
+<message #pop cssClass="modal-msg"></message>
+

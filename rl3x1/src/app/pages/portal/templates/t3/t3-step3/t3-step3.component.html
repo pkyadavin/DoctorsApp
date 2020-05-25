@@ -1,0 +1,137 @@
+<div id="print-section">
+    <section class="top_info_box ">
+        <!-- {{return_data_confirm | json}} -->
+        <div class="container" *ngIf="return_data_confirm">
+            <div class="row">
+                <div class="col-md-10 pr-0">
+                    <p class="thankyou_msg">
+                        {{ getlangval("lbl_summary_request_register") }}
+                    </p>
+                    <address>
+            <strong>{{ getlangval("lbl_customer_address") }}:
+            </strong>{{ return_data_confirm.customer.address.complete_address }}
+          </address>
+                    <p>
+                        <strong>{{ getlangval("lbl_ref_number") }} -</strong> {{ return_data_confirm.return_number }}
+                    </p>
+                </div>
+                <div class="col-md-2">
+                    <div class="req_date_box pull-right">
+                        <!-- <div class="iconbox">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </div> -->
+                        <div class="datebx">
+                            <p>{{ getlangval("lbl_customer_orderdate") }}</p>
+                            <span>{{ today | date: "MMM d, y" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="freight">
+        <div class="container" *ngIf="return_data_confirm">
+            <div class="row">
+                <div class="col-md-5">
+                    <h5 class="tack_heading">
+                        {{ getlangval("lbl_summary_track_refund") }}
+                    </h5>
+                    <a class="btn btn-primary track_btn" title="Track Return Status" (click)="goTrackStatus()"><i
+              class="fa fa-map-marker" aria-hidden="true"></i>{{ getlangval("lbl_summary_track_refund") }}
+            </a>
+                </div>
+                <div class="col-md-7 addition_info_box">
+                    <h5 class="tack_heading">{{ getlangval("lbl_additional_info") }}</h5>
+                    <div class="row">
+                        <!-- {{return_data_confirm | json}} -->
+                        <div class="col-md-4">
+                            <label for="">{{ getlangval("lbl_primary_email") }}</label>
+                            <p>{{ return_data_confirm.primary_email }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">{{ getlangval("lbl_secondary_email") }}</label>
+                            <!-- <p>{{return_data_confirm.secondary_email}}</p> -->
+                            <p>
+                                {{ return_data_confirm.secondary_email === "" ? "-" : return_data_confirm.secondary_email }}
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">{{ getlangval("lbl_own_refernce") }}</label>
+                            <!-- <p>{{return_data_confirm.add_own_reference_number}}</p> -->
+                            <p>
+                                {{ return_data_confirm.add_own_reference_number === "" ? "-" : return_data_confirm.add_own_reference_number }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pro_header">
+                        <h5>{{ getlangval("lbl_products") }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div id="print-section" *ngIf="return_data_confirm">
+                <div class="row product_detail_box" *ngFor="let item of this.return_data_confirm.items; let i = index">
+                    <div class="col-md-1 pr-0">
+                        <div class="imgbx">
+                            <img *ngIf="brand == 'dsc2'" style="width: auto; height: 100%;" src="../../../../../../assets/customer_portal/images/arcteryx-product1.png" alt="" />
+                            <img *ngIf="brand == 'dsc3'" style="width: auto; height: 100%;" src="../../../../../../assets/customer_portal/images/arcteryx-product1.png" alt="" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="v-center">
+                            <label for="">{{ item.name }}</label>
+                            <label for="">{{ getlangval("lbl_item_serialnumber") }} :
+                <span>{{ item.serial_number }}</span></label>
+                            <label for="">{{ getlangval("lbl_item_model") }} :
+                <span>{{ item.sku }}</span></label>
+                        </div>
+                    </div>
+                    <!-- {{item|json}} -->
+                    <div class="col-md-2">
+                        <div class="v-center">
+                            <label for="" style="color:colorgreen" [ngClass]="
+                item.warranty_status_id == 84 ? 'colorred' : 'colorgreen'
+              "><i class="fa fa-shield"></i>&nbsp;{{ item.warranty }}</label>
+
+                            <p class="proofop" for="" *ngIf="item.warranty_status_id == 84">
+                                <a (click)="viewpop()" target="_blank" style="cursor: pointer;">View POP
+                  <!--{{item.files[0].name}}--></a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <!-- {{item|json}} -->
+                        <div class="v-center">
+                            <label for="">{{ getlangval("lbl_item_returnreason") }}</label>
+                            <p>{{ item.return_reason.rma_action_name }}</p>
+                        </div>
+                    </div>
+                    <!-- {{item | json}} -->
+                    <div class="col-md-3">
+                        <div class="v-center">
+                            <label for="">{{ getlangval("lbl_item_comment") }}:</label>
+                            <p>{{ item.remark === "" ? "-" : item.remark }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <hr />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button class="btn btn-primary track_btn" target="_blank" title="Print" [useExistingCss]="true" printSectionId="print-section" ngxPrint><i class="fa fa-print" aria-hidden="true"></i>
+            {{ getlangval("lbl_print") }}</button>
+                    <!-- <button class="btn btn-primary track_btn" target="_blank" title="Print" printSectionId="print-section"
+            ngxPrint><i class="fa fa-print" aria-hidden="true"></i>
+            {{ getlangval("lbl_print") }}</button> -->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<ngx-ui-loader></ngx-ui-loader>

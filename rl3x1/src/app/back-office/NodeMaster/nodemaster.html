@@ -1,0 +1,98 @@
+﻿<div *ngIf="loading == true" class="loader">Loading..</div>
+<div *ngIf="loading == false">
+    <div class="widget" [hidden]="!isNodeMasterList$">
+        <div class="widget-header widget-header1 padding-bottom-5 ">
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                </span>
+            </div>
+            <div class="widget-buttons">
+                <button class="btn btn-sm btn-primary" type="button" (click)="ShowHideAdd()" *ngIf="isAddNodeMaster$ && LocalAccess | contains:'Add'">
+                    <i class="glyphicon glyphicon-plus-sign"></i>Add
+                </button>
+                <button class="btn btn-sm btn-primary" id="btnEdit" (click)="ShowHideEdit()" *ngIf="isEditNodeMaster$">
+                    <i class="glyphicon glyphicon-edit"></i>View
+                </button>
+                <button class="btn btn-sm btn-danger" type="button" (click)="Delete()" *ngIf="isEditNodeMaster$ && LocalAccess | contains:'Delete'">
+                    <i class="glyphicon glyphicon-trash"></i>Delete
+                </button>
+            </div>
+        </div>
+        <div class="widget-body no-padding marginTop34">
+            <div class="widget">
+                <div class="widget-body no-padding">
+                    <ag-grid-angular #agGrid style="height:100%;width:100%" class="ag-theme-balham"
+                                 [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+                    </ag-grid-angular>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div *ngIf="!isNodeMasterList$">
+        <div class="widget">
+            <form #f="ngForm" novalidate>
+                <div class="widget-header widget-header1">
+                    <span class="widget-caption pull-left font-40" *ngIf="currentNode.NodeID == 0"><b>Add {{moduleTitle}}</b> </span>
+                    <span class="widget-caption pull-left font-40" *ngIf="currentNode.NodeID > 0"><b><span *ngIf="(LocalAccess | contains:'Edit')">View</span> {{moduleTitle}}</b> </span>
+                    <div class="widget-buttons">
+                        <button type="button" class="btn btn-sm btn-danger" *ngIf="isCancel$" (click)="CancelNodeMaster()">
+                                <i class="fa fa-arrow-left"></i> Back 
+                        </button>
+
+                        <button class="btn btn-sm btn-primary" type="button" *ngIf="(LocalAccess | contains:'Edit')" (click)="onSubmit(f.form)">
+                            <!--[disabled]="!f.form.valid">-->
+                            <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                        </button>
+                    </div>
+                </div>
+                <div class="widget-body marginTop34">
+                    <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                        <div class="validationmsg">
+                            <b> Please fill the asterisk (*) fields. </b>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group" *ngIf="e_localize.Node.isVisible">
+                        <div class="col-sm-6 col-md-6 col-lg-6" style="margin-bottom:5px;">
+                            <label class="control-label col-sm-6 col-md-6 col-lg-6 ng-binding">
+                                {{e_localize.Node.headerName}}<span *ngIf="e_localize.Node.isRequired" style="color:red;">*</span>:
+                            </label>
+                            <div class="col-sm-6 col-md-6col-lg-6">
+                                <input type="text" name="Node" class="form-control" [(ngModel)]="currentNode.Node" #Node="ngModel" [required]="e_localize.Node.isRequired" [disabled]="!e_localize.Node.isEnabled" placeholder="Node"/>
+                                <!--<div *ngIf="Node.errors && (Node.dirty || Node.touched)" class="alert alert-danger">
+                                    <div [hidden]="!Node.errors.required">
+                                        {{e_localize.Node.headerName}} is required.
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group" *ngIf="e_localize.IsActive.isVisible">
+                        <div class="col-sm-6 col-md-6 col-lg-6" style="margin-bottom:5px;">
+                            <label class="control-label col-sm-6 col-md-6 col-lg-6 ng-binding">
+                                {{e_localize.IsActive.headerName}}:
+                            </label>
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <input type="checkbox" class="checkbox" style="opacity:1 !important;left:14px" [ngModelOptions]="{standalone: true}" [(ngModel)]="currentNode.IsActive" #IsActive="ngModel" [disabled]="!e_localize.IsActive.isEnabled" />
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<message #pop cssClass="modal-msg"></message>

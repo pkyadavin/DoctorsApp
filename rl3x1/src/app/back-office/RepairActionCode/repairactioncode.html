@@ -1,0 +1,114 @@
+﻿<div *ngIf="loading == true" class="loader">Loading..</div>
+<div *ngIf="loading == false">
+    <div class="widget" *ngIf="isRepairActionCodeList$">
+        <div class="widget-header padding-bottom-5 ">
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                </span>
+            </div>
+            <div class="widget-buttons">
+                <button class="btn btn-sm btn-primary" type="button" (click)="ShowHideAdd()" *ngIf="isAddRepairActionCode$">
+                    <i class="glyphicon glyphicon-plus-sign"></i>Add
+                </button>
+                <button class="btn btn-sm btn-primary" id="btnEdit" *ngIf="isEditRepairActionCode$" (click)="ShowHideEdit()">
+                    <i class="glyphicon glyphicon-edit"></i>View
+                </button>
+                <button class="btn btn-sm btn-danger" type="button" (click)="Delete(currentRepairActionCode.RepairActionCodeID)" *ngIf="currentRepairActionCode.RepairActionCodeID > 0">
+                    <i class="glyphicon glyphicon-trash"></i>Delete
+                </button>
+            </div>
+        </div>
+        <div class="widget-body no-padding">
+            <div class="widget">
+                <div class="widget-body no-padding">
+                    <ag-grid-angular #agGrid style="height:100%;width:100%" class="ag-theme-balham" (gridReady)="onGridReady($event)"
+                                 [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()">
+                    </ag-grid-angular>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div *ngIf="!isRepairActionCodeList$">
+        <div class="widget">
+            <form #f="ngForm" name="f" novalidate class="css-form">
+                <div class="widget-header">
+                    <span class="widget-caption pull-left font-40" *ngIf="currentRepairActionCode.RepairActionCodeID > 0"><b>View {{moduleTitle}}</b> </span>
+                    <span class="widget-caption pull-left font-40" *ngIf="currentRepairActionCode.RepairActionCodeID == 0"><b>Add {{moduleTitle}}</b> </span>
+                 
+                    <div class="widget-buttons">
+                        <button type="button" class="btn btn-sm btn-danger" *ngIf="isCancel$" (click)="CancelRepairActionCode()">
+                                <i class="fa fa-arrow-left"></i> Back 
+                        </button>
+
+                        <button class="btn btn-sm btn-primary" type="submit" (click)="onSubmit(f.form)">
+
+                            <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                        </button>
+                    </div>
+                </div>
+                <div class="widget-body">
+
+                    <!--start-->
+                    <div class="form-group" *ngIf="f.form.touched && !f.form.valid">
+                        <div class="validationmsg">
+                            <b> Please fill the asterisk (*) fields. </b>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <br />
+                    <!--till here-->
+
+
+                    <div class="form-group" *ngIf="e_localize.RepairActionCode.isVisible">
+                        <label class="control-label col-sm-3 col-md-3 col-lg-3 ng-binding">
+                            {{e_localize.RepairActionCode.headerName}}<span *ngIf="e_localize.RepairActionCode.isRequired" style="color:red;">*</span>:
+                        </label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" class="form-control" name="RepairActionCode" [(ngModel)]="currentRepairActionCode.RepairActionCode" #RepairActionCode="ngModel" [required]="e_localize.RepairActionCode.isRequired" [disabled]="!e_localize.RepairActionCode.isEnabled" placeholder="Code" />
+
+                            <!--<input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="currentRepairActionCode.RepairActionCode" #RepairActionCode="ngModel" [required]="e_localize.RepairActionCode.isRequired" [disabled]="!e_localize.RepairActionCode.isEnabled" placeholder="Code" />-->
+                           
+                        </div>
+                        <label class="control-label col-sm-3 col-md-3 col-lg-3 ng-binding">
+                            {{e_localize.RepairActionName.headerName}}<span *ngIf="e_localize.RepairActionName.isRequired" style="color:red;">*</span>:
+                        </label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <!--<input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="currentRepairActionCode.RepairActionName" #RepairActionCode="ngModel" [required]="e_localize.RepairActionName.isRequired" [disabled]="!e_localize.RepairActionCode.isEnabled" placeholder="Name" />-->
+                            <input type="text" class="form-control" name="RepairActionName" [(ngModel)]="currentRepairActionCode.RepairActionName" #RepairActionCode="ngModel" [required]="e_localize.RepairActionName.isRequired" [disabled]="!e_localize.RepairActionCode.isEnabled" placeholder="Name" />
+
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="form-group" *ngIf="e_localize.IsActive.isVisible">
+                        <label class="control-label col-sm-3 col-md-3 col-lg-3 ng-binding">{{e_localize.IsActive.headerName}}:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3" style="left:-20px;">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="RepairActionIsActive" class="form-control"
+                                           [required]="e_localize.IsActive.isRequired"
+                                           [disabled]="!e_localize.IsActive.isEnabled"
+                                           [(ngModel)]="currentRepairActionCode.IsActive"><span class="text">&nbsp;</span>
+                                    <!--[ngModelOptions]="{standalone: true}"-->
+                                </label>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </form>
+            <message #pop cssClass="modal-msg" (Confirm)="onConfirmPopup()" (Cancel)="onCancelPopup()"></message>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="clearfix"></div>
+</div>

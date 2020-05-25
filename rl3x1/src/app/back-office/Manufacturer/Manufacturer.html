@@ -1,0 +1,164 @@
+﻿
+<div class="" *ngIf="ListView">
+    <div class="widget">
+        <div class="widget-body no-padding">
+
+            <div class="widget">
+
+                <div class="widget-header ">
+                    <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+                    <div class="input-group pull-left margin-left-20 col-md-3">
+                        <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" placeholder="Search...">
+                        <span class="input-group-btn">
+                            <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                        </span>
+                    </div>
+                    <div class="widget-buttons">
+
+                        <button class="btn btn-sm btn-primary" type="button" (click)="onAdd()">
+                            <i class="glyphicon glyphicon-plus-sign"></i>Add
+                        </button>
+                        <button class="btn btn-sm btn-primary" id="btnEdit" (click)="onEdit()" *ngIf="CurrentObj.ID > 0">
+
+                            <i class="glyphicon glyphicon-edit"></i>View
+                        </button>                        
+                            <button class="btn btn-sm btn-danger" (click)="onDelete()" *ngIf="CurrentObj.ID > 0">
+                                <!--*ngIf="GridType != 'popup'"-->
+                                <i class="glyphicon glyphicon-trash"></i>Delete
+                            </button>                        
+                    </div>
+                </div>
+                <div class="widget-body no-padding">
+                    <ag-grid-angular #agGrid style="height:400px;width:100%" class="ag-theme-balham"
+                                 [gridOptions]="gridOptions" (selectionChanged)="GridType != 'popup' && onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+                    </ag-grid-angular>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+
+
+
+<div class="" *ngIf="!ListView">
+    <form name="Location" #f="ngForm" class="css-form" novalidate>
+        <div class="widget">
+            <div class="widget-header ">
+                <span class="widget-caption" *ngIf="CurrentObj.ID == 0"><b>Add {{moduleTitle}}</b> </span>
+                <span class="widget-caption" *ngIf="CurrentObj.ID > 0"><b><span *ngIf="LocalAccess | contains:'Edit'">View</span> {{moduleTitle}}</b> </span>
+                <div class="widget-buttons">
+                    <button class="btn btn-sm btn-danger" type="button" (click)="Cancel()">
+                            <i class="fa fa-arrow-left"></i> Back 
+                    </button>
+                    <button class="btn btn-sm btn-primary" type="submit"  (click)="Save(f.form)">
+                        <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                    </button>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                    <div class="validationmsg">
+                        <b> Please fill the asterisk (*) fields. </b>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+
+                <!--row1-->
+
+
+                <div class="form-group">
+                    <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.ManufacturerCode.isVisible">{{e_localize.ManufacturerCode.headerName}} 
+                    <span *ngIf="e_localize.ManufacturerCode.isRequired" style="color:red;">*</span>
+                    :
+                    </label>
+                    <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.ManufacturerCode.isVisible">
+                        <input type="text" class="form-control" name="ManufacturerCode" #ManufacturerCode="ngModel" [(ngModel)]="CurrentObj.ManufacturerCode" 
+                               [required]="e_localize.ManufacturerCode.isRequired" [disabled]="!e_localize.ManufacturerCode.isEnabled || CurrentObj.ID > 0" placeholder="">
+                    </div>
+
+                    <div>
+
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.ManufacturerName.headerName}} 
+                        <span *ngIf="e_localize.ManufacturerName.isRequired" style="color:red;">
+                            *
+                        </span>
+                        :
+                        </label>
+                        <div class="col-sm-3 col-md-3 col-lg-3 input-group input-group-sm">
+                            <input type="text" class="form-control" name="ManufacturerName" #ManufacturerName="ngModel" [(ngModel)]="CurrentObj.ManufacturerName" 
+                                   [required]="e_localize.ManufacturerName.isRequired" [disabled]="!e_localize.ManufacturerName.isEnabled" placeholder="">
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div><br />
+
+                <!--row 2-->
+
+
+                <div class="form-group">
+                    <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.GlobalManufacturerName.isVisible">{{e_localize.GlobalManufacturerName.headerName}} 
+                    <span *ngIf="e_localize.GlobalManufacturerName.isRequired" style="color:red;">*</span>:</label>
+                    <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.GlobalManufacturerName.isVisible">
+                        <input type="text" class="form-control" name="GlobalManufacturerName" #GlobalManufacturerName="ngModel" [(ngModel)]="CurrentObj.GlobalManufacturerName" 
+                               [required]="e_localize.GlobalManufacturerName.isRequired" [disabled]="!e_localize.GlobalManufacturerName.isEnabled" placeholder="">
+
+
+                    </div>
+
+                    <div>
+                        <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.IsActive.isVisible">{{e_localize.IsActive.headerName}}
+                        <span *ngIf="e_localize.IsActive.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.IsActive.isVisible" style="left:-20px;">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="IsActive" class="form-control"
+                                           [required]="e_localize.IsActive.isRequired"
+                                           [disabled]="!e_localize.IsActive.isEnabled"
+                                           [(ngModel)]="CurrentObj.IsActive"><span class="text">&nbsp;</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!--<label class="control-label  col-sm-3 col-md-3 col-lg-3">{{e_localize.ColorCode.headerName}} <span *ngIf="e_localize.ColorCode.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3 input-group input-group-sm">
+                            <input type="text" class="form-control" name="ColorCode" #ColorCode="ngModel" [(ngModel)]="CurrentLocationObj.ColorCode" [required]="e_localize.ColorCode.isRequired" [disabled]="!e_localize.ColorCode.isEnabled" placeholder="Color Code">
+
+                        </div>-->
+                        <div class="clearfix"></div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div><br />
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </form>
+
+</div>
+
+
+<message #pop cssClass="modal-msg"></message>
+
+
+
+
+<!--<modal #modalFacility cssClass="modal-lg" *ngIf="!ListView">
+    <modal-header>
+        <h4 class="modal-title">Select facility</h4>
+    </modal-header>
+    <modal-body>
+        <FacilityGrid [FacilityGridType]="popuptype" (notifyConsumer)="CustomerEvent($event)" ></FacilityGrid>
+    </modal-body>
+    <modal-footer>
+        <button type="button" class="btn btn-default" data-dismiss="modalFacility" (click)="modalFacility.dismiss()">Cancel</button>
+    </modal-footer>
+</modal>-->

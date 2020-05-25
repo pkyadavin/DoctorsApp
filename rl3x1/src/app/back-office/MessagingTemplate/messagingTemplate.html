@@ -1,0 +1,183 @@
+﻿<style>
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,0);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,0);
+        box-shadow: 0 0 4px rgba(0,0,0,0);
+        /*background-color: #eee;
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    box-shadow: 0 0 4px rgba(0,0,0,.3);*/
+    }
+
+        .nav-tabs > li {
+            margin: 0px 3px 0px 3px;
+        }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #777;
+                margin-right: -1px;
+                line-height: 24px;
+                position: relative;
+                z-index: 11;
+            }
+
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                color: #262626;
+                border: 0;
+                border-top: 2px solid #333;
+                border-bottom-color: transparent;
+                /*background-color: #fbfbfb;*/
+                z-index: 12;
+                line-height: 24px;
+                margin-top: -2px;
+                box-shadow: 0 -2px 3px 0 rgba(0,0,0,.15);
+            }
+
+            .nav-tabs > li a:hover {
+                color: #fff;
+                /*border: 0;*/
+                /*border-bottom-color: transparent;*/
+                /*background-color: #BAF3DA;*/
+                /*z-index: 12;*/
+                /*line-height: 24px;*/
+            }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #fff;
+                /* margin-right: -1px;
+                / line-height: 24px;
+                position: relative;
+                z-index: 11;
+                /*background-color: #178E58;*/
+            }
+
+    .nav > li.disabled > a {
+        color: #fff;
+        background-color: gray;
+    }
+
+        .nav > li.disabled > a:hover {
+            color: #fff;
+            background-color: gray;
+        }
+</style>
+
+<div class="widget"  [hidden]="!ListView">
+        <div class="widget-header widget-header1">
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+            <div class="col-md-3">
+                <div class="input-group input-group-sm">
+                    <input type="text" name="searchText" class="input-sm pull-left margin-left-20" style="margin-top:3px;width:250px;" [(ngModel)]="filterValue" placeholder="Search..." />
+                    <span class="input-group-btn">
+                        <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm  pull-left" style="margin-top:3px;"><i class="fa fa-search"></i>Search</button>
+                    </span>
+                    <!--<i aria-hidden="true" class="fa fa-download pull-left" (click)="DownloadMsg()" ng-if="1!=0" style="cursor:pointer;margin-left:10px;margin-top:10px;"></i>-->
+                </div>
+            </div>
+            <div class="widget-buttons">
+                <!-- <button class="btn btn-sm btn-primary" type="button" (click)="Show('Add')" *ngIf="isAddConfigSetup$ && LocalAccess | contains:'Add'">
+                    <i class="glyphicon glyphicon-plus-sign"></i>Add
+                </button> -->
+                <button class="btn btn-sm btn-primary" type="button" (click)="Show('Edit')" *ngIf="isEditConfigSetup$">
+                    <i class="glyphicon glyphicon-edit"></i>View
+                </button>
+                <!-- <button class="btn btn-sm btn-danger" type="button" (click)="Delete(CurrentMessageTemplate.ID)" *ngIf="isDeleteConfigSetup$ && LocalAccess | contains:'Delete'" >
+                    <i class="glyphicon glyphicon-trash"></i>Delete
+                </button> -->
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="widget-body no-padding">
+            <ag-grid-angular #agGrid style="height:100%;width:100%" class="ag-theme-balham"
+                         [gridOptions]="gridOptions" (selectionChanged)="onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+        </div> 
+    </div>
+<div class="clearfix"></div>
+    <div class="" *ngIf="!ListView">
+        <form name="MessageTemplate" #f="ngForm" class="css-form"  novalidate>
+            <div class="widget">
+                <div class="widget-header">
+                    <span class="widget-caption" *ngIf="CurrentMessageTemplate.ID == undefined"><b>Add {{moduleTitle}}</b> </span>
+                    <span class="widget-caption" *ngIf="CurrentMessageTemplate.ID > 0"><b><span *ngIf="LocalAccess | contains:'Edit'">View</span> {{moduleTitle}}</b> </span>
+                   <div class="widget-buttons">
+                    <button class="btn btn-sm btn-danger" type="button" (click)="Cancel()">
+                            <i class="fa fa-arrow-left"></i> Back 
+                    </button>
+                    <button class="btn btn-sm btn-primary" type="submit" *ngIf="LocalAccess | contains:'Edit'" (click)="Save(f.form)">
+                        <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                    </button>
+                </div>
+                </div>
+                <div class="widget-body">
+                    
+                        <div class="col-md-12 form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                            <div class="validationmsg">
+                                <b> Please fill the asterisk (*) fields. </b>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <div class="form-group" *ngIf="e_localize.TemplateCode.isVisible">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12" >{{e_localize.TemplateCode.headerName}}<span *ngIf="e_localize.TemplateCode.isRequired" style="color:red;">*</span></label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                        <input type="text"  class="form-control" name="tempcode" #tempcode="ngModel" [(ngModel)]="CurrentMessageTemplate.TemplateCode" [required]="e_localize.TemplateCode.isRequired" [disabled]="!e_localize.TemplateCode.isEnabled" placeholder="Code">
+                                    </div>
+                                  
+                                  
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group" *ngIf="e_localize.TemplateName.isVisible">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">{{e_localize.TemplateName.headerName}}<span *ngIf="e_localize.TemplateName.isRequired" style="color:red;">*</span></label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                        <input type="text" class="form-control" width="1500" name="tempName" #tempName="ngModel" [(ngModel)]="CurrentMessageTemplate.TemplateName" [required]="e_localize.TemplateName.isRequired" [disabled]="!e_localize.TemplateName.isEnabled" placeholder="Name">
+                                    </div>
+                                   
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group" *ngIf="e_localize.TemplateBody.isVisible">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">{{e_localize.TemplateBody.headerName}} <span *ngIf="e_localize.TemplateBody.isRequired" style="color:red;">*</span></label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                         <textarea  class="" name="tempBody" #tempBody="ngModel" rows="6" style="resize:vertical;width:100%!important;" id="dropdiv" (click)="templateBodyCursor()"  [(ngModel)]="CurrentMessageTemplate.TemplateBody"  [required]="e_localize.TemplateBody.isRequired" [disabled]="!e_localize.TemplateBody.isEnabled"></textarea>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="form-group" *ngIf="IsLoaded && e_localize.IsActive.isVisible">
+                                    <label class="control-label col-sm-6 col-md-6 col-lg-6 col-xs-12">{{e_localize.IsActive.headerName}}:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12">
+                                        <div class="checkbox" style="margin-top: 0px;margin-bottom: 0px;">
+                                            <label style="position:relative;">
+                                                <input type="checkbox"
+                                                       [required]="e_localize.IsActive.isRequired"
+                                                       [disabled]="!e_localize.IsActive.isEnabled"
+                                                       [(ngModel)]="CurrentMessageTemplate.IsActive" [ngModelOptions]="{standalone: true}"><span class="text">&nbsp;</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </form>
+        
+    </div>
+    <message #pop cssClass="modal-msg"></message>
+
+

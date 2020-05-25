@@ -1,0 +1,88 @@
+﻿<div class="widget-body">
+    <div class="form-group" *ngIf="IsLoaded">
+        <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.LineHaulRate.isVisible">{{addressEditor.LineHaulRate.DisplayName}}<span *ngIf="addressEditor.LineHaulRate.isRequired" style="color:red;">*</span>:</label>
+        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.LineHaulRate.isVisible">
+            <div class="col-sm-6 col-md-6 col-lg-6 no-padding" *ngIf="IsLoaded && addressEditor.LineHaulRate.isVisible">
+                <input type="number" name="LineHaulRate" [(ngModel)]="ContractTermData.LineHaulRate" class="form-control" maxlength="10" #LineHaulRate="ngModel"  [placeholder]="addressEditor.LineHaulRate.DisplayName" [disabled]="!addressEditor.LineHaulRate.isEnabled" [required]="addressEditor.LineHaulRate.isRequired" />
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6" *ngIf="IsLoaded && addressEditor.LineHaulRateUOMID.isVisible">
+                <select #LineHaulRateUOMID="ngModel" [(ngModel)]="ContractTermData.LineHaulRateUOMID"
+                        [disabled]="!addressEditor.LineHaulRateUOMID.isEnabled" [required]="addressEditor.LineHaulRateUOMID.isRequired"
+                        name="LineHaulRateUOMID" class="form-control">
+                    <option [value]="undefined">--Select UOM--</option>
+                    <option [value]="i.UOMID" *ngFor="let i of UOMList">{{i.UOMName}}</option>
+                </select>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+        <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.ServiceCost.isVisible">{{addressEditor.ServiceCost.DisplayName}}<span *ngIf="addressEditor.ServiceCost.isRequired" style="color:red;">*</span>:</label>
+        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.ServiceCost.isVisible">
+            <input type="number" name="ServiceCost" [(ngModel)]="ContractTermData.ServiceCost" 
+                   [placeholder]="addressEditor.ServiceCost.DisplayName" [disabled]="!addressEditor.ServiceCost.isEnabled" [required]="addressEditor.ServiceCost.isRequired"
+                   class="form-control" maxlength="10" #ServiceCost="ngModel" />
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.isAccrual.isVisible">{{addressEditor.isAccrual.DisplayName}}<span *ngIf="addressEditor.isAccrual.isRequired" style="color:red;">*</span>:</label>
+        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.isAccrual.isVisible">
+            <label style="position:relative;">
+                <input type="checkbox"
+                       name="isAccrual"
+                       [placeholder]="addressEditor.isAccrual.DisplayName" [disabled]="!addressEditor.isAccrual.isEnabled" [required]="addressEditor.isAccrual.isRequired"
+                       [(ngModel)]="ContractTermData.isAccrual"><span class="text">&nbsp;</span>
+            </label>
+            <div class="clearfix"></div>
+        </div>
+
+        <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.PaymentTermID.isVisible">{{addressEditor.PaymentTermID.DisplayName}}<span *ngIf="addressEditor.PaymentTermID.isRequired" style="color:red;">*</span>:</label>
+        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.PaymentTermID.isVisible">
+            <select #tempschDay="ngModel" [(ngModel)]="ContractTermData.PaymentTermID"
+                     [disabled]="!addressEditor.PaymentTermID.isEnabled" [required]="addressEditor.PaymentTermID.isRequired"
+                    name="PaymentTermID" class="form-control">
+                <option [value]="undefined">--Select Payment Terms--</option>
+                <option [value]="i.TypeLookUpID" *ngFor="let i of TypeLookUpList">{{i.TypeName}}</option>
+            </select>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.AccrualTerm.isVisible">{{addressEditor.AccrualTerm.DisplayName}}<span *ngIf="addressEditor.AccrualTerm.isRequired" style="color:red;">*</span>:</label>
+        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.AccrualTerm.isVisible">
+            <input type="text" name="AccrualTerm" class="form-control" [(ngModel)]="ContractTermData.AccrualTerm" 
+                    [placeholder]="addressEditor.AccrualTerm.DisplayName" [disabled]="!addressEditor.AccrualTerm.isEnabled" [required]="addressEditor.AccrualTerm.isRequired"
+                    maxlength="10" #AccrualTerm="ngModel"  />
+            <div class="clearfix"></div>
+        </div>
+
+        <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.GracePeriodDay.isVisible">{{addressEditor.GracePeriodDay.DisplayName}}<span *ngIf="addressEditor.GracePeriodDay.isRequired" style="color:red;">*</span>:</label>
+        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.GracePeriodDay.isVisible">
+            <input type="text" name="GracePeriod" class="form-control" [(ngModel)]="ContractTermData.GracePeriodDay"  [placeholder]="addressEditor.GracePeriodDay.DisplayName" [disabled]="!addressEditor.GracePeriodDay.isEnabled" [required]="addressEditor.GracePeriodDay.isRequired"
+                   maxlength="10" #GracePeriodDay="ngModel"  />
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.AccrualDay.isVisible">{{addressEditor.AccrualDay.DisplayName}}<span *ngIf="addressEditor.AccrualDay.isRequired" style="color:red;">*</span>:</label>
+        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.AccrualDay.isVisible">
+            <input type="text" name="AccrualInvoiceDay" class="form-control" [(ngModel)]="ContractTermData.AccrualDay" [placeholder]="addressEditor.AccrualDay.DisplayName" [disabled]="!addressEditor.AccrualDay.isEnabled" [required]="addressEditor.AccrualDay.isRequired" maxlength="10" #AccrualDay="ngModel"  />
+            <div class="clearfix"></div>
+        </div>
+
+        <label class="control-label col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.LatePenaltyPercentage.isVisible">{{addressEditor.LatePenaltyPercentage.DisplayName}}<span *ngIf="addressEditor.LatePenaltyPercentage.isRequired" style="color:red;">*</span>:</label>
+        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="IsLoaded && addressEditor.LatePenaltyPercentage.isVisible">
+            <input type="text" name="LatePenalties" class="form-control" [(ngModel)]="ContractTermData.LatePenaltyPercentage" [placeholder]="addressEditor.LatePenaltyPercentage.DisplayName" [disabled]="!addressEditor.LatePenaltyPercentage.isEnabled" [required]="addressEditor.LatePenaltyPercentage.isRequired" maxlength="10" #LatePenalties="ngModel" />
+
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+    <div class="clearfix"></div>
+</div>

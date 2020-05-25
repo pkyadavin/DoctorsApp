@@ -1,0 +1,9 @@
+﻿<tabs #tabs>
+    <tab *ngFor="let tabitem of Tablist" [tabTitle]="tabitem" (select)="tabChanged(tabitem)">
+     
+                <DynamicTabComponent [type]="tabitem" [ModuleName]="ModuleName" [Source]="orderTabSource[tabitem]"  ></DynamicTabComponent>
+                <!--<LineItems [Source]="orderTabSource[tabitem]"></LineItems>-->
+                <div class="clearfix"></div>
+          
+    </tab>
+</tabs>

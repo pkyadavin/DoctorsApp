@@ -1,0 +1,163 @@
+﻿
+<form #f="ngForm">
+    <div class="widget">
+        <!--<div class="widget-header ">
+            <span class="widget-caption pull-left font-40" *ngIf="TaskId == 0"><b>Add Task</b> </span>
+            <span class="widget-caption pull-left font-40" *ngIf="TaskId > 0"><b>View Task</b> </span>
+            <div class="widget-buttons">
+                <button type="button" class="btn-link" (click)="CancelTask()">
+                    <i class="glyphicon glyphicon-floppy-remove red" style="display:block;"></i>
+                </button>
+
+                <button class="btn-link" type="submit">
+                    <i class="glyphicon glyphicon-floppy-disk blue" style="display:block;"></i>
+                </button>
+            </div>
+        </div>-->
+      
+            <!--<div class="form-group">
+                <div *ngFor="let a of ActionList | orderBy : ['SortOrder']" makeDraggable="a" makeDroppable (dropped)="onDrop($event, a)">
+                    <a (click)="AddEditTaskFlow(a.ModuleActionMapID, a.SortOrder)">{{a.ActionName}}</a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>-->
+           
+                       
+                                      <div class="widget">
+                        <div class="widget-header bg-primary">
+                            <span class="widget-caption">WorkFlow List</span>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="widget-body">
+                            
+                            <!--<div class="dropdown">
+                                <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="/page.html">
+                                    Dropdown <span class="caret"></span>
+                                </a>
+                                <div class="widget-body dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                    Data will come here....
+                                </div>
+                            </div>-->
+                                <ul class="list-group" dnd-sortable-container [sortableData]="ActionList">
+                                    <li *ngFor="let item of ActionList; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i" (onDragSuccess)="item.SortOrder=i" (onDropSuccess)="onDropTaskDetails($event)">
+
+                                        <div *ngIf="item.IsTask" style="text-align: center !important;width:100%;margin:0px auto!important;">
+                                            <div class="form-group">
+                                                <div class="col-md-9 thumbnail" style="height:128px; border-top-right-radius:0px!important;border-bottom-right-radius:0px;margin-bottom:0px!important;cursor:move;">
+                                                    <div class="">
+                                                        <div class="thumbnail col-md-10" style="margin-bottom:9px!important;">
+                                                            <div class="pull-left" style="width:45%!important;float:left!important;">
+                                                                <strong><u>From</u></strong><br />
+                                                                {{item.currState}}
+                                                            </div>
+                                                            <div class="cl-md-3" style="width:10%!important;float:left!important;padding-top:10px;">
+                                                                <i class="fa fa-long-arrow-right red fa-2x"></i>
+                                                            </div>
+                                                            <div class="pull-left" style="width:45%!important;float:left!important;">
+                                                                <strong><u>To</u></strong><br />
+                                                                {{item.nextState}}
+                                                            </div>
+                                                            <div class="clearfix"></div>
+
+                                                        </div>
+                                                        <div class="col-md-1 text-align-center" style="padding-top:30px!important;">
+                                                            <i class="fa fa-level-down fa-3x" aria-hidden="true"></i>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="thumbnail no-margin padding-10 bg-primary">
+                                                        <h5 class="no-margin no-padding"><strong>{{item.ActionName}}</strong></h5>
+
+                                                    </div>
+                                                    <div class="clearfix"></div>
+
+
+                                                    <div class="clearfix"></div>
+                                                </div>
+
+
+                                                <div class="col-md-3 no-padding">
+                                                    <div class="thumbnail" style="padding:25px 0px!important;border-left:0px;border-top-left-radius:0px;border-bottom-left-radius:0px;margin-bottom:0px!important;">
+                                                        <div (click)="AddEditTaskFlow(item.ModuleActionMapID, item.SortOrder, item.ActionName)" class="btn btn-primary"><i class="fa fa-tasks fa-3x" title="Set WorkFlow"></i></div>
+                                                        <p class="no-padding no-margin"><b>Rules:</b><label *ngIf="item.IsRule" class="text-primary"><i class="fa fa-check fa-3x green"></i></label><label *ngIf="!item.IsRule"><i class="fa fa-times fa-3x red"></i></label></p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="clearfix"></div>
+                                                <!--<p style="font-size:16px!important;"> <i class="fa fa-long-arrow-right red"></i> {{item.nextState}}</p>-->
+
+
+
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="clearfix"></div>                                           
+                                            <div class="text-center col-md-9"><i class="fa fa-angle-double-down fa-4x" *ngIf="i<ActionList.length-1"></i></div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div *ngIf="!item.IsTask" style="text-align: center !important; text-orientation:use-glyph-orientation;">
+                                            <div class="col-md-9 thumbnail" style="border-top-right-radius:0px!important;border-bottom-right-radius:0px;margin-bottom:0px!important;">
+                                                <h3><strong>{{item.ActionName}}</strong></h3>
+                                            </div>
+                                            <div class="col-md-3 no-padding">
+                                                <div class="thumbnail" style="padding:15px 0px!important;border-left:0px;border-top-left-radius:0px;border-bottom-left-radius:0px;margin-bottom:0px!important;">
+                                                     <div (click)="AddEditTaskFlow(item.ModuleActionMapID, item.SortOrder, item.ActionName)" class="btn btn-primary"><i class="fa fa-tasks fa-3x"></i></div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+           
+               
+                <!--<div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            My prefences:<br />
+                            <span *ngFor="let item of ActionList; let i = index">{{i + 1}}) {{item.ActionName}}<br /></span>
+                        </div>
+                    </div>
+                </div>-->
+          
+        </div>
+    
+    <div class="clearfix"></div>
+
+    
+
+
+
+</form>
+
+
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+<bs-modal #OrderTaskFlowPopUp cssClass="modal-xl">
+    <bs-modal-header>
+        <button type="button" class="close" data-dismiss="modal" (click)="modal.dismiss()"><i class="fa fa-times"></i></button>
+        <h4 class="modal-title">Add/Edit Task Flow</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <!--<AddEditOrderTaskFlow [ModuleID]="TaskModuleID" [ActionID]="SetActionID" [TaskFlow]="CurrentTaskFlow" (notifyTaskFlowDetail)="onSaveTaskFlowDetailEvent($event)"></AddEditOrderTaskFlow>-->
+        <AddEditOrderTaskFlow [ModuleID]="TaskModuleID" [ActionOrder]="SetActionOrder" [ActionName]="SetActionName" [ActionID]="SetActionID" [CurrentState]="SetCurrentState" [NextState]="SetNextState" [StatusList]="SetStatusList" [StatusList1]="SetStatusList" [RuleList]="SetRuleList" (notifyTaskFlowDetail)="onSaveTaskFlowDetailEvent($event)" (clearTaskFlowDetail)="onClearTaskFlowDetailEvent($event)" (cancelTaskFlowDetail)="onCancelTaskFlowDetailEvent($event)"></AddEditOrderTaskFlow>
+    </bs-modal-body>
+    <bs-modal-footer>
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal" (click)="modal.dismiss()">Cancel</button>-->
+        <!--<button type="button" class="btn btn-primary" data-dismiss="modal" (click)="SaveTaskFlow();modal.close()">Save</button>-->
+    </bs-modal-footer>
+</bs-modal>

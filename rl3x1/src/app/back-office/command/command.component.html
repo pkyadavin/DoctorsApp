@@ -1,0 +1,60 @@
+<!-- <div id="setting" class="page-setting" style="height: 275px;">
+        <div class="padding-20" style="color:#666;">
+            <strong class="text-primary">Landing Page</strong><br>
+            Set your current page as your landing page and will be applicable from your next login, set this page as your landing page ?
+        <div class="clearfix"></div>
+        <div class="padding-top-10 ">
+            <button (click)="setLanding()" class="btn btn-sm btn-primary" style="padding-left:15px;padding-right:15px;">Ok</button>
+            <button (click)="resetLanding()" class="btn btn-sm btn-default margin-left-5" style="padding-left:15px;padding-right:15px;">Clear</button>
+        </div>
+        <hr style="margin: 8px 0px;"/>
+        <div class="form-group" style="color:#666;">
+                <strong class="text-primary">Timezone</strong><br>
+                <div class="clearfix"></div>
+                <div class="padding-top-10 ">
+                        <select [(ngModel)]="Timezone" #timezone="ngModel" name="timezone" class="form-control">
+                            <option *ngFor="let tz of _Timezones;" [value]="tz.timezoneId">
+                                {{tz.timezonedescription}}
+                            </option>
+                        </select>
+                   </div>
+               <div class="clearfix"></div>
+               <div class="padding-top-10 "><button (click)="resetTimezone()" class="btn btn-sm btn-primary" style="padding-left:15px;padding-right:15px;">Ok</button></div>
+               <hr style="margin: 8px 0px;"/>        
+            </div>  
+    </div>        
+</div> -->
+
+<!-- Page Breadcrumb -->
+<div class="page-breadcrumbs page-header">
+  <ul class="breadcrumb">
+      <li>
+          <i class="fa fa-home"></i>
+          <a [routerLink]="home_route">Home</a>
+      </li>
+      <li *ngIf="_route" class="active">{{_route}}</li>
+  </ul>
+  <div class="buttons-preview pull-right padding-top-5 margin-right-40">
+          <!-- <a class="btn btn-sm btn-default purple" href="javascript:void(0);"><i class="fa fa-plus"></i> Add</a>
+          <a class="btn btn-sm btn-primary" href="javascript:void(0);"><i class="fa fa-shopping-cart"></i> Buy</a>
+          <a class="btn btn-sm btn-danger" href="javascript:void(0);"><i class="fa fa-times"></i> Delete</a>
+          <a class="btn btn-sm btn-success" href="javascript:void(0);">Ok <i class="fa fa-check right"></i></a>
+          <a class="btn btn-sm btn-info" href="javascript:void(0);">Info <i class="fa fa-warning right"></i></a> -->
+  </div>
+  <!--Header Buttons-->
+  <div class="header-buttons">
+      
+          <!-- <a class="advance-search" id="advance-search" href="#" onclick="return false;">
+              <i class="fa fa-qrcode blue"></i>
+          </a> -->
+      </div>
+      <!--Header Buttons End-->
+
+  <div class="clearfix"></div>
+</div>                
+<!-- Page Breadcrumb -->  
+<!-- Advance Search -->
+<div id="searchpanel">
+<app-advance-filter></app-advance-filter>
+</div> 
+<!-- Advance Search -->  

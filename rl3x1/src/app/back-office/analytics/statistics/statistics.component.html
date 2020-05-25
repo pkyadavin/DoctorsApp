@@ -1,0 +1,252 @@
+<div class="col-sm-12 col-md-12 col-lg-12">
+  <div class="widget" style="margin-bottom: 5px!important;">
+     
+      <div class="widget-body">
+          <span class="widget-caption pull-left"></span>
+
+          <div class="form-group">
+            <label class="control-label col-sm-2 col-md-2 col-lg-2 col-xs-12" style="padding-top:8px;">Date Range :</label>
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xs-12">
+                <input class="form-control" bsDaterangepicker [bsConfig]="bsConfig" type="text" name="from_to_date"
+                [(ngModel)]="filter_data.from_to_date" />         
+            </div>
+              <div class="col-sm-2 col-md-2 col-lg-2 col-xs-12">
+                  <button class="btn btn-primary input-sm" (click)="filter()" ><span class="glyphicon glyphicon-search"></span> </button>
+                  <!--<button class="btn btn-primary input-sm" onmouseout="UnTip()" onmouseover=" Tip('Download all records based on the above filter options.')" ng-click="Download()"><span class="fa fa-download"></span> Download</button>-->
+                  <div class="clearfix"></div>
+              </div>
+              <div class="clearfix"></div>
+          </div>
+     
+
+          <div class="clearfix"></div>
+      </div>
+      <div class="clearfix"></div>
+  </div>
+
+      <div class="clearfix"></div>
+      <div class="widget" style="margin-bottom: 5px!important;">
+          <div class="widget-header">
+              <span class="widget-caption"><b>RMA Count Date Wise </b>&nbsp;</span>
+            
+              <div class="widget-buttons">
+                  <!--<expand-collpase collapse="collapse"></expand-collpase>-->
+                  <a href="" widget-collapse></a>
+              </div>
+            
+          </div>
+          <div class="widget-body" >
+                  <div class="table-responsive">
+                      <table class="table table-striped custab ">
+                          <thead style="background-color:#0072c6; color:white;">
+                              <tr>
+                                  <th></th>
+                                  <th colspan="2" style="vertical-align:top; background-color:#63b6f3;text-align:center;">RMA Source</th>
+                                  <th></th>
+                              </tr>
+                              <tr>
+                                  <th style="vertical-align:top;width:200px">Date</th>
+                                  <th style="vertical-align:top; background-color:#63b6f3;width:360px">Customer Portal</th>
+                                  <th style="vertical-align:top; background-color:#63b6f3;width:360px">DC Portal</th>
+                                  
+                                  <th style="vertical-align:top;width:200px">Total Count</th>
+                              </tr>
+                          </thead>
+                      </table>
+                  </div>
+                  <div class="table-responsive" style="overflow: auto; min-height: 200px; max-height:243px;border:1px solid #d4d4d4;">
+                      <table class="table table-striped">
+
+                          <tbody>
+                              <tr *ngFor="let dw of daywiselist"  style="height:30px !important;">
+                                  <td style="vertical-align:top;width:170px">
+                                      {{dw.Daywise}}
+                                  </td>
+                                  <td style="vertical-align:top; width:300px">
+                                      {{dw.Consumer}}
+                                  </td>
+                                  <td style="vertical-align:top; width:305px">
+                                      {{dw.RepairPortal}}
+                                  </td>
+                                 
+                                  <td style="vertical-align:top; width:150px">
+                                      {{dw.TotalRMA}}
+                                  </td>
+                              </tr>
+                          </tbody>
+                          <thead>
+                              <tr *ngIf="daywiselist.length==0">
+                                  <th colspan="4" style="text-align: center; ">
+                                      No RMA
+                                  </th>
+                              </tr>
+                          </thead>
+                      </table>
+                  </div>
+                  <div *ngIf="TotalCount.length!=0">
+                      <table class="table table-striped custab ">
+                          <thead style="background-color:#0072c6; color:white;">
+                              <tr>
+                                  <th style="vertical-align:top;width:200px"></th>
+                                  <th style="vertical-align:top; background-color:#63b6f3;width:352px;padding-left:12px!important;">{{Consumer}}</th>
+                                  <th style="vertical-align:top; background-color:#63b6f3;width:360px;padding-left:12px!important;">{{RepairPortal}}</th>
+
+                                  <th style="vertical-align:top;width:200px;padding-left:12px!important;">{{TotalRMA}} </th>
+                              </tr>
+                          </thead>
+                      </table>
+                  </div>
+
+              <div class="clearfix"></div>
+          </div>
+          <div class="clearfix"></div>
+      </div>
+
+
+      <div class="widget" style="margin-bottom: 5px!important;">
+          <div class="widget-header">
+              <span class="widget-caption"><b>RMA Count Brand Wise</b></span>
+              <div class="widget-buttons">
+                  <a href="" widget-collapse></a>
+              </div>
+          </div>
+          <div class="widget-body" >
+
+
+             
+
+                  <div class="table-responsive" style="overflow: auto; min-height: 235px; max-height:325px;border:1px solid #d4d4d4;">
+                      <table class="table custab" style="border:1px">
+                          <thead style="background-color:#0072c6; color:white;">
+                              <tr>
+                                  <th style="vertical-align:top;width:200px">Brand</th>
+                                  <th style="vertical-align:top; background-color:#63b6f3;width:360px">Customer Portal</th>
+                                  <th style="vertical-align:top; background-color:#63b6f3;width:360px">DC Portal</th>
+                                 
+                                  <th style="vertical-align:top;width:200px">Total Count</th>
+                              </tr>
+                          </thead>
+                      </table>
+                      <table class="table custab" style="border:1px">
+
+                          <tr *ngFor="let dw of brandwiselist"  style="height:30px !important;">
+                              <td style="width:200px;">
+                                  {{dw.PartnerName}}
+                              </td>
+                              <td style="width:360px;">
+                                  {{dw.Consumer}}
+                              </td>
+
+                              <td style="width:360px;">
+                                  {{dw.RepairPortal}}
+                              </td>
+
+                            
+                              <td style="width:200px;">
+                                  {{dw.TotalRMA}}
+                              </td>
+                          </tr>
+                          <tr *ngIf="brandwiselist.length==0">
+                              <td colspan="4" style="text-align: center; ">
+                                  No RMA
+                              </td>
+                          </tr>
+                      </table>
+                  </div>
+
+                  <div *ngIf="TotalTCCount.length!=0">
+                      <table class="table table-striped custab ">
+                          <thead style="background-color:#0072c6; color:white;">
+                              <tr>
+                                  <th style="vertical-align:top;width:200px"></th>
+                                  <th style="vertical-align:top; background-color:#63b6f3;width:360px;padding-left:12px!important;">{{Consumer}}</th>
+                                  <th style="vertical-align:top; background-color:#63b6f3;width:360px;padding-left:12px!important;">{{RepairPortal}}</th>
+
+                                  <th style="vertical-align:top;width:200px;padding-left:12px!important;">{{TotalRMA}} </th>
+                              </tr>
+                          </thead>
+                      </table>
+                  </div>
+             
+
+              <div class="clearfix"></div>
+
+          </div>
+
+          <div class="clearfix"></div>
+      </div>
+
+      <div class="widget" style="margin-bottom: 5px!important;">
+          <div class="widget-header">
+              <span class="widget-caption"><b>RMA Count Month Wise</b></span>
+              <div class="widget-buttons">
+                  <!--<expand-collpase collapse="collapse"></expand-collpase>-->
+                  <a href="" widget-collapse></a>
+              </div>
+
+          </div>
+          <div class="widget-body" >
+
+
+           
+
+                  <div class="table-responsive" style="overflow: auto; min-height: 200px; max-height:325px;border:1px solid #d4d4d4;">
+                      <table class="table custab" style="width: 100%; ">
+                          <thead style="background-color:#0072c6; color:white;">
+                              <tr>
+                                  <th style="vertical-align:top;width:200px">Month</th>
+                                  <th style="vertical-align:top; background-color:#63b6f3;width:360px;">Customer Portal</th>
+                                  <th style="vertical-align:top; background-color:#63b6f3;width:360px;">DC Portal</th>
+
+                                  
+                                  <th style="vertical-align:top;width:200px">Total Count</th>
+                              </tr>
+                          </thead>
+                          <tr *ngFor="let dw of monthwiselist" style="height:30px !important;">
+                              <td>
+                                  {{dw.Monthwise}}
+                              </td>
+                              <td>
+                                  {{dw.Consumer}}
+                              </td>
+
+                              <td>
+                                  {{dw.RepairPortal}}
+                              </td>
+                              
+                              <td>
+                                  {{dw.TotalRMA}}
+                              </td>
+                          </tr>
+                          <tr *ngIf="monthwiselist.length==0">
+                              <td colspan="4" style="text-align: center; ">
+                                  No RMA
+                              </td>
+                          </tr>
+                      </table>
+                  </div>
+
+                  <div *ngIf="TotalmCCount.length!=0">
+                      <table class="table table-striped custab ">
+                          <thead style="background-color:#0072c6; color:white;">
+                              <tr>
+                                  <th style="vertical-align:top;width:200px"></th>
+                                  <th style="vertical-align:top; background-color:#63b6f3;width:360px;padding-left:12px!important;">{{Consumer}}</th>
+                                  <th style="vertical-align:top; background-color:#63b6f3;width:360px;padding-left:12px!important;">{{RepairPortal}}</th>
+
+                                  <th style="vertical-align:top;width:200px;padding-left:12px!important;">{{TotalRMA}} </th>
+                              </tr>
+                          </thead>
+                      </table>
+                  </div>
+             
+              <div class="clearfix"></div>
+
+          </div>
+
+              <div class="clearfix"></div>
+          </div>
+
+
+ 
+</div>

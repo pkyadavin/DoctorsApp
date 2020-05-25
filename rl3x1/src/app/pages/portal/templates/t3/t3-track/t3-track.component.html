@@ -1,0 +1,338 @@
+<!--  New Layout Start Here -->
+<section class="top_info_box">
+    <div class="container">
+        <!-- {{return_data |json}} -->
+        <div class="row" *ngIf="return_data">
+            <div class="col-md-9 pr-0">
+                <address>
+          <strong>{{ getlangval("lbl_shipping_address") }}: </strong
+          >{{ return_data.customer.address.complete_address }}
+        </address>
+                <p>
+                    <strong>{{ getlangval("lbl_ref_number") }} -</strong> {{ return_data.return_number }} <br />
+                    <span *ngIf="
+              hdr_status.code != 'Rejected' &&
+              hdr_status.code != 'Cancelled' &&
+              hdr_status.code != 'PendingApproval'
+            ">
+            <strong>{{ getlangval("lbl_rma_number") }} -</strong>
+            {{
+              return_data.rma_number == "" ? "Pending" : return_data.rma_number
+            }}
+          </span>
+                    <span *ngIf="
+              hdr_status.code == 'Rejected' || hdr_status.code == 'Cancelled'
+            ">
+            <strong>Status -</strong>&nbsp;
+            <label
+              for=""
+              class="{{ hdr_status.statusClass }}"
+              style="color: red;"
+              >{{ hdr_status.status }}</label
+            >
+          </span>
+                </p>
+            </div>
+            <div class="col-md-3">
+                <div class="req_date_box datetime pull-right">
+                    <div class="iconbox">
+                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    </div>
+                    <div class="datebx">
+                        <p>{{ getlangval("lbl_return_initiated") }}</p>
+                        <span>{{ return_data.created_date | date: "MMM d, y" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="freight">
+    <div class="container" id="print-section">
+        <div class="row">
+            <div class="col-md-9 addition_info_box">
+                <ul class="progressbar" *ngIf="
+            hdr_status.code != 'Rejected' && hdr_status.code != 'Cancelled'
+          ">
+                    <li *ngFor="let itemtrackstatus of track_status; let i = index" [ngClass]="
+              itemtrackstatus.status_id === return_data.status.status_id
+                ? itemtrackstatus.headerStatusClass
+                : (itemtrackstatus.status | lowercase)
+            ">
+                        {{ itemtrackstatus.showinCP }}
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <div class="dropdown" style="display: inline-block;">
+                    <button class="btn btn-primary dropdown-toggle track_btn" type="button" data-toggle="dropdown">
+            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+            {{ getlangval("lbl_document") }}
+          </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="https://electrolux2017.blob.core.windows.net/electrolux/ROW_RMA_Shipping Doc.pdf" target="_blank">{{ getlangval("lbl_return_instruction") }}</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://pre.cycleon.net/labels/printables/Parcel/2019/12/12/823346394_853fa7fcf89c0a7fd94d_1576145054694_0.PDF"
+                target="_blank"
+                >{{ getlangval("lbl_shippinglabel") }}</a
+              >
+            </li>
+          </ul>
+        </div>
+        <button
+          *ngIf="hdr_status.code == 'PendingApproval'"
+          type="button"
+          class="btn btn-default btn-danger btn-primary cancelProd_btn"
+          data-toggle="modal"
+          data-target="#Cancellation"
+          style="height: 30px;margin-left: 10px; border: 0px solid; font-size: 13px!important;"
+        >
+          <i class="fa fa-ban" aria-hidden="true"></i>&nbsp;Cancel
+        </button>
+      </div>
+    </div>
+    <div class="prodbox" *ngIf="return_data">
+      <div
+        class="row product_detail_box"
+        *ngFor="let item of return_data.items; let i = index"
+      >
+        <div class="col-md-1 pr-0">
+          <div class="imgbx">
+            <img
+              *ngIf="brand == 'dsc2'" style="height: 100%;width: auto;"
+              src="../../../../../../assets/customer_portal/images/arcteryx-product1.png"
+              alt=""
+            />
+            <img
+              *ngIf="brand == 'dsc3'" style="height: 100%;width: auto;"
+              src="../../../../../../assets/customer_portal/images/arcteryx-product1.png"
+              alt=""
+            />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="v-center">
+                <label for="">{{ item.name }}</label>
+                <label for=""
+                  >{{ getlangval("lbl_item_serialnumber") }} :
+                  <span>{{ item.serial_number }}</span></label
+                >
+                <label for=""
+                  >{{ getlangval("lbl_item_model") }} :
+                  <span>{{ item.sku }}</span></label
+                >
+                <label
+                  for=""
+                  style="color:colorgreen"
+                  [ngClass]="
+                    item.warranty_status_id == 84 ? 'colorred' : 'colorgreen'
+                  "
+                  ><i class="fa fa-shield"></i>&nbsp;{{ item.warranty }}</label
+                >
+                <p class="proofop" for="" *ngIf="item.warranty_status_id == 84">
+                  <a
+                    href="{{ item.files[0].url }}"
+                    target="_blank"
+                    style="cursor: pointer;"
+                    >View POP</a
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="v-center">
+            <label for="">{{ getlangval("lbl_item_returnreason") }}</label>
+            <p>{{ item.return_reason.rma_action_name }}</p>
+            <label for="">Customer Reference Field:</label>
+            <p>{{ item.remark === "" ? "-" : item.remark }}</p>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div
+            class="product_progressbar"
+            *ngIf="
+              item.status.code != 'Rejected_Item' &&
+              item.status.code != 'Cancelled_Item'
+            "
+          >
+            <ul class="progressbar">
+              <li
+                *ngFor="let itemtrack of item.item_status; let i = index"
+                [ngClass]="
+                  itemtrack.status_id === item.status.status_id
+                    ? itemtrack.statusClass
+                    : (itemtrack.status | lowercase)
+                "
+              >
+                {{ itemtrack.showinCP }}
+              </li>
+            </ul>
+          </div>
+          <div
+            class="product_progressbar"
+            *ngIf="
+              item.status.code == 'Rejected_Item' ||
+              item.status.code == 'Cancelled_Item'
+            "
+          >
+            <div class="row">
+              <div class="col-md-12">
+                <div
+                  class="v-center"
+                  *ngIf="item.status.code == 'Rejected_Item'"
+                >
+                  <label for="">Reject Reason:</label>
+                  <p>
+                    {{
+                      item.authorize_action.authorized_reason_name === ""
+                        ? "-"
+                        : item.authorize_action.authorized_reason_name
+                    }}
+                  </p>
+                  <label for="">Comment:</label>
+                  <p>
+                    {{
+                      item.authorize_action.authorized_comment === ""
+                        ? "-"
+                        : item.authorize_action.authorized_comment
+                    }}
+                  </p>
+                </div>
+                <div
+                  class="v-center"
+                  *ngIf="item.status.code == 'Cancelled_Item'"
+                >
+                  <label for="">Cancel Remark:</label>
+                  <p>
+                    {{ item.cancel_action.cancelled_remarks }}
+                  </p>
+                  <label for="">Dated on:</label>
+                  <p>
+                    {{ item.cancel_action.cancelled_date }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <hr />
+        </div>
+      </div>
+    </div>
+    <div class="add_info_box" *ngIf="return_data">
+      <div class="row">
+        <div class="col-md-12">
+          <h5>{{ getlangval("lbl_add_information") }}</h5>
+          <hr />
+          <div class="row">
+            <div class="col-md-3">
+              <label for="">{{ getlangval("lbl_primary_email") }}</label>
+              <p>{{ return_data.primary_email }}</p>
+            </div>
+            <div class="col-md-3">
+              <label for="">{{ getlangval("lbl_secondary_email") }}</label>
+              <p>
+                {{
+                  return_data.secondary_email === ""
+                    ? "-"
+                    : return_data.secondary_email
+                }}
+              </p>
+            </div>
+            <div class="col-md-2">
+              <label for="">{{ getlangval("lbl_own_reference_numner") }}</label>
+              <p>
+                {{
+                  return_data.add_own_reference_number === ""
+                    ? "-"
+                    : return_data.add_own_reference_number
+                }}
+              </p>
+              <!-- <p>{{return_data.add_own_reference_number}}</p> -->
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn_rounded pull-right">
+                {{ getlangval("lbl_send_updates") }}
+                <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="note">
+      <strong>{{ getlangval("lbl_note") }}</strong>
+      {{ getlangval("lbl_note_comment") }}
+    </p>
+  </div>
+</section>
+<!--  New Layout End Here -->
+
+<!-- Cancellation Modal Popup -->
+<div id="Cancellation" class="modal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Cancel Return</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- <div class="form-group">
+                    <label for=""><strong>Cancellation Reason</strong></label>
+                    <select name="" id="" class="form-control">
+                    <option value="">Select Cancellation Reason</option>
+                    <option value="">Cancellation Reason 1</option>
+                    <option value="">Cancellation Reason 2</option>
+                    <option value="">Cancellation Reason 3</option>
+                  </select>
+                </div> -->
+        <div class="form-group">
+          <label for=""
+            ><strong>Cancellation Remark</strong
+            ><span style="color: red;">&nbsp;*</span></label
+          >
+          <textarea
+            name="txt_cancelRemark"
+            id="txt_cancelRemark"
+            cols="30"
+            rows="10"
+            class="form-control"
+            placeholder="Enter cancellation remark"
+            style="height: 90px !important;"
+            [(ngModel)]="_cancelReq.authorized_comment"
+          ></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-default btn-danger"
+          data-dismiss="modal"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          [disabled]="_cancelReq.authorized_comment == ''"
+          class="btn btn-default btn-success"
+          (click)="cancelRequest()"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-ui-loader></ngx-ui-loader>

@@ -1,0 +1,298 @@
+﻿<div class="widget" *ngIf="ListView">
+  <div class="widget-body">
+    <div class="widget-header ">
+      <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+      <div class="input-group pull-left margin-left-20 col-md-3">
+        <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;"
+          [(ngModel)]="filterText" placeholder="Search...">
+        <span class="input-group-btn">
+          <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i
+              class="fa fa-search"></i>Search</button>
+        </span>
+      </div>
+      <div class="widget-buttons">
+        <button class="btn btn-sm btn-primary" type="button" (click)="onAdd_CaseAssessment()"
+          *ngIf="isAddConfigSetup$ && LocalAccess | contains:'Add'">
+          <i class="glyphicon glyphicon-plus-sign"></i>Add
+        </button>
+        <button class="btn btn-sm btn-primary" id="btnEdit" *ngIf="isEditConfigSetup$" (click)="onEdit_CaseAssessment()">
+          <i class="glyphicon glyphicon-edit"></i>Edit
+        </button>
+      </div>
+    </div>
+    <div class="card1 no-padding marginTop34">
+      <ag-grid-angular #agGrid class="agc-grid ag-theme-balham" [ngClass]="{'agc-grid-popup':(GridType=='popup') }"
+        (gridReady)="onGridReady($event)" [gridOptions]="gridOptions"
+        (selectionChanged)="GridType != 'popup' && onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+      </ag-grid-angular>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>
+<div class="clearfix"></div>
+
+<div class="" *ngIf="!ListView">
+  <form name="_CaseAssessment" #f="ngForm" class="css-form" novalidate>
+    <div class="widget">
+      <div class="widget-body">
+        <div class="widget-header ">
+          <span class="widget-caption" *ngIf="CurrentCaseAssessmentObj.CaseAssessmentID == undefined"><b>Add
+              {{moduleTitle}}</b>
+          </span>
+          <span class="widget-caption" *ngIf="CurrentCaseAssessmentObj.CaseAssessmentID > 0"><b><span
+                *ngIf="LocalAccess | contains:'Edit'">Edit</span> {{moduleTitle}}</b>
+          </span>
+          <div class="widget-buttons">
+            <button class="btn btn-sm btn-danger" type="button" (click)="Cancel()">
+              <i class="glyphicon glyphicon-floppy-remove"></i>Cancel
+            </button>
+            <button class="btn btn-sm btn-primary" type="submit" *ngIf="LocalAccess | contains:'Edit'"
+              (click)="Save(f.form)">
+              <i class="glyphicon glyphicon-floppy-disk"></i>Save
+            </button>
+          </div>
+        </div>
+        <div class="widget-body no-padding">
+          <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+            <div class="validationmsg">
+              <b> Please fill the asterisk (*) fields. </b>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+
+          <div class="form-group" *ngIf="IsLoaded">
+
+              <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                *ngIf="e_localize.CaseID.isVisible">{{e_localize.CaseID.headerName}} <span
+                  *ngIf="e_localize.CaseID.isRequired" style="color:red;">*</span>:</label>
+
+              <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.CaseID.isVisible">
+                <input maxlength="20" type="number" class="form-control" name="CaseID" #CaseID="ngModel"
+                  [(ngModel)]="CurrentCaseAssessmentObj.CaseID" [required]="e_localize.CaseID.isRequired"
+                  [disabled]="!e_localize.CaseID.isEnabled" placeholder="CaseID">
+
+              </div>
+
+              <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+                *ngIf="e_localize.CaseNo.isVisible">{{e_localize.CaseNo.headerName}} <span
+                  *ngIf="e_localize.CaseNo.isRequired" style="color:red;">*</span>:</label>
+
+              <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.CaseNo.isVisible">
+                <input maxlength="50" type="text" class="form-control" name="CaseNo" #CaseNo="ngModel"
+                  [(ngModel)]="CurrentCaseAssessmentObj.CaseNo" [required]="e_localize.CaseNo.isRequired"
+                  [disabled]="!e_localize.CaseID.isEnabled" placeholder="CaseID">
+
+              </div>
+
+
+            <div class="clearfix"></div>
+          </div>
+
+          <div class="form-group" *ngIf="IsLoaded">
+
+            <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+              *ngIf="e_localize.OrderID.isVisible">{{e_localize.OrderID.headerName}} <span
+                *ngIf="e_localize.OrderID.isRequired" style="color:red;">*</span>:</label>
+
+            <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.OrderID.isVisible">
+              <input maxlength="20" type="number"  type="text" class="form-control" name="OrderID" #OrderID="ngModel"
+                [(ngModel)]="CurrentCaseAssessmentObj.OrderID" [required]="e_localize.OrderID.isRequired"
+                [disabled]="!e_localize.OrderID.isEnabled" placeholder="OrderID">
+
+            </div>
+
+            <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+              *ngIf="e_localize.OrderNo.isVisible">{{e_localize.OrderNo.headerName}} <span
+                *ngIf="e_localize.OrderNo.isRequired" style="color:red;">*</span>:</label>
+
+            <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.OrderNo.isVisible">
+              <input maxlength="50" type="text" class="form-control" name="OrderNo" #OrderNo="ngModel"
+                [(ngModel)]="CurrentCaseAssessmentObj.OrderNo" [required]="e_localize.OrderNo.isRequired"
+                [disabled]="!e_localize.OrderNo.isEnabled" placeholder="OrderNo">
+
+            </div>
+
+
+          <div class="clearfix"></div>
+        </div>
+
+        <div class="form-group" *ngIf="IsLoaded">
+
+          <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+            *ngIf="e_localize.IssueId.isVisible">{{e_localize.IssueId.headerName}} <span
+              *ngIf="e_localize.IssueId.isRequired" style="color:red;">*</span>:</label>
+          <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.IssueId.isVisible">
+            <input maxlength="20" type="number"    class="form-control" name="IssueId" #IssueId="ngModel"
+              [(ngModel)]="CurrentCaseAssessmentObj.IssueId" [required]="e_localize.IssueId.isRequired"
+              [disabled]="!e_localize.IssueId.isEnabled" placeholder="IssueId">
+          </div>
+
+          <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+          *ngIf="e_localize.RootCauseId.isVisible">{{e_localize.RootCauseId.headerName}} <span
+            *ngIf="e_localize.RootCauseId.isRequired" style="color:red;">*</span>:</label>
+        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.RootCauseId.isVisible">
+          <input maxlength="20" type="number"   class="form-control" name="RootCauseId" #RootCauseId="ngModel"
+            [(ngModel)]="CurrentCaseAssessmentObj.RootCauseId" [required]="e_localize.RootCauseId.isRequired"
+            [disabled]="!e_localize.RootCauseId.isEnabled" placeholder="RootCauseId">
+        </div>
+
+
+        <div class="clearfix"></div>
+      </div>
+
+
+
+    <div class="form-group" *ngIf="IsLoaded">
+
+      <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+      *ngIf="e_localize.LocationId.isVisible">{{e_localize.LocationId.headerName}} <span
+        *ngIf="e_localize.LocationId.isRequired" style="color:red;">*</span>:</label>
+    <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.LocationId.isVisible">
+      <input maxlength="20" type="number"  class="form-control" name="LocationId" #LocationId="ngModel"
+        [(ngModel)]="CurrentCaseAssessmentObj.LocationId" [required]="e_localize.LocationId.isRequired"
+        [disabled]="!e_localize.LocationId.isEnabled" placeholder="LocationId">
+    </div>
+
+    <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+    *ngIf="e_localize.ReferenceNo.isVisible">{{e_localize.ReferenceNo.headerName}} <span
+      *ngIf="e_localize.ReferenceNo.isRequired" style="color:red;">*</span>:</label>
+  <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.ReferenceNo.isVisible">
+    <input maxlength="50" type="text" class="form-control" name="ReferenceNo" #ReferenceNo="ngModel"
+      [(ngModel)]="CurrentCaseAssessmentObj.ReferenceNo" [required]="e_localize.ReferenceNo.isRequired"
+      [disabled]="!e_localize.ReferenceNo.isEnabled" placeholder="ReferenceNo">
+  </div>
+
+
+    <div class="clearfix"></div>
+  </div>
+
+
+  <div class="form-group" *ngIf="IsLoaded">
+
+    <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+    *ngIf="e_localize.Quantity.isVisible">{{e_localize.Quantity.headerName}} <span
+      *ngIf="e_localize.Quantity.isRequired" style="color:red;">*</span>:</label>
+  <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Quantity.isVisible">
+    <input maxlength="20" type="number"  class="form-control" name="Quantity" #Quantity="ngModel"
+      [(ngModel)]="CurrentCaseAssessmentObj.Quantity" [required]="e_localize.Quantity.isRequired"
+      [disabled]="!e_localize.Quantity.isEnabled" placeholder="Quantity">
+  </div>
+
+  <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+  *ngIf="e_localize.PersonalInfoAccountID.isVisible">{{e_localize.PersonalInfoAccountID.headerName}} <span
+    *ngIf="e_localize.PersonalInfoAccountID.isRequired" style="color:red;">*</span>:</label>
+<div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.PersonalInfoAccountID.isVisible">
+  <input maxlength="20" type="number"  class="form-control" name="PersonalInfoAccountID" #PersonalInfoAccountID="ngModel"
+    [(ngModel)]="CurrentCaseAssessmentObj.PersonalInfoAccountID" [required]="e_localize.PersonalInfoAccountID.isRequired"
+    [disabled]="!e_localize.PersonalInfoAccountID.isEnabled" placeholder="PersonalInfoAccountID">
+</div>
+
+  <div class="clearfix"></div>
+</div>
+
+<div class="form-group" *ngIf="IsLoaded">
+
+  <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+  *ngIf="e_localize.PersonalInfoAccountNo.isVisible">{{e_localize.PersonalInfoAccountNo.headerName}} <span
+    *ngIf="e_localize.PersonalInfoAccountNo.isRequired" style="color:red;">*</span>:</label>
+<div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.PersonalInfoAccountNo.isVisible">
+  <input maxlength="50" type="text" class="form-control" name="PersonalInfoAccountNo" #PersonalInfoAccountNo="ngModel"
+    [(ngModel)]="CurrentCaseAssessmentObj.PersonalInfoAccountNo" [required]="e_localize.PersonalInfoAccountNo.isRequired"
+    [disabled]="!e_localize.PersonalInfoAccountNo.isEnabled" placeholder="PersonalInfoAccountNo">
+</div>
+
+<label class="control-label  col-sm-3 col-md-3 col-lg-3"
+*ngIf="e_localize.PersonalFirstName.isVisible">{{e_localize.PersonalFirstName.headerName}} <span
+  *ngIf="e_localize.PersonalFirstName.isRequired" style="color:red;">*</span>:</label>
+<div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.PersonalFirstName.isVisible">
+<input maxlength="50" type="text" class="form-control" name="PersonalFirstName" #PersonalFirstName="ngModel"
+  [(ngModel)]="CurrentCaseAssessmentObj.PersonalFirstName" [required]="e_localize.PersonalFirstName.isRequired"
+  [disabled]="!e_localize.PersonalFirstName.isEnabled" placeholder="PersonalFirstName">
+</div>
+
+<div class="clearfix"></div>
+</div>
+
+<div class="form-group" *ngIf="IsLoaded">
+
+  <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+  *ngIf="e_localize.PersonalLastName.isVisible">{{e_localize.PersonalLastName.headerName}} <span
+    *ngIf="e_localize.PersonalLastName.isRequired" style="color:red;">*</span>:</label>
+<div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.PersonalLastName.isVisible">
+  <input maxlength="50" type="text" class="form-control" name="PersonalLastName" #PersonalLastName="ngModel"
+    [(ngModel)]="CurrentCaseAssessmentObj.PersonalLastName" [required]="e_localize.PersonalLastName.isRequired"
+    [disabled]="!e_localize.PersonalLastName.isEnabled" placeholder="PersonalLastName">
+</div>
+<label class="control-label  col-sm-3 col-md-3 col-lg-3"
+*ngIf="e_localize.PersonalPhoneNo.isVisible">{{e_localize.PersonalPhoneNo.headerName}} <span
+  *ngIf="e_localize.PersonalPhoneNo.isRequired" style="color:red;">*</span>:</label>
+<div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.PersonalPhoneNo.isVisible">
+<input maxlength="13" type="text" class="form-control" name="PersonalPhoneNo" #PersonalPhoneNo="ngModel"
+  [(ngModel)]="CurrentCaseAssessmentObj.PersonalPhoneNo" [required]="e_localize.PersonalPhoneNo.isRequired"
+  [disabled]="!e_localize.PersonalPhoneNo.isEnabled" placeholder="PersonalPhoneNo">
+</div>
+<div class="clearfix"></div>
+</div>
+
+<div class="form-group" *ngIf="IsLoaded">
+
+  <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+  *ngIf="e_localize.PersonalEmail.isVisible">{{e_localize.PersonalEmail.headerName}} <span
+    *ngIf="e_localize.PersonalEmail.isRequired" style="color:red;">*</span>:</label>
+<div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.PersonalEmail.isVisible">
+  <input type="email" class="form-control" name="PersonalEmail" #PersonalEmail="ngModel"
+    [(ngModel)]="CurrentCaseAssessmentObj.PersonalEmail" [required]="e_localize.PersonalEmail.isRequired"
+    [disabled]="!e_localize.PersonalEmail.isEnabled" placeholder="PersonalEmail">
+</div>
+
+<label class="control-label  col-sm-3 col-md-3 col-lg-3"
+*ngIf="e_localize.product_sku.isVisible">{{e_localize.product_sku.headerName}} <span
+  *ngIf="e_localize.product_sku.isRequired" style="color:red;">*</span>:</label>
+<div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.product_sku.isVisible">
+<input maxlength="200" type="text" class="form-control" name="product_sku" #product_sku="ngModel"
+  [(ngModel)]="CurrentCaseAssessmentObj.product_sku" [required]="e_localize.product_sku.isRequired"
+  [disabled]="!e_localize.product_sku.isEnabled" placeholder="product_sku">
+</div>
+<div class="clearfix"></div>
+</div>
+
+
+<div class="form-group" *ngIf="IsLoaded">
+  <label class="control-label  col-sm-3 col-md-3 col-lg-3"
+  *ngIf="e_localize.size_code_id.isVisible">{{e_localize.size_code_id.headerName}} <span
+    *ngIf="e_localize.size_code_id.isRequired" style="color:red;">*</span>:</label>
+<div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.size_code_id.isVisible">
+  <!-- <input type="text" class="form-control" name="size_code_id" #size_code_id="ngModel"
+    [(ngModel)]="CurrentCaseAssessmentObj.size_code_id" [required]="e_localize.size_code_id.isRequired"
+    [disabled]="!e_localize.size_code_id.isEnabled" placeholder="size_code_id"> -->
+    <select #size_code_id="ngModel" [(ngModel)]="CurrentCaseAssessmentObj.size_code_id"
+    [required]="e_localize.size_code_id.isRequired" name="size_code_id" class="form-control">
+    <option [value]="i.SizeCode" *ngFor="let i of ProductSizeList">{{i.SizeCode}} </option>
+  </select>
+</div>
+
+<label class="control-label  col-sm-3 col-md-3 col-lg-3"
+*ngIf="e_localize.base_color.isVisible">{{e_localize.base_color.headerName}} <span
+  *ngIf="e_localize.base_color.isRequired" style="color:red;">*</span>:</label>
+<div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.base_color.isVisible">
+<!-- <input type="text" class="form-control" name="base_color" #base_color="ngModel"
+  [(ngModel)]="CurrentCaseAssessmentObj.base_color" [required]="e_localize.base_color.isRequired"
+  [disabled]="!e_localize.base_color.isEnabled" placeholder="base_color"> -->
+  <select #base_color="ngModel" [(ngModel)]="CurrentCaseAssessmentObj.base_color"
+  [required]="e_localize.base_color.isRequired" name="base_color" class="form-control">
+  <option [value]="i.Name" *ngFor="let i of ColorsList">{{i.Name}} </option>
+</select>
+
+</div>
+
+<div class="clearfix"></div>
+</div>
+          <div class="clearfix"></div>
+
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>

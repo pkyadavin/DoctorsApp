@@ -1,0 +1,304 @@
+﻿<style>
+    .ui-tabs .ui-tabs-nav li {
+        width: 35px !important;
+    }
+
+    .nav-tabs {
+        margin-bottom: 0;
+        margin-left: 0;
+        border: 0;
+        top: 2px;
+        background: none !important;
+        -webkit-box-shadow: 0 0 4px rgba(0,0,0,0);
+        -moz-box-shadow: 0 0 4px rgba(0,0,0,0);
+        box-shadow: 0 0 4px rgba(0,0,0,0);
+        /*background-color: #eee;
+    -webkit-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 0 4px rgba(0,0,0,.3);
+    box-shadow: 0 0 4px rgba(0,0,0,.3);*/
+    }
+
+        .nav-tabs > li {
+            margin: 0px 3px 0px 3px;
+        }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #777;
+                margin-right: -1px;
+                line-height: 24px;
+                position: relative;
+                z-index: 11;
+            }
+
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                color: #262626;
+                border: 0;
+                border-top: 2px solid #333;
+                border-bottom-color: transparent;
+                /*background-color: #fbfbfb;*/
+                z-index: 12;
+                line-height: 24px;
+                margin-top: -2px;
+                box-shadow: 0 -2px 3px 0 rgba(0,0,0,.15);
+            }
+
+            .nav-tabs > li a:hover {
+                color: #fff;
+                /*border: 0;*/
+                /*border-bottom-color: transparent;*/
+                /*background-color: #BAF3DA;*/
+                /*z-index: 12;*/
+                /*line-height: 24px;*/
+            }
+
+            .nav-tabs > li > a, .nav-tabs > li > a:focus {
+                border-radius: 0 !important;
+                color: #fff;
+                /* margin-right: -1px;
+                / line-height: 24px;
+                position: relative;
+                z-index: 11;
+                /*background-color: #178E58;*/
+            }
+
+    .nav > li.disabled > a {
+        color: #fff;
+        background-color: gray;
+    }
+
+        .nav > li.disabled > a:hover {
+            color: #fff;
+            background-color: gray;
+        }
+</style>
+
+<form #f="ngForm" novalidate>
+    <div class="widget">
+        <div class="widget-header">
+            <span class="widget-caption"><b>{{SOOrderHeaderName}}</b> </span>
+            <div class="widget-buttons">
+                <button class="btn btn-sm btn-danger" type="button" (click)="Cancel()">
+                        <i class="fa fa-arrow-left"></i> Back 
+                </button>
+                <!--<button class="btn btn-sm btn-primary" type="submit" (click)="onSubmit(f.form)">
+                    <i class="glyphicon glyphicon-floppy-disk"></i>Save
+                </button>-->
+            </div>
+        </div>
+        <div class="widget-body no-padding">
+                <div class="col-md-12 margin-top-5 form-group validationmsg">
+                    <div *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                        <b> Please fill the asterisk (*) fields. </b>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div *ngIf="(orderlineGridList.length==0)&& isSaveClick">
+                        <b> Please add one line item. </b>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-6" *ngIf="IsLoaded && soEditor.SONumber.isVisible">
+                        <label class="control-label col-lg-6 ng-binding">
+                            {{soEditor.SONumber.DisplayName}}: <span *ngIf="soEditor.SONumber.isRequired" style="color:red;">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" name="SONumber" placeholder="{{soEditor.SONumber.DisplayName}}"
+                                   [required]="soEditor.SONumber.isRequired"
+                                   [disabled]="!soEditor.SONumber.isEnabled"
+                                   [(ngModel)]="CurrentSOeditor.SONumber" />
+                            <!--(focusout)="CheckAvailability('SONumber')">-->
+                        </div>
+                    </div>
+                    <div class="col-lg-6" *ngIf="IsLoaded && soEditor.PartnerName.isVisible">
+                        <label class="control-label col-sm-6 col-md-6 col-lg-6">{{soEditor.PartnerName.DisplayName}} <span *ngIf="soEditor.PartnerName.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <input type="text" class="form-control" name="PartnerName" readonly="readonly" [(ngModel)]="CurrentSOeditor.PartnerName" [required]="soEditor.PartnerName.isRequired" [disabled]="!soEditor.PartnerName.isEnabled" placeholder="{{soEditor.PartnerName.DisplayName}}">
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-6" *ngIf="IsLoaded && soEditor.BillDate.isVisible">
+                        <label class="control-label col-lg-6 ng-binding">
+                            {{soEditor.BillDate.DisplayName}}: <span *ngIf="soEditor.BillDate.isRequired" style="color:red;">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <input ng2-datetime-picker date-only="true" readonly="readonly" type="text" class="form-control" name="BillDate"
+                                   [required]="soEditor.BillDate.isRequired" [disabled]="!soEditor.BillDate.isEnabled"
+                                   [(ngModel)]="CurrentSOeditor.BillDate">
+                        </div>
+                    </div>
+                    <div class="col-lg-6" *ngIf="IsLoaded ">
+                        <label class="control-label col-sm-6 col-md-6 col-lg-6">{{soEditor.TypeName.DisplayName}} <span *ngIf="soEditor.TypeName.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-lg-6">
+                            <select [(ngModel)]="CurrentSOeditor.SOTypeID" class="form-control" (change)="onRefChange($event.target.value)"
+                                    name="SOTypeID"
+                                    [required]="soEditor.TypeName.isRequired"
+                                    [disabled]="!soEditor.TypeName.isEnabled">
+                                <option [value]="undefined" [disabled]="soEditor.TypeName.isRequired">--Select SO. Type--</option>
+                                <option *ngFor="let rec of RefTypeLIst" [value]="rec.TypelookUpId">
+                                    {{rec.TypeName}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--<div  class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded ">
+                        <label class="control-label col-sm-6 col-md-6 col-lg-6">{{soEditor.SOPartners.DisplayName}} <span *ngIf="soEditor.SOPartners.isRequired" style="color:red;">*</span>:</label>
+
+                        <div class="col-lg-6">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" name="SOPartners" readonly="readonly" [(ngModel)]="CurrentSOeditor.SOPartners" [required]="soEditor.SOPartners.isRequired" [disabled]="!soEditor.SOPartners.isEnabled">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default btn-sm" type="button" (click)="selectToPartner()"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>-->
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-6" *ngIf="IsLoaded ">
+                            <div class="form-group">
+                        <label class="control-label col-sm-6 col-md-6 col-lg-6">{{soEditor.SOPartners.DisplayName}} <span *ngIf="soEditor.SOPartners.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-lg-6">
+                            <!--<div class="input-group input-group-sm">-->
+                                <input type="text" class="form-control" name="SOPartners" readonly="readonly" [(ngModel)]="CurrentSOeditor.SOPartners" [required]="soEditor.SOPartners.isRequired" [disabled]="!soEditor.SOPartners.isEnabled">
+                                <!--<span class="input-group-btn">
+                                    <button class="btn btn-default btn-sm" type="button" (click)="selectPartner()"><i class="fa fa-search"></i></button>
+                                </span>-->
+                            <!--</div>-->
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                        <div class="form-group">
+                            <div class="" *ngIf="IsLoaded ">
+                                <label class="control-label col-sm-6 col-md-6 col-lg-6">{{soEditor.SOTypeAddressID.DisplayName}} <span *ngIf="soEditor.SOTypeAddressID.isRequired" style="color:red;">*</span>:</label>
+
+                                <div class="col-lg-6">
+                                    <textarea name="VendorAddress" #VendorAddress="ngModel" [required]="soEditor.SOTypeAddressID.isRequired"
+                                              [disabled]="!soEditor.SOTypeAddressID.isEnabled" class="form-control" readonly="readonly"
+                                              style="width:100%;height: 62px!important;float:left;" [(ngModel)]="CurrentSOeditor.SOTypeAddress"></textarea>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="col-lg-6" *ngIf="IsLoaded && soEditor.Remarks.isVisible">
+                        <label class="control-label col-lg-6 ng-binding">
+                            {{soEditor.Remarks.DisplayName}}: <span *ngIf="soEditor.Remarks.isRequired" style="color:red;">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <textarea type="text" class="form-control" name="Remarks"
+                                      [required]="soEditor.Remarks.isRequired" [disabled]="!soEditor.Remarks.isEnabled"
+                                      [(ngModel)]="CurrentSOeditor.Remarks"></textarea>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-6" *ngIf="IsLoaded && soEditor.PORefNo.isVisible">
+                        <label class="control-label col-sm-6 col-md-6 col-lg-6">{{soEditor.PORefNo.DisplayName}} <span *ngIf="soEditor.PORefNo.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <input type="text" class="form-control" name="PORefNo" [(ngModel)]="CurrentSOeditor.PORefNo" [required]="soEditor.PORefNo.isRequired" [disabled]="!soEditor.PORefNo.isEnabled" placeholder="{{soEditor.PORefNo.DisplayName}}">
+                        </div>
+                    </div>
+                    <div class="col-lg-6" *ngIf="IsLoaded && soEditor.PORefDate.isVisible">
+                        <label class="control-label col-lg-6 ng-binding">
+                            {{soEditor.PORefDate.DisplayName}}: <span *ngIf="soEditor.PORefDate.isRequired" style="color:red;">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <input ng2-datetime-picker date-only="true" readonly="readonly" type="text" class="form-control" name="PORefDate"
+                                   [required]="soEditor.PORefDate.isRequired" [disabled]="!soEditor.PORefDate.isEnabled"
+                                   [(ngModel)]="CurrentSOeditor.PORefDate">
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-6" *ngIf="IsLoaded && soEditor.BillNumber.isVisible">
+                        <label class="control-label col-sm-6 col-md-6 col-lg-6">{{soEditor.BillNumber.DisplayName}} <span *ngIf="soEditor.BillNumber.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <input type="text" class="form-control" name="BillNumber" [(ngModel)]="CurrentSOeditor.BillNumber" [required]="soEditor.BillNumber.isRequired"
+                                   [disabled]="!soEditor.BillNumber.isEnabled" placeholder="{{soEditor.BillNumber.DisplayName}}" />
+                            <!--(focusout)="CheckAvailability('BOLNumber')">-->
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--<div class="form-group">
+                    <div class="col-lg-6" style="margin-bottom:5px;" *ngIf="IsLoaded && soEditor.Series.isVisible">
+                        <label class="control-label col-lg-6 ng-binding">
+                            {{soEditor.Series.DisplayName}}: <span *ngIf="soEditor.Series.isRequired" style="color:red;">*</span>
+                        </label>
+                        <div class="col-lg-6">
+                            <input type="checkbox" class="checkbox" style="opacity:1 !important;left:14px" name="Series"
+                                   [required]="soEditor.Series.isRequired"
+                                   [disabled]="!soEditor.Series.isEnabled"
+                                   [(ngModel)]="CurrentSOeditor.Series">
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>-->
+                <div class="clearfix"></div>            
+            <tabs>
+                <tab tabTitle="Order Line Items">
+                    <div class="form-group">
+                        <div>
+                            <!--<button id="btnAdd" href="javascript:void(0)" class="btn btn-sm btn-primary text-align-center thumb Authorize AUTH_2068 pull-right" (click)="SelectItem()"><i class="glyphicon glyphicon-plus-sign"></i>Add</button>-->
+                            <ag-grid-angular #agGrid style="height:200px;width:100%" class="ag-theme-balham"
+                                         [gridOptions]="ItemsGridOptions" (selectionChanged)="onGridSelectionChanged()">
+                            </ag-grid-angular>
+                        </div>
+                    </div>
+                </tab>               
+            </tabs>
+        </div>
+        <message #pop cssClass="modal-msg"></message>
+    </div>
+</form>
+
+<!-- <modal #itemSelector cssClass="modal-xxl" id="divItemPopup">
+    <item-selector [Paramdata]="Paramdata" Paramdata="Paramdata" (itemListChange)="itemListChange($event)"></item-selector>
+</modal> -->
+<bs-modal #modalPartner cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close"  (click)="modalPartner.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Select Partners</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <!-- <PartnerGrid [partnerGridType]="popuptype" [partnerType]="partnerType" (notifyPartner)="PartnerEvent($event)"></PartnerGrid> -->
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default"   (click)="modalPartner.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #modalCustomer cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close"  (click)="modalCustomer.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Customers</h4>
+    </bs-modal-header>
+    <bs-modal-body>
+        <!-- <ConsumerGrid [consumerGridType]="popuptype" (notifyConsumer)="CustomerEvent($event)"></ConsumerGrid> -->
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default"   (click)="modalCustomer.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>
+
+<bs-modal #addressPopUp cssClass="modal-lg">
+    <bs-modal-header>
+        <button type="button" class="close"  (click)="addressPopUp.dismiss()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" style="float:left;">Address</h4>
+    </bs-modal-header>
+    <bs-modal-body *ngIf="addressGridPopup">
+        <!-- <Address-Grid [addressInput]="addressInput" (notifyAddress)="onAddressSelect($event)"></Address-Grid> -->
+    </bs-modal-body>
+    <bs-modal-footer>
+        <button type="button" class="btn btn-default"   (click)="addressPopUp.dismiss()">Close</button>
+    </bs-modal-footer>
+</bs-modal>

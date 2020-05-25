@@ -1,0 +1,124 @@
+﻿<div class="widget" [hidden]="!ListView">
+    <div class="widget-body">
+        <div class="widget-header ">
+            <span class="widget-caption pull-left font-40"><b>{{moduleTitle}}</b> </span>
+            <div class="input-group pull-left margin-left-20 col-md-3">
+                <input type="text" name="searchText" class="form-control input-sm" style="margin-top:3px;width:250px;" [(ngModel)]="filterText" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button (click)="onFilterChanged()" class="btn btn-secondary btn-sm" style="margin-top:3px;"><i
+                            class="fa fa-search"></i>Search</button>
+                </span>
+            </div>
+            <div class="widget-buttons">
+                <button class="btn btn-sm btn-primary" type="button" (click)="onAddIssue()" *ngIf="isAddConfigSetup$ && LocalAccess | contains:'Add'">
+                    <i class="glyphicon glyphicon-plus-sign"></i>Add
+                </button>
+                <button class="btn btn-sm btn-primary" id="btnEdit" *ngIf="isEditConfigSetup$" (click)="onEditIssue()">
+                    <i class="glyphicon glyphicon-edit"></i>Edit
+                </button>
+                <!-- <button class="btn btn-sm btn-danger" (click)="onDeleteCountry()"
+                    *ngIf="isDeleteConfigSetup$ && LocalAccess | contains:'Delete'">
+                    <i class="glyphicon glyphicon-trash"></i>Delete
+                </button> -->
+            </div>
+        </div>
+        <div class="card1 no-padding marginTop34">
+            <ag-grid-angular #agGrid class="agc-grid ag-theme-balham" [ngClass]="{'agc-grid-popup':(GridType=='popup') }" (gridReady)="onGridReady($event)" [gridOptions]="gridOptions" (selectionChanged)="GridType != 'popup' && onSelectionChanged()" (rowClicked)="onRowClicked($event)">
+            </ag-grid-angular>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+
+</div>
+<div class="clearfix"></div>
+
+
+
+<div class="" *ngIf="!ListView">
+    <form name="Country" #f="ngForm" class="css-form" novalidate>
+        <div class="widget">
+            <div class="widget-body">
+                <div class="widget-header ">
+                    <span class="widget-caption" *ngIf="CurrentIssueObj.ID == undefined"><b>Add {{moduleTitle}}</b>
+                    </span>
+                    <span class="widget-caption" *ngIf="CurrentIssueObj.ID > 0"><b><span
+                                *ngIf="LocalAccess | contains:'Edit'">Edit</span> {{moduleTitle}}</b>
+                    </span>
+                    <div class="widget-buttons">
+                        <button class="btn btn-sm waves-effect waves-light btn-danger mr-2" type="button" (click)="Cancel()">
+                            <i class="fa fa-long-arrow-left"></i> Back
+                        </button>
+                        <button class="btn btn-sm waves-effect waves-light btn-success" type="submit" *ngIf="LocalAccess | contains:'Edit'" (click)="Save(f.form)">
+                            <i class="fa fa-floppy-o"></i> Save
+                        </button>
+                    </div>
+                </div>
+                <hr>
+                <div class="widget-body no-padding">
+                    <div class="form-group" *ngIf="f.form.touched && !f.form.valid && isSaveClick">
+                        <div class="validationmsg">
+                            <b> Please fill the asterisk (*) fields. </b>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group" *ngIf="IsLoaded">
+                        <div *ngIf="IsLoaded">
+                            <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Name.isVisible">{{e_localize.Name.headerName}} <span
+                                    *ngIf="e_localize.Name.isRequired" style="color:red;">*</span>:</label>
+
+                            <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Name.isVisible">
+                                <input type="text" class="form-control" name="Name" #Name="ngModel" [(ngModel)]="CurrentIssueObj.Name" [required]="e_localize.Name.isRequired" [disabled]="!e_localize.Name.isEnabled" placeholder="Name">
+
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!--2row-->
+                    <div class="form-group" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Code.isVisible">{{e_localize.Code.headerName}} <span
+                                *ngIf="e_localize.Code.isRequired" style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Code.isVisible">
+                            <input type="text" class="form-control" name="Code" #Code="ngModel" [(ngModel)]="CurrentIssueObj.Code" [required]="e_localize.Code.isRequired" [disabled]="!e_localize.Code.isEnabled" placeholder="Code">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Code.isVisible">{{e_localize.Description.headerName}} </label>
+                        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.Description.isVisible">
+                            <input type="text" class="form-control" name="Description" #Description="ngModel" [(ngModel)]="CurrentIssueObj.Description" [disabled]="!e_localize.Description.isEnabled" placeholder="Description">
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="form-group" *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3">Category <span style="color:red;">*</span>:</label>
+                        <div class="col-sm-3 col-md-3 col-lg-3">
+                            <select id="selectedCategory" class="form-control-mb-12" [ngModelOptions]="{standalone: true}" [(ngModel)]="selectedCategory" (change)="getCategory($event.target.value)">
+                              <option *ngFor="let reg of CategoryList" [value]="reg.ID">{{reg.Name}}</option>
+                          </select>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div *ngIf="IsLoaded">
+                        <label class="control-label  col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.IsActive.isVisible">{{e_localize.IsActive.headerName}} <span
+                                *ngIf="e_localize.IsActive.isRequired" style="color:red;">*</span>:</label>
+
+                        <div class="col-sm-3 col-md-3 col-lg-3" *ngIf="e_localize.IsActive.isVisible">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" [required]="e_localize.IsActive"
+                                        class="checkbox-slider colored-palegreen yesno"
+                                        [disabled]="!e_localize.IsActive" [(ngModel)]="CurrentIssueObj.IsActive"
+                                        [ngModelOptions]="{standalone: true}"><span class="text">&nbsp;</span>
+                                </label>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

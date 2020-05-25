@@ -1,0 +1,144 @@
+<section class="top_info_box">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-6">
+                <h6>{{ getlangval("lbl_hi") }} {{ customer_display.name1 + " " + customer_display.name2 }} !</h6>
+                <address>
+          <strong>{{ getlangval("lbl_shipping_address") }}</strong>
+          {{ _addHeaderInfo.select_customer.address.complete_address === "" ? processableItems[0].customer.address.complete_address : _addHeaderInfo.select_customer.address.complete_address }}
+        </address>
+            </div>
+            <div class="col-md-6">
+                <div class="req_date_box pull-right">
+                    <div class="iconbox">
+                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                    </div>
+                    <div class="datebx">
+                        <p>{{ getlangval("lbl_request_date") }}</p>
+                        <span>{{ today | date: "MMM d, y" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="middle_section" *ngIf="processableItems">
+    <form #orderForm="ngForm">
+        <div class="container">
+            <div class="row" *ngFor="let item of processableItems; let i = index">
+                <div class="col-md-12 d-flex">
+                    <div class="reason_box">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="img_box align-self-center">
+                                    <span class="helper"></span>
+                                    <img *ngIf="brand == 'dsc2'" src="../../../../assets/img/../../../../../../assets/customer_portal/images/arcteryx-product1.png" alt="" />
+                                    <img *ngIf="brand == 'dsc3'" src="../../../../assets/img/../../../../../../assets/customer_portal/images/arcteryx-product1.png" alt="" />
+                                    <!-- <img src="../../../../../../assets/img/jabra_product_img.png" alt="" /> -->
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="info_box">
+                                    <label><strong>{{ item.items[0].name }}</strong></label>
+                                    <label for=""><strong>{{ getlangval("lbl_item_serialnumber") }} :</strong>
+                    {{ item.serial_number }}</label>
+                                    <label for=""><strong>{{ getlangval("lbl_item_sku") }} :</strong>
+                    {{ item.items[0].product_number }}</label>
+                                    <label for="" style="color:colorgreen" [ngClass]="
+                      item.warranty_status_id == 84 ? 'colorred' : 'colorgreen'
+                    "><i class="fa fa-shield"></i>&nbsp;{{
+                      item.warranty_status
+                    }}</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input_box">
+                                    <div class="form-group">
+                                        <label for="" class="col-md-12"><strong>{{
+                        getlangval("lbl_item_returnreason")
+                      }}</strong></label>
+                                        <div class="col-md-8">
+                                            <!-- rrr  {{reasons | json}} -->
+                                            <!-- {{returnReason.value |json}} -->
+                                            <select id="itemReturnReason_{{ i }}" name="itemreturnReason_{{ i }}" [(ngModel)]="item.items[0].return_reason.rma_action_code===''?returnReason.rma_action_code:item.items[0].return_reason.rma_action_code " class="form-control rounded-0 selectHeight"
+                                                (change)="
+                          onReasonChange(returnReason.value, item.items, i)
+                        " #returnReason="ngModel" [required]="item.rma_action_name == 84 ? true : false">
+                        <option value="undefined">-------Select Return reason-------</option>
+                        <option *ngFor="let returnReason of reasons" [value]="returnReason.rma_action_code">
+                          {{ returnReason.rma_action_name }}</option>
+                      </select>
+                                        </div>
+
+                                        <div class="col-md-4 pl-0" *ngIf="item.warranty_status_id == 84">
+                                            <div class="myLabel">
+                                                <div (click)="triggerFile(item.serial_number)">
+                                                    <i class="fa fa-upload" style="margin-right: 8px;"></i> {{ getlangval("lbl_file_upload_text") }} <i data-toggle="tooltip" data-placement="top" title="Please select any of these formate .gif, .jpg, .jpeg, .png, .docx, .doc, .xlsx, .xls, .txt, .pptx"
+                                                        class="fa fa-info-circle" aria-hidden="true"></i>
+                                                    <div class="clearfix"></div>
+                                                    <!-- {{ item.items[0].files.length }}
+                          {{ item.items[0].files | json }} -->
+
+                                                    <input type="file" id="file_{{ item.serial_number }}" #fileupload name="file_{{ item.serial_number }}" accept=".gif, .jpg, .jpeg, .png, .docx, .doc, .xlsx, .xls, .txt, .pptx" style="display:none" ngModel (change)="
+                              handleFile(
+                                $event,
+                                item,
+                                item.isSelected,
+                                fileupload,
+                                i
+                              )
+                            " />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div *ngFor="let image of item.items[0].files">
+                                                    <a style="position: absolute;
+                                                    text-decoration: none;
+                                                    width: 95%;
+                                                    overflow: hidden;
+                                                    text-overflow: ellipsis;
+                                                    white-space: nowrap;
+                                                    font-size: 11px;" href="{{ image.url }}">{{ image.name }}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="" class="col-md-12"><strong>{{
+                        getlangval("lbl_item_comment")
+                      }}</strong></label>
+                                        <div class="col-md-12">
+                                            <textarea id="txtComment_{{ i }}" name="Comment_{{ i }}" [(ngModel)]="item.items[0].remark" cols="30" rows="4" class="form-control" placeholder="{{
+                          getlangval('lbl_comment_placeholder')
+                        }}"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <button class="del_button" (click)="deleteItem(i)" *ngIf="processableItems.length > 1">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-primary pl-pr-40 prev_button" (click)="goPrevSearch()" type="submit">
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            {{ getlangval("lbl_btn_prev") }}
+          </button>
+                    <button type="button" class="btn btn-primary pl-pr-40 pull-right" (click)="replaceProductContinue()">
+            {{ getlangval("lbl_btn_Next") }}
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+          </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<ngx-ui-loader></ngx-ui-loader>
