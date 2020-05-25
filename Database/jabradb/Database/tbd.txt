@@ -1,0 +1,5 @@
+1. make copy of jabra db
+2. make copy of BO
+3. make copy of CP
+-- Remove Unnessary code 
+-- optimize for doctorsApp
