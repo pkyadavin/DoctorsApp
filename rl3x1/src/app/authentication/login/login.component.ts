@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
   Menus: Menu[];
   encryptionKey: string = "$aS^AmR$@Cx2o19!";
-  sitekey: string = "6Lc_7MoUAAAAAPttZjZ6vDOnfEPNSrjy1wWtuhVm";
+  sitekey: string = "6Lf1P_wUAAAAACzZCAxbq9CIZJ_vgk-mHgTA7UZX";
   constructor(private _sidebar: SidebarService, private _util: Util, private _auth: AuthService, private router: Router,
     private route: ActivatedRoute, private userService: UserService,private loaderService: LoaderService) {
     if (this._auth.getAuthorizationToken()) {
@@ -36,11 +36,11 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.router.navigate(['/login']);
 debugger;
-/// NEW 
+/// NEW
     $(".login-control").toggleClass("step");
    // this.elementpwd.focus();
     grecaptcha.render($('.g-recaptcha')[0], { sitekey: this.sitekey });
-/// NEW 
+/// NEW
 
 
     this.elementmail = document.getElementById('txt_email') as HTMLElement;
